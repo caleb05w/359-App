@@ -16,7 +16,18 @@ export default function HomeScreen({ navigation }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  return (
+    const handleAddItem = () => {
+    if (!username.trim() || !password.trim()) {
+      Alert.alert("Please enter both username and password.");
+      return;
+    }
+
+    setList([{ name: username }, ...list]);
+    setUsername("");
+    setPassword("");
+  };
+
+ return (
     <View>
       <View style={[styles.containerFlex, styles.containerCenter]}>
         {list.map((temp) => (
@@ -40,13 +51,15 @@ export default function HomeScreen({ navigation }) {
           secureTextEntry={true} 
         />
 
-        <View style={styles.containerFlexRow}>
+         <View style={styles.containerFlexRow}>
+          <Button title="Add item" onPress={handleAddItem} />
           <Button
-            title="Add item"
+            title="Reset list"
             onPress={() => {
-              setList([{ name: username }, ...list]);
+              setList([]);
             }}
           />
+          
           <Button
             title="Reset list"
             onPress={() => {

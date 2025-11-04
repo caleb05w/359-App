@@ -4,7 +4,7 @@ export default function TestScreen({navigation}) {
 
     return (
     <View>
-        <Text>I am test screen</Text>
+        <Text>My Aquarium</Text>
     </View>
     )
 }
