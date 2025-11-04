@@ -11,79 +11,88 @@ import { Button, View, Text, TextInput, TouchableOpacity, StyleSheet, Alert} fro
 // Storage
 // key system
 
-export default function HomeScreen({navigation}) {
+export default function HomeScreen({ navigation }) {
+  const [list, setList] = useState([{ name: "role" }, { name: "two" }]);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
-    const [list, setList] = useState([{name:"role"}, {name:"two"}]);
-    const [item, setItem] = useState("");
+  return (
+    <View>
+      <View style={[styles.containerFlex, styles.containerCenter]}>
+        {list.map((temp) => (
+          <Text key={temp.name}>{temp.name}</Text>
+        ))}
 
-    return (
-        <View>
-            <View style={[styles.containerFlex, styles.containerCenter]}>
-                {/* //key needs unique identifier */}
-            {list.map((temp)=>(
-                <Text key={temp.name}> {temp.name} </Text>
+        {/* Username input */}
+        <TextInput
+          style={styles.h1}
+          placeholder="Enter username"
+          value={username}
+          onChangeText={setUsername}
+        />
 
-            ))}
+        {/* Password input */}
+        <TextInput
+          style={styles.h1}
+          placeholder="Enter password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry={true} 
+        />
 
-            <TextInput
-            styles={styles.h1}
-            placeholder="enter name"
-            value={item}
-            onChangeText={setItem}
-            />
-            
-
-            <View style={[styles.containerFlexRow]}>
-                <Button
-                title="add item"
-                onPress={()=>{
-                    setList([{name:item}, ...list])
-                }}
-                ></Button>
-                <Button
-                title="reset list"
-                onPress={()=>{setList([])}}>
-                </Button>
-            </View>
-
-            <Button
-            title="Change page"
-            onPress={()=>{
-                navigation.navigate("Test")
+        <View style={styles.containerFlexRow}>
+          <Button
+            title="Add item"
+            onPress={() => {
+              setList([{ name: username }, ...list]);
             }}
-            ></Button>
+          />
+          <Button
+            title="Reset list"
+            onPress={() => {
+              setList([]);
+            }}
+          />
         </View>
-        </View>
-    )
 
+        <Button
+          title="Change page"
+          onPress={() => {
+            navigation.navigate("Test");
+          }}
+        />
+      </View>
+    </View>
+  );
 }
 
-const styles = StyleSheet.create(
-    {
+const styles = StyleSheet.create({
+  containerFlex: {
+    flexDirection: "column",
+    gap: 12,
+    marginVertical: 10,
+    width: "100%",
+  },
 
-    containerFlex: {
-        flexDirection: "column",
-        gap: 12,
-        marginVertical: 10,
-        width: "100%",
-    },
+  h1: {
+    fontSize: 18,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    padding: 8,
+    width: "80%",
+    borderRadius: 6,
+  },
 
-    h1: {
-        fontSize: 24,
-    },
+  containerFlexRow: {
+    flexDirection: "row",
+    gap: 12,
+  },
 
-    containerFlexRow: {
-        flexDirection: "row",
-        gap: 12,
-    },
-
-    containerCenter: {
-        flexDirection: "Row",
-        width: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: "center",
-
-    },
-}
-)
+  containerCenter: {
+    flexDirection: "column",
+    width: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
