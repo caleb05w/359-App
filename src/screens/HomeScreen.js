@@ -13,7 +13,7 @@ import { saveUserPrefs, loadUserPrefs, removeUserPrefs } from '../utils/storage'
 
 export default function HomeScreen({navigation}) {
 
-    const [list, setList] = useState([{name:"role"}, {name:"two"}]);
+    const [list, setList] = useState([""]);
     const [item, setItem] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -33,23 +33,25 @@ export default function HomeScreen({navigation}) {
 
   //pass values onto next page
   //also load it into our asycn storage 
-    const changePage = async () => {
-
-        //save user prefs
-        await saveUserPrefs(item, selectedColor);
-
+    const changePage = () => {
         navigation.navigate("Test", {item:item.trim(), color:selectedColor})
     }
 
+    const updatePrefs = async () => {
+    await saveUserPrefs(item, selectedColor);
+    const load = await loadUserPrefs();
+    Alert.alert(JSON.stringify(load));
+    }
+
     useEffect(()=>{
-        console.log(loadUserPrefs);
         
         (async () => {
         const load = await loadUserPrefs();
-        if (load?.item) setItem(load.item);
-        if (load?.selectedColor) setSelectedColor(load.selectedColor);
-        }
-    )
+        console.log(`unloading log`, load);
+        if (load?.name) setItem(load.name);
+        if (load?.color) setSelectedColor(load.color);
+        })();
+
     }, []);
 
  return (
@@ -60,7 +62,7 @@ export default function HomeScreen({navigation}) {
         ))}
 
             <TextInput
-            styles={styles.h1}
+            styles={[styles.h1, {backgroundColor: selectedColor}]}
             placeholder="enter name"
             value={item}
             onChangeText={setItem}
@@ -93,12 +95,30 @@ export default function HomeScreen({navigation}) {
                 </Button>
             </View>
 
+            <View style={[styles.containerFlexRow]}>
             <Button
-            title="Change page"
+              title="Test Page"
+              onPress={()=>{
+                  changePage()
+                }}/>
+              <Button
+            title="Save"
             onPress={()=>{
-               changePage()
-            }}
-            ></Button>
+               updatePrefs()
+            }}/>
+
+                          <Button
+            title="Reset"
+            onPress={ async () => {
+               removeUserPrefs()
+               Alert.alert("data wiped");
+            }} />
+            </View>
+
+            <Button
+            title = "Login screen"
+            onPress={()=>{navigation.navigate("Login")}}
+            />
         </View>
         </View>
     )
