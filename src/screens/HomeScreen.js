@@ -11,21 +11,10 @@ import { Button, View, Text, TextInput, TouchableOpacity, StyleSheet, Alert} fro
 // Storage
 // key system
 
-export default function HomeScreen({ navigation }) {
-  const [list, setList] = useState([{ name: "role" }, { name: "two" }]);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+export default function HomeScreen({navigation}) {
 
-    const handleAddItem = () => {
-    if (!username.trim() || !password.trim()) {
-      Alert.alert("Please enter both username and password.");
-      return;
-    }
-
-    setList([{ name: username }, ...list]);
-    setUsername("");
-    setPassword("");
-  };
+    const [list, setList] = useState([{name:"role"}, {name:"two"}]);
+    const [item, setItem] = useState("");
 
  return (
     <View>
@@ -34,43 +23,37 @@ export default function HomeScreen({ navigation }) {
           <Text key={temp.name}>{temp.name}</Text>
         ))}
 
-        {/* Username input */}
-        <TextInput
-          style={styles.h1}
-          placeholder="Enter username"
-          value={username}
-          onChangeText={setUsername}
-        />
+            <TextInput
+            styles={styles.h1}
+            placeholder="enter name"
+            value={item}
+            onChangeText={setItem}
+            />
+            
 
-        {/* Password input */}
-        <TextInput
-          style={styles.h1}
-          placeholder="Enter password"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry={true} 
-        />
+            <View style={[styles.containerFlexRow]}>
+                <Button
+                title="add item"
+                onPress={()=>{
+                    setList([{name:item}, ...list])
+                }}
+                ></Button>
+                <Button
+                title="reset list"
+                onPress={()=>{setList([])}}>
+                </Button>
+            </View>
 
-         <View style={styles.containerFlexRow}>
-          <Button title="Add item" onPress={handleAddItem} />
-          <Button
-            title="Reset list"
-            onPress={() => {
-              setList([]);
+            <Button
+            title="Change page"
+            onPress={()=>{
+                navigation.navigate("Test")
             }}
-          />
-          
+            ></Button>
         </View>
+        </View>
+    )
 
-        <Button
-          title="Change page"
-          onPress={() => {
-            navigation.navigate("Test");
-          }}
-        />
-      </View>
-    </View>
-  );
 }
 
 const styles = StyleSheet.create({
@@ -95,11 +78,13 @@ const styles = StyleSheet.create({
     gap: 12,
   },
 
-  containerCenter: {
-    flexDirection: "column",
-    width: "100%",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});
+    containerCenter: {
+        flexDirection: "Row",
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: "center",
+
+    },
+}
+)
