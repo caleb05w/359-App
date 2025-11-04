@@ -3,8 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 
 import HomeScreen from "./src/screens/HomeScreen.js";
-import WelcomeScreen from "./src/screens/WelcomeScreen.js";
-
+import TestScreen from "./src/screens/TestScreen.js";
 
 const Stack = createNativeStackNavigator();
 
@@ -19,11 +18,17 @@ export default function App() {
           options={{ title: "Home Screen" }}
           />
 
-        <Stack.Screen
+          <Stack.Screen
+          name="Test"
+          component={TestScreen}
+          options={{title: "Test Screen"}}
+          />
+
+        {/* <Stack.Screen
           name="Welcome"
           component={WelcomeScreen}
           options={{ title: "Welcome Screen" }}
-          />
+          /> */}
         </Stack.Navigator>
     </NavigationContainer>
   )
