@@ -3,14 +3,14 @@ import { Text, View, StyleSheet} from 'react-native'
 export default function TestScreen({navigation, route}) {
     console.log(route.params);
     const initialItem = route?.params?.item?? null;
-    const bg = route?.params.color?? null;
+    const bg = route?.params.color?? "black";
 
 
     return (
     <View>
         <Text>My Aquarium</Text>
         <View style={styles.flex}>
-        <View style={[styles.colorBox, {backgroundColor: bg?? black}]}></View>
+        <View style={[styles.colorBox, {backgroundColor: bg ?? black}]}></View>
         <Text> {initialItem ?? " no item" } </Text>
         </View>
     </View>

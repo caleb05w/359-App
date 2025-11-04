@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react';
 import { Button, View, Text, TextInput, TouchableOpacity, StyleSheet, Alert} from 'react-native'
-
+import { saveUserPrefs, loadUserPrefs, removeUserPrefs } from '../utils/storage';
 
 //things to add 
 
@@ -15,6 +15,42 @@ export default function HomeScreen({navigation}) {
 
     const [list, setList] = useState([{name:"role"}, {name:"two"}]);
     const [item, setItem] = useState("");
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const colors = ["red", "blue", "orange", "green"];
+    const [selectedColor, setSelectedColor] = useState("")
+
+
+    const handleAddItem = () => {
+    if (!username.trim() || !password.trim()) {
+      Alert.alert("Please enter both username and password.");
+      return;
+    }
+    setList([{ name: username }, ...list]);
+    setUsername("");
+    setPassword("");
+  };
+
+  //pass values onto next page
+  //also load it into our asycn storage 
+    const changePage = async () => {
+
+        //save user prefs
+        await saveUserPrefs(item, selectedColor);
+
+        navigation.navigate("Test", {item:item.trim(), color:selectedColor})
+    }
+
+    useEffect(()=>{
+        console.log(loadUserPrefs);
+        
+        (async () => {
+        const load = await loadUserPrefs();
+        if (load?.item) setItem(load.item);
+        if (load?.selectedColor) setSelectedColor(load.selectedColor);
+        }
+    )
+    }, []);
 
  return (
     <View>
@@ -29,11 +65,24 @@ export default function HomeScreen({navigation}) {
             value={item}
             onChangeText={setItem}
             />
+
+
+            <View style={styles.colorsRow}> 
+            {colors.map((item)=>(
+                <TouchableOpacity
+                onPress={()=>setSelectedColor(item)}
+                key={item}
+                style={[styles.colorsSwatch, {backgroundColor:item, borderWidth: selectedColor === item ? 3 : 1}]}>
+                <Text>{item}</Text>
+                </TouchableOpacity>
+            ))
+             }
+             </View>
             
 
             <View style={[styles.containerFlexRow]}>
                 <Button
-                title="add item"
+                title="add items"
                 onPress={()=>{
                     setList([{name:item}, ...list])
                 }}
@@ -47,7 +96,7 @@ export default function HomeScreen({navigation}) {
             <Button
             title="Change page"
             onPress={()=>{
-                navigation.navigate("Test")
+               changePage()
             }}
             ></Button>
         </View>
@@ -78,13 +127,26 @@ const styles = StyleSheet.create({
     gap: 12,
   },
 
-    containerCenter: {
-        flexDirection: "Row",
-        width: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: "center",
+  containerCenter: {
+    flexDirection: "column",
+    width: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 
+        
+    colorsRow: {
+        flexDirection: "row",
+        gap: 12,
+        marginVertical: 10,
     },
-}
-)
+
+    colorsSwatch: {
+        width: "fit-content",
+        height: "fit-content",
+        padding: 12,
+        borderColor: "#111",
+        borderRadius: 8,
+    },
+});
