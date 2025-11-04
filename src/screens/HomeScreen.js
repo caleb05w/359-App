@@ -60,12 +60,6 @@ export default function HomeScreen({ navigation }) {
             }}
           />
           
-          <Button
-            title="Reset list"
-            onPress={() => {
-              setList([]);
-            }}
-          />
         </View>
 
         <Button
