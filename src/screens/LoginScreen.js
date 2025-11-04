@@ -3,7 +3,7 @@ import {View, Text} from 'react-native'
 export default function LoginScreen(navigation) {
     return (
         <View> 
-            <Text> Login Page </Text>
+            <Text> Login Page eek </Text>
         </View>
     )
 }
