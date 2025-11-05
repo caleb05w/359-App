@@ -1,10 +1,20 @@
-<<<<<<< HEAD
-import { useState, useEffect } from 'react';
-import { Button, View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { saveUserPrefs, loadUserPrefs, removeUserPrefs } from '../utils/storage';
+import { useState, useEffect } from "react";
+import {
+  Button,
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+} from "react-native";
+import {
+  saveUserPrefs,
+  loadUserPrefs,
+  removeUserPrefs,
+} from "../utils/storage";
 
 export default function LoginScreen({ navigation }) {
-
   const [list, setList] = useState([]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -19,7 +29,7 @@ export default function LoginScreen({ navigation }) {
     setPassword("");
   };
 
-const updatePrefs = async () => {
+  const updatePrefs = async () => {
     await saveUserPrefs({ name: username, pass: password });
     const load = await loadUserPrefs();
     Alert.alert("Saved Data:\n" + JSON.stringify(load, null, 2));
@@ -34,7 +44,7 @@ const updatePrefs = async () => {
     })();
   }, []);
 
-   return (
+  return (
     <View style={[styles.containerFlex, styles.containerCenter]}>
       <Text style={styles.title}>Sign In</Text>
 
@@ -52,7 +62,7 @@ const updatePrefs = async () => {
         secureTextEntry
         onChangeText={setPassword}
       />
-       <Button title="Add User" onPress={handleAddItem} />
+      <Button title="Add User" onPress={handleAddItem} />
       <Button
         title="Reset Saved Data"
         onPress={async () => {
@@ -61,11 +71,7 @@ const updatePrefs = async () => {
         }}
       />
 
-      <Button
-        title="Go to Home"
-        onPress={() => navigation.navigate("Home")}
-      />
-
+      <Button title="Go to Home" onPress={() => navigation.navigate("Home")} />
     </View>
   );
 }
@@ -78,7 +84,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
 
- containerCenter: {
+  containerCenter: {
     flexDirection: "column",
     width: "100%",
     display: "flex",
@@ -86,11 +92,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
-title: {
+  title: {
     fontSize: 22,
     marginBottom: 10,
     fontWeight: "bold",
-},
+  },
 
   h1: {
     fontSize: 18,
@@ -101,23 +107,3 @@ title: {
     borderRadius: 6,
   },
 });
-=======
-import { View, Text } from "react-native";
-
-export default function LoginScreen(navigation) {
-<<<<<<< Updated upstream
-    return (
-        <View> 
-            <Text> Login Page </Text>
-        </View>
-    )
-}
-=======
-  return (
-    <View >
-      <Text> Login Page eek </Text>
-    </View>
-  );
-}
->>>>>>> Stashed changes
->>>>>>> storage
