@@ -69,7 +69,7 @@ export default function HomeScreen({ navigation }) {
 
         <TextInput
           styles={[styles.h1, { backgroundColor: selectedColor }]}
-          placeholder="enter name"
+          placeholder="enterr name"
           value={item}
           onChangeText={setItem}
         />
