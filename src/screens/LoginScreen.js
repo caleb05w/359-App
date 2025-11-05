@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useState, useEffect } from 'react';
 import { Button, View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { saveUserPrefs, loadUserPrefs, removeUserPrefs } from '../utils/storage';
@@ -100,3 +101,23 @@ title: {
     borderRadius: 6,
   },
 });
+=======
+import { View, Text } from "react-native";
+
+export default function LoginScreen(navigation) {
+<<<<<<< Updated upstream
+    return (
+        <View> 
+            <Text> Login Page </Text>
+        </View>
+    )
+}
+=======
+  return (
+    <View >
+      <Text> Login Page eek </Text>
+    </View>
+  );
+}
+>>>>>>> Stashed changes
+>>>>>>> storage
