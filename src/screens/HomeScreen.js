@@ -1,27 +1,35 @@
-import {useState, useEffect} from 'react';
-import { Button, View, Text, TextInput, TouchableOpacity, StyleSheet, Alert} from 'react-native'
-import { saveUserPrefs, loadUserPrefs, removeUserPrefs } from '../utils/storage';
+import { useState, useEffect } from "react";
+import {
+  Button,
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+} from "react-native";
+import {
+  saveUserPrefs,
+  loadUserPrefs,
+  removeUserPrefs,
+} from "../utils/storage";
 
-//things to add 
+//things to add
+// DB -- idk for what tho lol
+// IOS Camera Library
+// API Gmap?
+// Plan our object thingy
+// Plan out GPT pipeline
 
-//navigation
-// Listing mechanism
-// Storage mechanism
-// logger
-// Storage
-// key system
+export default function HomeScreen({ navigation }) {
+  const [list, setList] = useState([""]);
+  const [item, setItem] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const colors = ["red", "blue", "orange", "green"];
+  const [selectedColor, setSelectedColor] = useState("");
 
-export default function HomeScreen({navigation}) {
-
-    const [list, setList] = useState([""]);
-    const [item, setItem] = useState("");
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const colors = ["red", "blue", "orange", "green"];
-    const [selectedColor, setSelectedColor] = useState("")
-
-
-    const handleAddItem = () => {
+  const handleAddItem = () => {
     if (!username.trim() || !password.trim()) {
       Alert.alert("Please enter both username and password.");
       return;
@@ -32,97 +40,105 @@ export default function HomeScreen({navigation}) {
   };
 
   //pass values onto next page
-  //also load it into our asycn storage 
-    const changePage = () => {
-        navigation.navigate("Test", {item:item.trim(), color:selectedColor})
-    }
+  //also load it into our asycn storage
+  const changePage = () => {
+    navigation.navigate("Test", { item: item.trim(), color: selectedColor });
+  };
 
-    const updatePrefs = async () => {
+  const updatePrefs = async () => {
     await saveUserPrefs(item, selectedColor);
     const load = await loadUserPrefs();
     Alert.alert(JSON.stringify(load));
-    }
+  };
 
-    useEffect(()=>{
-        
-        (async () => {
-        const load = await loadUserPrefs();
-        console.log(`unloading log`, load);
-        if (load?.name) setItem(load.name);
-        if (load?.color) setSelectedColor(load.color);
-        })();
+  useEffect(() => {
+    (async () => {
+      const load = await loadUserPrefs();
+      console.log(`unloading log`, load);
+      if (load?.name) setItem(load.name);
+      if (load?.color) setSelectedColor(load.color);
+    })();
+  }, []);
 
-    }, []);
-
- return (
+  return (
     <View>
       <View style={[styles.containerFlex, styles.containerCenter]}>
         {list.map((temp) => (
           <Text key={temp.name}>{temp.name}</Text>
         ))}
 
-            <TextInput
-            styles={[styles.h1, {backgroundColor: selectedColor}]}
-            placeholder="enter name"
-            value={item}
-            onChangeText={setItem}
-            />
+        <TextInput
+          styles={[styles.h1, { backgroundColor: selectedColor }]}
+          placeholder="enter name"
+          value={item}
+          onChangeText={setItem}
+        />
 
+        <View style={styles.colorsRow}>
+          {colors.map((item) => (
+            <TouchableOpacity
+              onPress={() => setSelectedColor(item)}
+              key={item}
+              style={[
+                styles.colorsSwatch,
+                {
+                  backgroundColor: item,
+                  borderWidth: selectedColor === item ? 3 : 1,
+                },
+              ]}
+            >
+              <Text>{item}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
 
-            <View style={styles.colorsRow}> 
-            {colors.map((item)=>(
-                <TouchableOpacity
-                onPress={()=>setSelectedColor(item)}
-                key={item}
-                style={[styles.colorsSwatch, {backgroundColor:item, borderWidth: selectedColor === item ? 3 : 1}]}>
-                <Text>{item}</Text>
-                </TouchableOpacity>
-            ))
-             }
-             </View>
-            
+        <View style={[styles.containerFlexRow]}>
+          <Button
+            title="add items"
+            onPress={() => {
+              setList([{ name: item }, ...list]);
+            }}
+          ></Button>
+          <Button
+            title="reset list"
+            onPress={() => {
+              setList([]);
+            }}
+          ></Button>
+        </View>
 
-            <View style={[styles.containerFlexRow]}>
-                <Button
-                title="add items"
-                onPress={()=>{
-                    setList([{name:item}, ...list])
-                }}
-                ></Button>
-                <Button
-                title="reset list"
-                onPress={()=>{setList([])}}>
-                </Button>
-            </View>
-
-            <View style={[styles.containerFlexRow]}>
-            <Button
-              title="Test Page"
-              onPress={()=>{
-                  changePage()
-                }}/>
-              <Button
+        <View style={[styles.containerFlexRow]}>
+          <Button
+            title="Test Page"
+            onPress={() => {
+              changePage();
+            }}
+          />
+          <Button
             title="Save"
-            onPress={()=>{
-               updatePrefs()
-            }}/>
+            onPress={() => {
+              updatePrefs();
+            }}
+          />
 
-                          <Button
+          <Button
             title="Reset"
-            onPress={ async () => {
-               removeUserPrefs()
-               Alert.alert("data wiped");
-            }} />
-            </View>
-
-            <Button
-            title = "Login screen"
-            onPress={()=>{navigation.navigate("Login")}}
-            />
+            onPress={async () => {
+              removeUserPrefs();
+              Alert.alert("data wiped");
+            }}
+          />
         </View>
-        </View>
-    )
 
+        <Button
+          title="Login screen"
+          onPress={() => {
+            navigation.navigate("Login");
+          }}
+        />
+      </View>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -155,18 +171,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
-        
-    colorsRow: {
-        flexDirection: "row",
-        gap: 12,
-        marginVertical: 10,
-    },
+  colorsRow: {
+    flexDirection: "row",
+    gap: 12,
+    marginVertical: 10,
+  },
 
-    colorsSwatch: {
-        width: "fit-content",
-        height: "fit-content",
-        padding: 12,
-        borderColor: "#111",
-        borderRadius: 8,
-    },
+  colorsSwatch: {
+    width: "fit-content",
+    height: "fit-content",
+    padding: 12,
+    borderColor: "#111",
+    borderRadius: 8,
+  },
 });
