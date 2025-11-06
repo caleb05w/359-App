@@ -13,6 +13,7 @@ import {
   loadUserPrefs,
   removeUserPrefs,
 } from "../utils/storage";
+import global from "../globalStyles";
 
 //things to add
 // DB -- idk for what tho lol
@@ -97,7 +98,7 @@ export default function HomeScreen({ navigation }) {
             }}
           ></Button>
           <Button
-            title="reset list"
+            title="Reset List"
             onPress={() => {
               setList([]);
             }}

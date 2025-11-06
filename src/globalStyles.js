@@ -14,7 +14,7 @@ export default StyleSheet.create({
     // bottom: 0, this just pushes it out of the app for some reason and for the love of god i cant find out why
     left: 0,
     right: 0,
-    zIndex: 10,
+    top: 100,
     padding: 16,
     flexDirection: "row",
     gap: 12,
@@ -29,5 +29,28 @@ export default StyleSheet.create({
     flexDirection: "column",
     gap: 24,
     flex: 1,
+  },
+
+  navBuffer: {
+    marginTop: 64,
+  },
+
+  test: {
+    borderColor: "red",
+    borderWidth: 2,
+  },
+
+  flexRow: {
+    display: "flex",
+    flexDirection: "row",
+    gap: 12,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  flexCol: {
+    display: "flex",
+    flexDirection: "col",
+    gap: 12,
   },
 });
