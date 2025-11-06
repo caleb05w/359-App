@@ -8,7 +8,7 @@ import {
   StyleSheet,
   Alert,
 } from "react-native";
-import globalStyles from "../styles/globalStyles";
+import globalStyles from "../globalStyles";
 import {
   saveUserPrefs,
   loadUserPrefs,

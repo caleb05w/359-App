@@ -110,8 +110,10 @@ export default function HomeScreen({ navigation }) {
             onPress={() => {
               updatePrefs();
             }}
+          /><Button
+            title="Go to Login"
+            onPress={() => navigation.navigate("Login")}
           />
-
           <Button
             title="Reset"
             onPress={async () => {
