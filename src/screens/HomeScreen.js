@@ -13,6 +13,7 @@ import {
   loadUserPrefs,
   removeUserPrefs,
 } from "../utils/storage";
+import global from "../globalStyles";
 
 //things to add
 // DB -- idk for what tho lol
@@ -66,14 +67,12 @@ export default function HomeScreen({ navigation }) {
         {list.map((temp) => (
           <Text key={temp.name}>{temp.name}</Text>
         ))}
-
         <TextInput
           styles={[styles.h1, { backgroundColor: selectedColor }]}
           placeholder="enterr name"
           value={item}
           onChangeText={setItem}
         />
-
         <View style={styles.colorsRow}>
           {colors.map((item) => (
             <TouchableOpacity
@@ -91,7 +90,6 @@ export default function HomeScreen({ navigation }) {
             </TouchableOpacity>
           ))}
         </View>
-
         <View style={[styles.containerFlexRow]}>
           <Button
             title="add items"
@@ -100,20 +98,13 @@ export default function HomeScreen({ navigation }) {
             }}
           ></Button>
           <Button
-            title="reset list"
+            title="Reset List"
             onPress={() => {
               setList([]);
             }}
           ></Button>
         </View>
-
         <View style={[styles.containerFlexRow]}>
-          <Button
-            title="Test Page"
-            onPress={() => {
-              changePage();
-            }}
-          />
           <Button
             title="Save"
             onPress={() => {
@@ -128,14 +119,7 @@ export default function HomeScreen({ navigation }) {
               Alert.alert("data wiped");
             }}
           />
-        </View>
-
-        <Button
-          title="Login screen"
-          onPress={() => {
-            navigation.navigate("Login");
-          }}
-        />
+        </View>{" "}
       </View>
     </View>
   );
