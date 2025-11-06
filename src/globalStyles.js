@@ -14,7 +14,7 @@ export default StyleSheet.create({
     bottom: 0, 
     left: 0,
     right: 0,
-    zIndex: 10,
+    top: 100,
     padding: 16,
     flexDirection: "row",
     justifyContent: "space-around",
@@ -31,5 +31,28 @@ export default StyleSheet.create({
     alignItems: "center",
     paddingBottom: 80, 
     gap: 24,
+  },
+
+  navBuffer: {
+    marginTop: 64,
+  },
+
+  test: {
+    borderColor: "red",
+    borderWidth: 2,
+  },
+
+  flexRow: {
+    display: "flex",
+    flexDirection: "row",
+    gap: 12,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  flexCol: {
+    display: "flex",
+    flexDirection: "col",
+    gap: 12,
   },
 });
