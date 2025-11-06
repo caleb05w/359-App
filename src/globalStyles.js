@@ -11,24 +11,26 @@ export default StyleSheet.create({
 
   navBar: {
     position: "absolute",
-    // bottom: 0, this just pushes it out of the app for some reason and for the love of god i cant find out why
+    bottom: 0, 
     left: 0,
     right: 0,
     top: 100,
     padding: 16,
     flexDirection: "row",
-    gap: 12,
+    justifyContent: "space-around",
     backgroundColor: "white",
     borderTopWidth: 1,
     borderTopColor: "#e5e5e5",
-    elevation: 8, //shadow
+    elevation: 8, // shadow
   },
 
   page: {
-    display: "flex",
+    flex: 1, 
     flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingBottom: 80, 
     gap: 24,
-    flex: 1,
   },
 
   navBuffer: {

@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Alert,
 } from "react-native";
+import globalStyles from "../styles/globalStyles";
 import {
   saveUserPrefs,
   loadUserPrefs,
@@ -45,7 +46,7 @@ export default function LoginScreen({ navigation }) {
   }, []);
 
   return (
-    <View style={[styles.containerFlex, styles.containerCenter]}>
+    <View style={globalStyles.page}>
       <Text style={styles.title}>Sign In</Text>
 
       <TextInput
@@ -62,6 +63,7 @@ export default function LoginScreen({ navigation }) {
         secureTextEntry
         onChangeText={setPassword}
       />
+
       <Button title="Add User" onPress={handleAddItem} />
       <Button
         title="Reset Saved Data"
@@ -70,34 +72,30 @@ export default function LoginScreen({ navigation }) {
           Alert.alert("Data cleared.");
         }}
       />
-
       <Button title="Go to Home" onPress={() => navigation.navigate("Home")} />
+
+      {/* ✅ Bottom NavBar */}
+      <View style={globalStyles.navBar}>
+        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+          <Text>Home</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+          <Text>Login</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => Alert.alert("Settings coming soon!")}>
+          <Text>Settings</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  containerFlex: {
-    flexDirection: "column",
-    gap: 12,
-    marginVertical: 10,
-    width: "100%",
-  },
-
-  containerCenter: {
-    flexDirection: "column",
-    width: "100%",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
   title: {
     fontSize: 22,
     marginBottom: 10,
     fontWeight: "bold",
   },
-
   h1: {
     fontSize: 18,
     borderWidth: 1,
