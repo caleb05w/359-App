@@ -109,8 +109,10 @@ export default function HomeScreen({ navigation }) {
             onPress={() => {
               updatePrefs();
             }}
+          /><Button
+            title="Go to Login"
+            onPress={() => navigation.navigate("Login")}
           />
-
           <Button
             title="Reset"
             onPress={async () => {
@@ -120,6 +122,17 @@ export default function HomeScreen({ navigation }) {
           />
         </View>{" "}
       </View>
+        <View style={globalStyles.navBar}>
+              <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+                <Text>Home</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+                <Text>Login</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => Alert.alert("Settings coming soon!")}>
+                <Text>Settings</Text>
+              </TouchableOpacity>
+            </View>
     </View>
   );
 }
