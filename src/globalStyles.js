@@ -1,4 +1,6 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
+//because apparently, you can't use 100vh on react expo lol
+const { height } = Dimensions.get("window");
 
 export default StyleSheet.create({
   colorBox: {
@@ -11,30 +13,32 @@ export default StyleSheet.create({
 
   navBar: {
     position: "absolute",
-    bottom: 0, 
+    bottom: 60 - height,
     left: 0,
     right: 0,
-    top: 100,
     padding: 16,
     flexDirection: "row",
     justifyContent: "space-around",
     backgroundColor: "white",
     borderTopWidth: 1,
     borderTopColor: "#e5e5e5",
-    elevation: 8, // shadow
+    elevation: 8, //shadow
+  },
+
+  view: {
+    position: "relative",
+    borderColor: "red",
+    borderWidth: 2,
+    height: height,
   },
 
   page: {
-    flex: 1, 
+    flex: 1,
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    paddingBottom: 80, 
+    paddingBottom: 80,
     gap: 24,
-  },
-
-  navBuffer: {
-    marginTop: 64,
   },
 
   test: {

@@ -19,7 +19,7 @@
     "expo": "^54.0.21",
     "expo-camera": "~17.0.9",
     "expo-file-system": "~19.0.17",
-    "expo-sqlite": "~16.0.8",
+    "expo-sqlite": "~16.0.9",
     "nativewind": "^4.2.1",
     "openai": "^6.8.0",
     "react": "19.1.0",
