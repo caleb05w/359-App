@@ -9,77 +9,54 @@ import {
   TouchableOpacity,
 } from "react-native";
 import globalStyles from "../globalStyles";
-import {
-  saveUserPrefs,
-  loadUserPrefs,
-  removeUserPrefs,
-} from "../utils/storage";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../utils/firebaseConfig";
+
 
 export default function LoginScreen({ navigation }) {
-  const [list, setList] = useState([]);
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleAddItem = () => {
-    if (!username.trim() || !password.trim()) {
-      Alert.alert("Please enter both username and password.");
+  const handleLogin = async () => {
+    if (!email || !password) {
+      Alert.alert("Please enter both email and password.");
       return;
     }
-    setList([{ name: username, pass: password }, ...list]);
-    setUsername("");
-    setPassword("");
-  };
 
-  const updatePrefs = async () => {
-    await saveUserPrefs({ name: username, pass: password });
-    const load = await loadUserPrefs();
-    Alert.alert("Saved Data:\n" + JSON.stringify(load, null, 2));
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      Alert.alert("Login successful!");
+      navigation.navigate("Home");
+    } catch (error) {
+      Alert.alert("Login failed", error.message);
+    }
   };
-
-  useEffect(() => {
-    (async () => {
-      const load = await loadUserPrefs();
-      console.log("Loaded login data:", load);
-      if (load?.name) setUsername(load.name);
-      if (load?.pass) setPassword(load.pass);
-    })();
-  }, []);
 
   return (
     <View style={globalStyles.page}>
-      <Text style={styles.title}>Welcome To Your Aqaurium!</Text>
+      <Text style={styles.title}>Welcome Back To Your Aquarium!</Text>
 
       <TextInput
-        style={styles.h1}
-        placeholder="Enter username"
-        value={username}
-        onChangeText={setUsername}
+        style={styles.input}
+        placeholder="Enter email"
+        value={email}
+        onChangeText={setEmail}
+        autoCapitalize="none"
       />
 
       <TextInput
-        style={styles.h1}
+        style={styles.input}
         placeholder="Enter password"
         value={password}
-        secureTextEntry
         onChangeText={setPassword}
+        secureTextEntry
       />
 
-      <Button title="Add User" onPress={handleAddItem} />
-      <Button
-        title="Reset Saved Data"
-        onPress={async () => {
-          await removeUserPrefs();
-          Alert.alert("Data cleared.");
-        }}
-      />
-      <Button title="Go to Home" onPress={() => navigation.navigate("Home")} />
+      <Button title="Login" onPress={handleLogin} />
 
       <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
         <Text style={styles.linkText}>Don't have an account? Sign up here</Text>
       </TouchableOpacity>
-
-      {/* ✅ Bottom NavBar */}
-      <View style={globalStyles.navBar}></View>
     </View>
   );
 }
@@ -90,13 +67,14 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     fontWeight: "bold",
   },
-  h1: {
+  input: {
     fontSize: 18,
     borderWidth: 1,
     borderColor: "#ccc",
     padding: 8,
     width: "80%",
     borderRadius: 6,
+    marginBottom: 10,
   },
   linkText: {
     marginTop: 10,

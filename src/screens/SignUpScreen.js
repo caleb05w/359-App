@@ -9,19 +9,29 @@ import {
   TouchableOpacity,
 } from "react-native";
 import global from "../globalStyles";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth } from "../utils/firebaseConfig";
+
 
 export default function SignUpScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSignUp = () => {
-    if (!email.trim() || !username.trim() || !password.trim()) {
+  const handleSignUp = async () => {
+    if (!email || !username || !password) {
       Alert.alert("Please fill in all fields.");
       return;
     }
-    Alert.alert("Account created!", `Welcome, ${username}!`);
-    navigation.navigate("Login");
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      await updateProfile(userCredential.user, { displayName: username });
+      Alert.alert("Success!", `Welcome, ${username}!`);
+      navigation.navigate("Login");
+    } catch (error) {
+      Alert.alert("Sign up failed", error.message);
+    }
   };
 
   return (
@@ -33,6 +43,7 @@ export default function SignUpScreen({ navigation }) {
         placeholder="Enter email"
         value={email}
         onChangeText={setEmail}
+        autoCapitalize="none"
       />
 
       <TextInput
@@ -46,8 +57,8 @@ export default function SignUpScreen({ navigation }) {
         style={styles.input}
         placeholder="Enter password"
         value={password}
-        secureTextEntry
         onChangeText={setPassword}
+        secureTextEntry
       />
 
       <Button title="Sign Up" onPress={handleSignUp} />
