@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { Text, View, TextInput, StyleSheet, Button } from "react-native";
+import { Text, View, TextInput, StyleSheet, Button, Image } from "react-native";
 import global from "../globalStyles";
-import { fetchData, initDb, createData } from "../utils/db";
+import { fetchData, initDb, createData, deleteData } from "../utils/db";
 
-export default function AddItem() {
+export default function ItemAdd({}) {
   const [upload, setUpload] = useState({ name: "", batch: "" });
   const [data, setData] = useState([]);
 
@@ -15,8 +15,13 @@ export default function AddItem() {
     })();
   }, []);
 
+  const handleDelete = async () => {
+    await deleteData();
+    setData(await fetchData());
+  };
+
   const handleSave = async () => {
-    await createData(upload.name, upload.batch); //sends our upload object into db
+    await createData(upload.name, upload.batch, null); //sends our upload object into db
     setData(await fetchData()); //updates list on save.
   };
 
@@ -46,10 +51,7 @@ export default function AddItem() {
 
       <View style={global.flexRow}>
         <Button title="Save List" onPress={handleSave} />
-        <Button
-          title="Delete List"
-          onPress={() => console.log("Delete pressed")}
-        />
+        <Button title="Delete List" onPress={() => handleDelete()} />
       </View>
 
       <View>
@@ -57,6 +59,14 @@ export default function AddItem() {
           <View key={item.id} style={global.flexRow}>
             <Text>{item.name}</Text>
             <Text>{item.email}</Text>
+            {item.imageUri === null ? (
+              <Text> No Image Found</Text>
+            ) : (
+              <Image
+                source={{ uri: item.imageUri }}
+                style={{ width: 100, height: 100 }}
+              ></Image>
+            )}
           </View>
         ))}
       </View>

@@ -39,6 +39,7 @@ export default StyleSheet.create({
     alignItems: "center",
     paddingBottom: 80,
     gap: 24,
+    flex: 1,
   },
 
   test: {

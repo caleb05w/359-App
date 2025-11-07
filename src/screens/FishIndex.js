@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { View, Text } from "react-native";
 import global from "../globalStyles";
-import AddItem from "../components/AddItem";
+import ItemAdd from "../components/ItemAdd";
 
 export default function FishIndex({ navigation, route }) {
   return (
     <View style={[global.page, global.navbuffer]}>
-      <AddItem></AddItem>
+      <ItemAdd></ItemAdd>
       <Text> Hello </Text>
     </View>
   );

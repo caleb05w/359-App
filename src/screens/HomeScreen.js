@@ -43,7 +43,10 @@ export default function HomeScreen({ navigation }) {
   //pass values onto next page
   //also load it into our asycn storage
   const changePage = () => {
-    navigation.navigate("Test", { item: item.trim(), color: selectedColor });
+    navigation.navigate("Test", {
+      screen: "Test",
+      params: { item: item.trim(), color: selectedColor },
+    });
   };
 
   const updatePrefs = async () => {
@@ -64,15 +67,14 @@ export default function HomeScreen({ navigation }) {
   return (
     <View>
       <View style={[styles.containerFlex, styles.containerCenter]}>
-        {list.map((temp) => (
-          <Text key={temp.name}>{temp.name}</Text>
-        ))}
-        <TextInput
-          styles={[styles.h1, { backgroundColor: selectedColor }]}
-          placeholder="enterr name"
-          value={item}
-          onChangeText={setItem}
-        />
+        <Text>
+          <TextInput
+            styles={[styles.h1, { backgroundColor: selectedColor }]}
+            placeholder="enterr name"
+            value={item}
+            onChangeText={setItem}
+          />
+        </Text>
         <View style={styles.colorsRow}>
           {colors.map((item) => (
             <TouchableOpacity
