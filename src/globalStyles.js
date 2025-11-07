@@ -13,7 +13,7 @@ export default StyleSheet.create({
 
   navBar: {
     position: "absolute",
-    bottom: 60 - height,
+    bottom: 110 - height,
     left: 0,
     right: 0,
     padding: 16,

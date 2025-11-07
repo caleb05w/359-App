@@ -11,11 +11,9 @@ import { z } from "zod";
 export default function TestScreen({ navigation, route }) {
   console.log(route.params);
   const initialItem = route?.params?.item ?? null;
-  const bg = route?.params.color ?? null;
+  const bg = route?.params?.color ?? null;
   const [fish, setFish] = useState("");
   const [response, setResponse] = useState("");
-
-
 
   async function askGPT() {
     //stage the answer

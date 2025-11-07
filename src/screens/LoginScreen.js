@@ -8,6 +8,10 @@ import {
   StyleSheet,
   Alert,
 } from "react-native";
+<<<<<<< Updated upstream
+=======
+import globalStyles from "../globalStyles";
+>>>>>>> Stashed changes
 import {
   saveUserPrefs,
   loadUserPrefs,
