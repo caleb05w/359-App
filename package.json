@@ -20,6 +20,7 @@
     "expo-camera": "~17.0.9",
     "expo-file-system": "~19.0.17",
     "expo-sqlite": "~16.0.9",
+    "firebase": "^12.5.0",
     "nativewind": "^4.2.1",
     "openai": "^6.8.0",
     "react": "19.1.0",
