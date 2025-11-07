@@ -74,11 +74,9 @@ export default function LoginScreen({ navigation }) {
       />
       <Button title="Go to Home" onPress={() => navigation.navigate("Home")} />
 
-       <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
-                <Text style={styles.linkText}>
-                  Don't have an account? Sign up here
-                </Text>
-        </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
+        <Text style={styles.linkText}>Don't have an account? Sign up here</Text>
+      </TouchableOpacity>
 
       {/* ✅ Bottom NavBar */}
       <View style={globalStyles.navBar}></View>
@@ -100,7 +98,7 @@ const styles = StyleSheet.create({
     width: "80%",
     borderRadius: 6,
   },
-   linkText: {
+  linkText: {
     marginTop: 10,
     color: "#007AFF",
     fontSize: 16,

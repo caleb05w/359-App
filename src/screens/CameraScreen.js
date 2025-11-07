@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { View, Text, Button, StyleSheet, Image } from "react-native";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { createData } from "../utils/db";
-export default function CameraScreen() {
+export default function CameraScreen({ navigation, route }) {
   //sets direction camera faces
   const [facing, setFacing] = useState(true);
   //handles camera permissions, which according to documnetation, is 100% necessary
@@ -20,6 +20,7 @@ export default function CameraScreen() {
       const photoResult = await cameraRef.current.takePictureAsync({
         quality: 1,
       });
+      navigation.navigate("Results");
       setPhoto(photoResult);
       await createData("Caleb", "caleb@example.com", photoResult.uri);
     } catch (e) {

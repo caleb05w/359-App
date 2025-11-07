@@ -12,6 +12,8 @@ import TestScreen from "./src/screens/TestScreen.js";
 import LoginScreen from "./src/screens/LoginScreen.js";
 import CameraScreen from "./src/screens/CameraScreen.js";
 import FishIndexScreen from "./src/screens/FishIndex.js";
+import CameraResultScreen from "./src/screens/CameraResult.js";
+import SignUpScreen from "./src/screens/SignUpScreen.js";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -35,6 +37,11 @@ function UploadStack() {
       <Stack.Screen
         name="Camera"
         component={CameraScreen}
+        options={{ headerShown: false }} //hide the header again
+      />
+      <Stack.Screen
+        name="Results"
+        component={CameraResultScreen}
         options={{ headerShown: false }} //hide the header again
       />
     </Stack.Navigator>
@@ -73,6 +80,11 @@ function LoginStack() {
       <Stack.Screen
         name="Login"
         component={LoginScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="SignUp"
+        component={SignUpScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

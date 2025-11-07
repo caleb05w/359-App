@@ -25,39 +25,37 @@ export default function SignUpScreen({ navigation }) {
   };
 
   return (
-      <View style={global.page}>
-        <Text style={styles.title}>Create Account</Text>
+    <View style={global.page}>
+      <Text style={styles.title}>Create Account</Text>
 
-        <TextInput
-          style={styles.input}
-          placeholder="Enter email"
-          value={email}
-          onChangeText={setEmail}
-        />
+      <TextInput
+        style={styles.input}
+        placeholder="Enter email"
+        value={email}
+        onChangeText={setEmail}
+      />
 
-        <TextInput
-          style={styles.input}
-          placeholder="Enter username"
-          value={username}
-          onChangeText={setUsername}
-        />
+      <TextInput
+        style={styles.input}
+        placeholder="Enter username"
+        value={username}
+        onChangeText={setUsername}
+      />
 
-        <TextInput
-          style={styles.input}
-          placeholder="Enter password"
-          value={password}
-          secureTextEntry
-          onChangeText={setPassword}
-        />
+      <TextInput
+        style={styles.input}
+        placeholder="Enter password"
+        value={password}
+        secureTextEntry
+        onChangeText={setPassword}
+      />
 
-        <Button title="Sign Up" onPress={handleSignUp} />
+      <Button title="Sign Up" onPress={handleSignUp} />
 
-        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-          <Text style={styles.linkText}>
-            Already have an account? Login here
-          </Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+        <Text style={styles.linkText}>Already have an account? Login here</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
 
