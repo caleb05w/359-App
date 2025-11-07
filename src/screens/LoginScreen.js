@@ -47,7 +47,7 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <View style={globalStyles.page}>
-      <Text style={styles.title}>Sign In</Text>
+      <Text style={styles.title}>Welcome To Your Aqaurium!</Text>
 
       <TextInput
         style={styles.h1}

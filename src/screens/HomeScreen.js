@@ -13,7 +13,7 @@ import {
   loadUserPrefs,
   removeUserPrefs,
 } from "../utils/storage";
-import global from "../globalStyles";
+import globalStyles from "../globalStyles";
 
 //things to add
 // DB -- idk for what tho lol
@@ -123,6 +123,17 @@ export default function HomeScreen({ navigation }) {
           />
         </View>{" "}
       </View>
+        <View style={globalStyles.navBar}>
+              <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+                <Text>Home</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+                <Text>Login</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => Alert.alert("Settings coming soon!")}>
+                <Text>Settings</Text>
+              </TouchableOpacity>
+            </View>
     </View>
   );
 }
