@@ -1,4 +1,6 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
+//because apparently, you can't use 100vh on react expo lol
+const { height } = Dimensions.get("window");
 
 export default StyleSheet.create({
   colorBox: {
@@ -11,10 +13,9 @@ export default StyleSheet.create({
 
   navBar: {
     position: "absolute",
-    // bottom: 0, this just pushes it out of the app for some reason and for the love of god i cant find out why
+    bottom: 60 - height,
     left: 0,
     right: 0,
-    top: 100,
     padding: 16,
     flexDirection: "row",
     gap: 12,
@@ -24,15 +25,18 @@ export default StyleSheet.create({
     elevation: 8, //shadow
   },
 
+  view: {
+    position: "relative",
+    borderColor: "red",
+    borderWidth: 2,
+    height: height,
+  },
+
   page: {
     display: "flex",
     flexDirection: "column",
     gap: 24,
     flex: 1,
-  },
-
-  navBuffer: {
-    marginTop: 64,
   },
 
   test: {

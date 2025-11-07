@@ -24,7 +24,6 @@ export default function Navbar({ navigation }) {
           <Text> {i.Text} </Text>
         </TouchableOpacity>
       ))}
-      <Text> Ah </Text>
     </View>
   );
 }
