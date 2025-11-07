@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Alert,
 } from "react-native";
+import globalStyles from "../globalStyles";
 import {
   saveUserPrefs,
   loadUserPrefs,
@@ -122,17 +123,7 @@ export default function HomeScreen({ navigation }) {
           />
         </View>{" "}
       </View>
-        <View style={globalStyles.navBar}>
-              <TouchableOpacity onPress={() => navigation.navigate("Home")}>
-                <Text>Home</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-                <Text>Login</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => Alert.alert("Settings coming soon!")}>
-                <Text>Settings</Text>
-              </TouchableOpacity>
-            </View>
+        <View style={globalStyles.navBar}></View>
     </View>
   );
 }
