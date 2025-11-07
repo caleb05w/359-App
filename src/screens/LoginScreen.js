@@ -4,9 +4,9 @@ import {
   View,
   Text,
   TextInput,
-  TouchableOpacity,
   StyleSheet,
   Alert,
+  TouchableOpacity,
 } from "react-native";
 import globalStyles from "../globalStyles";
 import {
@@ -74,18 +74,14 @@ export default function LoginScreen({ navigation }) {
       />
       <Button title="Go to Home" onPress={() => navigation.navigate("Home")} />
 
+       <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
+                <Text style={styles.linkText}>
+                  Don't have an account? Sign up here
+                </Text>
+        </TouchableOpacity>
+
       {/* ✅ Bottom NavBar */}
-      <View style={globalStyles.navBar}>
-        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
-          <Text>Home</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-          <Text>Login</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => Alert.alert("Settings coming soon!")}>
-          <Text>Settings</Text>
-        </TouchableOpacity>
-      </View>
+      <View style={globalStyles.navBar}></View>
     </View>
   );
 }
@@ -103,5 +99,10 @@ const styles = StyleSheet.create({
     padding: 8,
     width: "80%",
     borderRadius: 6,
+  },
+   linkText: {
+    marginTop: 10,
+    color: "#007AFF",
+    fontSize: 16,
   },
 });

@@ -8,6 +8,8 @@ import TestScreen from "./src/screens/TestScreen.js";
 import LoginScreen from "./src/screens/LoginScreen.js";
 import CameraScreen from "./src/screens/CameraScreen.js";
 import FishIndexScreen from "./src/screens/FishIndex.js";
+import SignUpScreen from "./src/screens/SignUpScreen.js";
+
 
 import Navbar from "./src/components/Navbar.js";
 
@@ -60,6 +62,13 @@ export default function App() {
               component={FishIndexScreen}
               options={{ title: "Fish Index" }}
             />
+
+            <Stack.Screen
+              name="SignUp"
+              component={SignUpScreen}
+              options={{ title: "Sign Up" }}
+            />
+
 
             {/* <Stack.Screen
           name="Welcome"
