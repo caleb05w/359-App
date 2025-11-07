@@ -13,7 +13,6 @@ import {
   loadUserPrefs,
   removeUserPrefs,
 } from "../utils/storage";
-import globalStyles from "../globalStyles";
 
 //things to add
 // DB -- idk for what tho lol
@@ -55,7 +54,7 @@ export default function HomeScreen({ navigation }) {
   useEffect(() => {
     (async () => {
       const load = await loadUserPrefs();
-      console.log(`unloading log`, load);
+      // console.log(`unloading log`, load);
       if (load?.name) setItem(load.name);
       if (load?.color) setSelectedColor(load.color);
     })();
