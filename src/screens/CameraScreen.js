@@ -1,12 +1,31 @@
-import { useState } from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
+import { useState, useRef } from "react";
+import { View, Text, Button, StyleSheet, Image } from "react-native";
 import { CameraView, useCameraPermissions } from "expo-camera";
-
+import { createData } from "../utils/db";
 export default function CameraScreen() {
   //sets direction camera faces
   const [facing, setFacing] = useState(true);
   //handles camera permissions, which according to documnetation, is 100% necessary
   const [permission, requestPermission] = useCameraPermissions();
+  //camera reference
+  const cameraRef = useRef(null);
+  //photo holder
+  const [photo, setPhoto] = useState(null);
+
+  const takePhoto = async () => {
+    //if it doesnt exist just return and kill this function
+    if (!cameraRef.current) return;
+    console.log("Photo Taken");
+    try {
+      const photoResult = await cameraRef.current.takePictureAsync({
+        quality: 1,
+      });
+      setPhoto(photoResult);
+      await createData("Caleb", "caleb@example.com", photoResult.uri);
+    } catch (e) {
+      console.warn(`failed to take photo`, e);
+    }
+  };
 
   //if you have permissions, skip
   if (!permission) return <View />;
@@ -26,13 +45,37 @@ export default function CameraScreen() {
       <CameraView
         style={styles.camera}
         facing={facing === true ? "front" : "back"}
+        ref={cameraRef}
       />
-      <View style={{ position: "absolute", bottom: 24, left: 24, right: 24 }}>
+      <View
+        style={{
+          position: "absolute",
+          bottom: 24,
+          left: 24,
+          right: 24,
+          display: "flex",
+          flexDirection: "column",
+          gap: 10,
+        }}
+      >
+        <Button
+          title="take photo"
+          onPress={() => {
+            takePhoto();
+          }}
+        ></Button>
         <Button
           title={`Flip to ${facing === false ? "front" : "back"}`}
           onPress={() => setFacing(!facing)}
         />
       </View>
+
+      {photo && (
+        <Image
+          source={{ uri: photo.uri }}
+          style={{ width: "100%", height: 300, marginTop: 10 }}
+        />
+      )}
     </View>
   );
 }
