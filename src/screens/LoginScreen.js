@@ -12,9 +12,19 @@ import globalStyles from "../globalStyles";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../utils/firebaseConfig";
 
-export default function LoginScreen({ navigation }) {
+export default function LoginScreen({ navigation, route }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const localUserName = route?.params?.localUserName ?? null;
+  const localEmail = route?.params?.localEmail ?? null;
+  const localPassword = route?.params?.localPassword ?? null;
+
+  const handlePassword = () => {
+    localPassword === null
+      ? Alert.alert("no password saved")
+      : setPassword(localPassword);
+  };
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -25,7 +35,9 @@ export default function LoginScreen({ navigation }) {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       Alert.alert("Login successful!");
-      navigation.navigate("Upload", { screen: "Camera" });
+      navigation.navigate("MainTabs", {
+        screen: "Camera",
+      });
     } catch (error) {
       Alert.alert("Login failed", error.message);
     }
@@ -33,11 +45,11 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <View style={globalStyles.page}>
-      <Text style={styles.title}>Welcome Back To Your Aquarium!</Text>
+      <Text style={styles.title}>Login to your account {localUserName}</Text>
 
       <TextInput
         style={styles.input}
-        placeholder="Enter email"
+        placeholder={localEmail ?? "Enter email"}
         value={email}
         onChangeText={setEmail}
         autoCapitalize="none"
@@ -55,6 +67,14 @@ export default function LoginScreen({ navigation }) {
 
       <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
         <Text style={styles.linkText}>Don't have an account? Sign up here</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => {
+          handlePassword();
+        }}
+      >
+        <Text style={styles.linkText}>Forgot Password?</Text>
       </TouchableOpacity>
     </View>
   );

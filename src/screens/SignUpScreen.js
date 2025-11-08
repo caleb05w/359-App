@@ -34,7 +34,11 @@ export default function SignUpScreen({ navigation }) {
       );
       await updateProfile(userCredential.user, { displayName: username });
       Alert.alert("Success!", `Welcome, ${username}!`);
-      navigation.navigate("Login");
+      navigation.navigate("Login", {
+        localUserName: username,
+        localEmail: email,
+        localPassword: password,
+      });
     } catch (error) {
       Alert.alert("Sign up failed", error.message);
     }

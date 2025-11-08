@@ -20,8 +20,8 @@ export default function List({ data }) {
                 ></Image>
               )}
               <View style={styles.containerText}>
-                <Text>{item.name}</Text>
-                <Text>{item.email}</Text>
+                <Text>{item.name === "" ? "No Name" : item.name}</Text>
+                <Text>{item.email === "" ? "No Description" : item.email}</Text>
               </View>
             </View>
           )}

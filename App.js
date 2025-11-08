@@ -72,6 +72,16 @@ function TestStack() {
   );
 }
 
+function MainTabs() {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="Upload" component={UploadStack}></Tab.Screen>
+      <Tab.Screen name="Index" component={IndexStack}></Tab.Screen>
+      <Tab.Screen name="Test" component={TestStack}></Tab.Screen>
+    </Tab.Navigator>
+  );
+}
+
 //Login Flow
 
 function LoginStack() {
@@ -96,12 +106,19 @@ export default function App() {
     <SQLiteProvider databaseName="test.db" onInit={initDb}>
       <NavigationContainer>
         <SafeAreaProvider>
-          <Tab.Navigator>
-            <Tab.Screen name="Login" component={LoginStack}></Tab.Screen>
-            <Tab.Screen name="Upload" component={UploadStack}></Tab.Screen>
-            <Tab.Screen name="Index" component={IndexStack}></Tab.Screen>
-            <Tab.Screen name="Test" component={TestStack}></Tab.Screen>
-          </Tab.Navigator>
+          <Stack.Navigator>
+            <Stack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen name="MainTabs" component={MainTabs} />
+            <Stack.Screen
+              name="SignUp"
+              component={SignUpScreen}
+              options={{ headerShown: false }}
+            />
+          </Stack.Navigator>
         </SafeAreaProvider>
       </NavigationContainer>
     </SQLiteProvider>
