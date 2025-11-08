@@ -12,7 +12,6 @@ import global from "../globalStyles";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../utils/firebaseConfig";
 
-
 export default function SignUpScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
@@ -25,10 +24,21 @@ export default function SignUpScreen({ navigation }) {
     }
 
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      console.log("auth?", !!auth, auth?.app?.options?.projectId);
+      console.log("auth", auth);
+      console.log("auth.app", auth?.app);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       await updateProfile(userCredential.user, { displayName: username });
       Alert.alert("Success!", `Welcome, ${username}!`);
-      navigation.navigate("Login");
+      navigation.navigate("Login", {
+        localUserName: username,
+        localEmail: email,
+        localPassword: password,
+      });
     } catch (error) {
       Alert.alert("Sign up failed", error.message);
     }

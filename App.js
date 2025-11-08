@@ -72,6 +72,16 @@ function TestStack() {
   );
 }
 
+function MainTabs() {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="Upload" component={UploadStack}></Tab.Screen>
+      <Tab.Screen name="Index" component={IndexStack}></Tab.Screen>
+      <Tab.Screen name="Test" component={TestStack}></Tab.Screen>
+    </Tab.Navigator>
+  );
+}
+
 //Login Flow
 
 function LoginStack() {
@@ -96,54 +106,21 @@ export default function App() {
     <SQLiteProvider databaseName="test.db" onInit={initDb}>
       <NavigationContainer>
         <SafeAreaProvider>
-          <Tab.Navigator>
-            <Tab.Screen name="Login" component={LoginStack}></Tab.Screen>
-            <Tab.Screen name="Upload" component={UploadStack}></Tab.Screen>
-            <Tab.Screen name="Index" component={IndexStack}></Tab.Screen>
-            <Tab.Screen name="Test" component={TestStack}></Tab.Screen>
-          </Tab.Navigator>
+          <Stack.Navigator>
+            <Stack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen name="MainTabs" component={MainTabs} />
+            <Stack.Screen
+              name="SignUp"
+              component={SignUpScreen}
+              options={{ headerShown: false }}
+            />
+          </Stack.Navigator>
         </SafeAreaProvider>
       </NavigationContainer>
     </SQLiteProvider>
   );
 }
-
-// {/* //tab vs stack? */}
-// <Stack.Navigator
-//   initialRouteName="Home"
-//   screenOptions={
-//     {
-//       // header: (props) => <Navbar {...props} />, // ✅ gives {navigation, route}
-//     }
-//   }
-// >
-//   <Stack.Screen
-//     name="Test"
-//     component={TestScreen}
-//     options={{ title: "Test Screen" }}
-//   />
-
-//   <Stack.Screen
-//     name="Login"
-//     component={LoginScreen}
-//     options={{ title: "Login Screen" }}
-//   />
-
-//   <Stack.Screen
-//     name="Camera"
-//     component={CameraScreen}
-//     options={{ title: "Camera Screen" }}
-//   />
-
-//   <Stack.Screen
-//     name="FishIndex"
-//     component={FishIndexScreen}
-//     options={{ title: "Fish Index" }}
-//   />
-
-//   {/* <Stack.Screen
-// name="Welcome"
-// component={WelcomeScreen}
-// options={{ title: "Welcome Screen" }}
-// /> */}
-// </Stack.Navigator>
