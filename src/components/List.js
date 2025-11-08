@@ -1,12 +1,8 @@
 import { useState, useEffect } from "react";
 import { Text, View, StyleSheet, Image, FlatList } from "react-native";
 import global from "../globalStyles";
-import { fetchData, initDb, createData } from "../utils/db";
 
-export default function ItemAdd({}) {
-  const [upload, setUpload] = useState({ name: "", batch: "" });
-  const [data, setData] = useState([]);
-
+export default function List({ data }) {
   return (
     <View style={[global.test, styles.container]}>
       <View style={{ height: "100%" }}>

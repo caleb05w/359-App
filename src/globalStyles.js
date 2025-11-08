@@ -27,24 +27,18 @@ export default StyleSheet.create({
 
   view: {
     position: "relative",
-    borderColor: "red",
-    borderWidth: 2,
     height: height,
   },
 
   page: {
     flex: 1,
     flexDirection: "column",
-    justifyContent: "center",
+    // justifyContent: "center",
     alignItems: "center",
-    paddingBottom: 80,
+    padding: 24,
     gap: 24,
     flex: 1,
-  },
-
-  test: {
-    borderColor: "red",
-    borderWidth: 2,
+    backgroundColor: "white",
   },
 
   flexRow: {

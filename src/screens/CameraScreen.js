@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { View, Text, Button, StyleSheet, Image } from "react-native";
 import { CameraView, useCameraPermissions } from "expo-camera";
-import { createData } from "../utils/db";
+
 export default function CameraScreen({ navigation, route }) {
   //sets direction camera faces
   const [facing, setFacing] = useState(true);
@@ -20,9 +20,8 @@ export default function CameraScreen({ navigation, route }) {
       const photoResult = await cameraRef.current.takePictureAsync({
         quality: 1,
       });
-      navigation.navigate("Results");
+      navigation.navigate("Results", { photo: photoResult });
       setPhoto(photoResult);
-      await createData("Caleb", "caleb@example.com", photoResult.uri);
     } catch (e) {
       console.warn(`failed to take photo`, e);
     }
@@ -70,13 +69,6 @@ export default function CameraScreen({ navigation, route }) {
           onPress={() => setFacing(!facing)}
         />
       </View>
-
-      {photo && (
-        <Image
-          source={{ uri: photo.uri }}
-          style={{ width: "100%", height: 300, marginTop: 10 }}
-        />
-      )}
     </View>
   );
 }

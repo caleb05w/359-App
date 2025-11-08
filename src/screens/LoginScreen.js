@@ -12,7 +12,6 @@ import globalStyles from "../globalStyles";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../utils/firebaseConfig";
 
-
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -26,7 +25,7 @@ export default function LoginScreen({ navigation }) {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       Alert.alert("Login successful!");
-      navigation.navigate("Home");
+      navigation.navigate("Upload", { screen: "Camera" });
     } catch (error) {
       Alert.alert("Login failed", error.message);
     }

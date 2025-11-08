@@ -112,7 +112,8 @@ export default function HomeScreen({ navigation }) {
             onPress={() => {
               updatePrefs();
             }}
-          /><Button
+          />
+          <Button
             title="Go to Login"
             onPress={() => navigation.navigate("Login")}
           />
@@ -125,7 +126,7 @@ export default function HomeScreen({ navigation }) {
           />
         </View>{" "}
       </View>
-        <View style={globalStyles.navBar}></View>
+      <View style={globalStyles.navBar}></View>
     </View>
   );
 }
