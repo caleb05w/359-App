@@ -76,6 +76,7 @@ export default function LoginScreen({ navigation, route }) {
       >
         <Text style={styles.linkText}>Forgot Password?</Text>
       </TouchableOpacity>
+      <View style={globalStyles.navBar}></View>
     </View>
   );
 }
