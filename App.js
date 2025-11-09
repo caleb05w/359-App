@@ -22,7 +22,7 @@ const Tab = createBottomTabNavigator();
 // function CreateStack() {
 //   return (
 //     <Stack.Navigator>
-//       <Stack.Screen
+//       <Stack.Screenw
 //         name="Home"
 //         component={HomeScreen}
 //         options={{ headerShown: false }} //hide the header again
