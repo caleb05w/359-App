@@ -1,13 +1,14 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-//navbar from navbar tutorial https://www.youtube.com/watch?v=AnjyzruZ36E&t=25s
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+//navbar from navbar tutorial https://www.youtube.com/watch?v=AnjyzruZ36E&t=25s
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { SQLiteProvider } from "expo-sqlite";
 import { initDb } from "./src/utils/db.js";
 
-//screens
+// screens
 import HomeScreen from "./src/screens/HomeScreen.js";
+import WelcomeScreen from "./src/screens/WelcomeScreen.js";
 import TestScreen from "./src/screens/TestScreen.js";
 import LoginScreen from "./src/screens/LoginScreen.js";
 import CameraScreen from "./src/screens/CameraScreen.js";
@@ -18,106 +19,59 @@ import SignUpScreen from "./src/screens/SignUpScreen.js";
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-// //Create Flow
-// function CreateStack() {
-//   return (
-//     <Stack.Navigator>
-//       <Stack.Screenw
-//         name="Home"
-//         component={HomeScreen}
-//         options={{ headerShown: false }} //hide the header again
-//       />
-//     </Stack.Navigator>
-//   );
-// }
-
+// Upload stack
 function UploadStack() {
   return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Camera"
-        component={CameraScreen}
-        options={{ headerShown: false }} //hide the header again
-      />
-      <Stack.Screen
-        name="Results"
-        component={CameraResultScreen}
-        options={{ headerShown: false }} //hide the header again
-      />
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Camera" component={CameraScreen} />
+      <Stack.Screen name="Results" component={CameraResultScreen} />
     </Stack.Navigator>
   );
 }
 
+// Index stack
 function IndexStack() {
   return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Index"
-        component={FishIndexScreen}
-        options={{ headerShown: false }} //hide the header again
-      />
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Index" component={FishIndexScreen} />
     </Stack.Navigator>
   );
 }
 
+// Test stack
 function TestStack() {
   return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Test"
-        component={TestScreen}
-        options={{ headerShown: false }} //hide the header again
-      />
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Test" component={TestScreen} />
     </Stack.Navigator>
   );
 }
 
+// Bottom tabs (main app)
 function MainTabs() {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Upload" component={UploadStack}></Tab.Screen>
-      <Tab.Screen name="Index" component={IndexStack}></Tab.Screen>
-      <Tab.Screen name="Test" component={TestStack}></Tab.Screen>
+      <Tab.Screen name="Upload" component={UploadStack} />
+      <Tab.Screen name="Index" component={IndexStack} />
+      <Tab.Screen name="Test" component={TestStack} />
     </Tab.Navigator>
   );
 }
 
-//Login Flow
-
-function LoginStack() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Login"
-        component={LoginScreen}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="SignUp"
-        component={SignUpScreen}
-        options={{ headerShown: false }}
-      />
-    </Stack.Navigator>
-  );
-}
-
+// Main App Navigation
 export default function App() {
   return (
     <SQLiteProvider databaseName="test.db" onInit={initDb}>
       <NavigationContainer>
         <SafeAreaProvider>
-          <Stack.Navigator>
-            <Stack.Screen
-              name="Login"
-              component={LoginScreen}
-              options={{ headerShown: false }}
-            />
+          <Stack.Navigator
+            initialRouteName="Welcome"
+            screenOptions={{ headerShown: false }}
+          >
+            <Stack.Screen name="Welcome" component={WelcomeScreen} />
+            <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="SignUp" component={SignUpScreen} />
             <Stack.Screen name="MainTabs" component={MainTabs} />
-            <Stack.Screen
-              name="SignUp"
-              component={SignUpScreen}
-              options={{ headerShown: false }}
-            />
           </Stack.Navigator>
         </SafeAreaProvider>
       </NavigationContainer>

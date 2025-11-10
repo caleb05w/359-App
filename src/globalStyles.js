@@ -45,7 +45,7 @@ export default StyleSheet.create({
   page: {
     flex: 1,
     flexDirection: "column",
-    // justifyContent: "center",
+    justifyContent: "center",
     alignItems: "center",
     padding: 24,
     gap: 24,
