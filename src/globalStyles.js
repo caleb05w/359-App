@@ -1,6 +1,18 @@
 import { StyleSheet, Dimensions } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 //because apparently, you can't use 100vh on react expo lol
 const { height } = Dimensions.get("window");
+
+export const GradientBackground = ({ children }) => {
+  return (
+    <LinearGradient
+      colors={["#fff6ebff", "#c0ebffff"]} 
+      style={{ flex: 1 }}
+    >
+      {children}
+    </LinearGradient>
+  );
+};
 
 export default StyleSheet.create({
   colorBox: {
@@ -38,7 +50,7 @@ export default StyleSheet.create({
     padding: 24,
     gap: 24,
     flex: 1,
-    backgroundColor: "white",
+   
   },
 
   flexRow: {

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { GradientBackground } from "../globalStyles";
 import {
   Button,
   View,
@@ -44,61 +45,91 @@ export default function LoginScreen({ navigation, route }) {
   };
 
   return (
+    <GradientBackground>
     <View style={globalStyles.page}>
-      <Text style={styles.title}>Login to your account {localUserName}</Text>
+       <View style={styles.header}>
+          <Text style={styles.title}>Login</Text>
+        </View>
 
-      <TextInput
-        style={styles.input}
-        placeholder={localEmail ?? "Enter email"}
-        value={email}
-        onChangeText={setEmail}
-        autoCapitalize="none"
-      />
+        {/* Inputs */}
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            placeholderTextColor="#777"
+            value={email}
+            onChangeText={setEmail}
+            autoCapitalize="none"
+            keyboardType="email-address"
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            placeholderTextColor="#777"
+            secureTextEntry
+            value={password}
+            onChangeText={setPassword}
+          />
+        </View>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Enter password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
+        {/* Continue Button */}
+        <TouchableOpacity style={styles.button} onPress={handleLogin}>
+          <Text style={styles.buttonText}>Continue</Text>
+        </TouchableOpacity>
 
-      <Button title="Login" onPress={handleLogin} />
-
-      <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
-        <Text style={styles.linkText}>Don't have an account? Sign up here</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        onPress={() => {
-          handlePassword();
-        }}
-      >
-        <Text style={styles.linkText}>Forgot Password?</Text>
-      </TouchableOpacity>
-      <View style={globalStyles.navBar}></View>
-    </View>
+        {/* Link to Sign Up */}
+        <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
+          <Text style={styles.linkText}>Don’t have an account? Sign up</Text>
+        </TouchableOpacity>
+        </View>
+    </GradientBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 24,
+  },
+  header: {
+    alignItems: "center",
+    marginBottom: 60,
+  },
   title: {
-    fontSize: 22,
-    marginBottom: 10,
+    fontSize: 24,
     fontWeight: "bold",
+    color: "#033A57",
+    marginTop: 8,
+  },
+  inputContainer: {
+    width: "100%",
+    marginBottom: 60,
   },
   input: {
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
     fontSize: 18,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 8,
-    width: "80%",
-    borderRadius: 6,
-    marginBottom: 10,
+    paddingVertical: 8,
+    marginBottom: 25,
+    color: "#033A57",
+  },
+  button: {
+    backgroundColor: "#0077A3",
+    paddingVertical: 14,
+    borderRadius: 30,
+    width: "100%",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "600",
   },
   linkText: {
-    marginTop: 10,
-    color: "#007AFF",
     fontSize: 16,
+    color: "#007AFF",
   },
 });
