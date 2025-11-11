@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import global from "../globalStyles";
+import { GradientBackground } from "../globalStyles";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../utils/firebaseConfig";
 
@@ -45,9 +46,11 @@ export default function SignUpScreen({ navigation }) {
   };
 
   return (
+    <GradientBackground>
     <View style={global.page}>
       <Text style={styles.title}>Create Account</Text>
 
+    <View style={styles.inputContainer}>
       <TextInput
         style={styles.input}
         placeholder="Enter email"
@@ -70,34 +73,64 @@ export default function SignUpScreen({ navigation }) {
         onChangeText={setPassword}
         secureTextEntry
       />
+    </View>
 
-      <Button title="Sign Up" onPress={handleSignUp} />
+      <TouchableOpacity style={styles.button} onPress={handleSignUp}>
+                <Text style={styles.buttonText}>Continue</Text>
+      </TouchableOpacity>
 
       <TouchableOpacity onPress={() => navigation.navigate("Login")}>
         <Text style={styles.linkText}>Already have an account? Login here</Text>
       </TouchableOpacity>
     </View>
+    </GradientBackground>
   );
 }
 
 const styles = StyleSheet.create({
+container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 24,
+  },
+  header: {
+    alignItems: "center",
+    marginBottom: 60,
+  },
   title: {
-    fontSize: 22,
-    marginBottom: 10,
+    fontSize: 24,
     fontWeight: "bold",
+    color: "#033A57",
+    marginTop: 8,
+  },
+  inputContainer: {
+    width: "100%",
+    marginBottom: 60,
   },
   input: {
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
     fontSize: 18,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 8,
-    width: "80%",
-    borderRadius: 6,
-    marginBottom: 10,
+    paddingVertical: 8,
+    marginBottom: 25,
+    color: "#033A57",
+  },
+  button: {
+    backgroundColor: "#0077A3",
+    paddingVertical: 14,
+    borderRadius: 30,
+    width: "100%",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "600",
   },
   linkText: {
-    marginTop: 10,
-    color: "#007AFF",
     fontSize: 16,
+    color: "#007AFF",
   },
 });

@@ -2,7 +2,7 @@ import { openDatabaseAsync } from "expo-sqlite";
 
 let dbPromise;
 export function getDb() {
-  if (!dbPromise) dbPromise = openDatabaseAsync("appv2.db");
+  if (!dbPromise) dbPromise = openDatabaseAsync("fish.db");
   return dbPromise;
 }
 
@@ -14,32 +14,46 @@ export async function initDb() {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT,
       email TEXT,
-      imageUri TEXT
+      imageUri TEXT,
+      fishObj TEXT
     );
   `);
 }
 
-export async function createData(name, email, imageUri) {
+// db.js
+export async function createData(name, email, imageUri, fishObject) {
   const db = await getDb();
   try {
+    // make sure fishObject is JSON-safe
+    let fishJson = null;
+    try {
+      fishJson = JSON.stringify(fishObject ?? null);
+    } catch {
+      fishJson = null; // fallback if circular
+    }
+
     await db.runAsync(
-      //inserts into table (users) [x] values, then VALUES (number of values)
-      "INSERT INTO users (name, email, imageUri) VALUES (?, ?, ?);",
-      [name, email, imageUri]
+      "INSERT INTO users (name, email, imageUri, fishObj) VALUES (?, ?, ?, ?);",
+      [name ?? null, email ?? null, imageUri ?? null, fishJson]
     );
-    console.log("data saved");
   } catch (e) {
-    console.warn(`failed to save`, e);
+    console.warn("createData failed:", e);
+    throw e;
   }
 }
 
 export async function fetchData() {
   const db = await getDb();
   try {
-    return await db.getAllAsync("SELECT * FROM users ORDER BY id DESC;");
+    const rows = await db.getAllAsync("SELECT * FROM users ORDER BY id DESC;");
+    // Convert TEXT -> object (and handle legacy null/empty rows)
+    return rows.map((r) => ({
+      ...r,
+      fish: r.fishObj ? JSON.parse(r.fishObj) : null,
+    }));
   } catch (e) {
     console.warn("Error fetching data:", e);
-    return []; // <- so data.map doesn't explode
+    return [];
   }
 }
 
