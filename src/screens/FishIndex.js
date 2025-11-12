@@ -29,15 +29,17 @@ export default function FishIndex({ navigation, route }) {
       <Text> Camera Index </Text>
       <View style={global.flexRow}>
         {/* <Button title=""></Button> */}
-        <Button
-          title="Delete List"
-          onPress={() => {
-            handleDelete();
-          }}
-        ></Button>
+        <Text>
+          <Button
+            title="Delete List"
+            onPress={() => {
+              handleDelete();
+            }}
+          ></Button>
+        </Text>
       </View>
       {/* renders data in a list fed into it */}
-      <List data={data}></List> =
+      <List data={data} />
     </View>
   );
 }

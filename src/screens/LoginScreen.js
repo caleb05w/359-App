@@ -46,8 +46,8 @@ export default function LoginScreen({ navigation, route }) {
 
   return (
     <GradientBackground>
-    <View style={globalStyles.page}>
-       <View style={styles.header}>
+      <View style={globalStyles.page}>
+        <View style={styles.header}>
           <Text style={styles.title}>Login</Text>
         </View>
 
@@ -81,7 +81,7 @@ export default function LoginScreen({ navigation, route }) {
         <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
           <Text style={styles.linkText}>Don’t have an account? Sign up</Text>
         </TouchableOpacity>
-        </View>
+      </View>
     </GradientBackground>
   );
 }

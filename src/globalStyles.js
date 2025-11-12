@@ -5,10 +5,7 @@ const { height } = Dimensions.get("window");
 
 export const GradientBackground = ({ children }) => {
   return (
-    <LinearGradient
-      colors={["#fff6ebff", "#c0ebffff"]} 
-      style={{ flex: 1 }}
-    >
+    <LinearGradient colors={["#fff6ebff", "#c0ebffff"]} style={{ flex: 1 }}>
       {children}
     </LinearGradient>
   );
@@ -50,7 +47,6 @@ export default StyleSheet.create({
     padding: 24,
     gap: 24,
     flex: 1,
-   
   },
 
   flexRow: {
@@ -65,5 +61,28 @@ export default StyleSheet.create({
     display: "flex",
     flexDirection: "col",
     gap: 12,
+  },
+  upload: {
+    borderColor: "#D9D9D9",
+    borderWidth: 2,
+    padding: 12,
+    borderRadius: 12,
+    minWidth: 220,
+  },
+
+  fill: {
+    width: "100%",
+  },
+
+  center: {
+    height: "fit",
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+
+  m12: {
+    margin: 12,
   },
 });

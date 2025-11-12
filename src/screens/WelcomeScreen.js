@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Button } from "react-native";
 import { GradientBackground } from "../globalStyles";
 
 export default function WelcomeScreen({ navigation }) {
@@ -22,6 +17,16 @@ export default function WelcomeScreen({ navigation }) {
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
 
+        <Button
+          title="skip"
+          onPress={() => {
+            navigation.navigate("MainTabs", {
+              screen: "Upload", // the Tab
+              params: { screen: "Results" }, // the Stack screen inside the Upload tab
+            });
+          }}
+        />
+
         <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
           <Text style={styles.linkText}>Don’t have an account? Sign up</Text>
         </TouchableOpacity>
@@ -33,8 +38,8 @@ export default function WelcomeScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center", 
-    alignItems: "center", 
+    justifyContent: "center",
+    alignItems: "center",
     paddingHorizontal: 24,
   },
   header: {
