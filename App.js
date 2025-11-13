@@ -6,6 +6,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { initDb, getDb } from "./src/utils/db";
 import { useEffect } from "react";
 
+
 // screens
 import WelcomeScreen from "./src/screens/WelcomeScreen.js";
 import LoginScreen from "./src/screens/LoginScreen.js";
