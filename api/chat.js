@@ -1,4 +1,5 @@
 //import GPT.. duhh
+//for safety reaons, the API key has been deleted. Please refer to our slides and demo to see the app functioning
 import OpenAI from "openai";
 //formatting helpers. Used documentation from prof to help me build this --> https://platform.openai.com/docs/guides/structured-outputs
 import { zodTextFormat } from "openai/helpers/zod";
