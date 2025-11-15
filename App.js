@@ -15,6 +15,7 @@ import FishIndexScreen from "./src/screens/FishIndex.js";
 import CameraResultScreen from "./src/screens/CameraResult.js";
 import SignUpScreen from "./src/screens/SignUpScreen.js";
 import FishScreen from "./src/screens/Upload.js";
+import AquariumScreen from "./src/screens/AquariumScreen.js";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -54,6 +55,7 @@ function MainTabs() {
       <Tab.Screen name="Upload" component={UploadStack} />
       <Tab.Screen name="Index" component={IndexStack} />
       <Tab.Screen name="Fish" component={FishStack} />
+      <Tab.Screen name="Aquarium" component={AquariumScreen} /> 
     </Tab.Navigator>
   );
 }

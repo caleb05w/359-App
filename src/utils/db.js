@@ -71,3 +71,9 @@ export async function deleteById(id) {
   const db = await getDb();
   await db.runAsync("DELETE FROM users WHERE id = ?;", [id]);
 }
+
+export async function getAllData() {
+  const db = await getDb();
+  return await db.getAllAsync("SELECT * FROM users");
+}
+
