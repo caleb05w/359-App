@@ -2,59 +2,114 @@ import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Dimensions, Text } from "react-native";
 import { Accelerometer } from "expo-sensors";
 import Fish from "../components/Fish";
-import { fetchData } from "../utils/db"; 
+import { fetchData } from "../utils/db";
 
 const { width, height } = Dimensions.get("window");
 
+// Clamp helper
+const clamp = (v, min, max) => Math.min(Math.max(v, min), max);
+
 export default function AquariumScreen() {
   const [fishList, setFishList] = useState([]);
-  const [offsetX, setOffsetX] = useState(0);
-  const [offsetY, setOffsetY] = useState(0);
   const [error, setError] = useState("");
 
-  //Helper function to clamp a value between min and max
-  const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+  // Each fish has its own state: { x, y, angle, speed, flip }
+  const [swimState, setSwimState] = useState([]);
 
-  //Load all saved fish from DB
+  // Tilt offsets
+  const [tiltX, setTiltX] = useState(0);
+  const [tiltY, setTiltY] = useState(0);
+
+  // ---------------------------
+  // Load fish from database
+  // ---------------------------
   useEffect(() => {
     (async () => {
       try {
-        const rows = await fetchData(); 
-        const validFish = rows
-          .map(r => r.fish)
-          .filter(f => f !== null);
+        const rows = await fetchData();
+        const validFish = rows.map(r => r.fish).filter(f => f != null);
 
         if (validFish.length === 0) {
           setError("No saved fish found.");
         }
 
         setFishList(validFish);
+
+        // Initialize movement state for each fish
+        setSwimState(
+          validFish.map(() => ({
+            x: width / 2,
+            y: height / 2,
+            angle: Math.random() * Math.PI * 2,
+            speed: 2.0 + Math.random() * 1.5,  // 1.2 – 2.2 px/frame
+            flip: false,
+          }))
+        );
       } catch (e) {
-        console.warn("Failed to load fish:", e);
+        console.warn("Could not load fish:", e);
         setError("Could not load fish from DB.");
       }
     })();
   }, []);
 
-  //Accelerometer movement
+  // ---------------------------
+  // Accelerometer input
+  // ---------------------------
   useEffect(() => {
     Accelerometer.setUpdateInterval(50);
 
-    const subscription = Accelerometer.addListener(({ x, y }) => {
-      setOffsetX(prev => {
-        const newX = prev + x * -10; // tilt right -> move right
-        return clamp(newX, -width / 2, width / 2); // clamp horizontally
-      });
+    const sub = Accelerometer.addListener(({ x, y }) => {
+      setTiltX(x * -5);
+      setTiltY(y * 5);
 
-      setOffsetY(prev => {
-        const newY = prev + y * 10;
-        return clamp(newY, -height / 2, height / 2); // clamp vertically
-      });
     });
 
-    return () => subscription && subscription.remove();
+    return () => sub && sub.remove();
   }, []);
 
+  // ---------------------------
+  // Smooth swimming loop
+  // ---------------------------
+  useEffect(() => {
+    if (swimState.length === 0) return;
+
+    const interval = setInterval(() => {
+      setSwimState(prev =>
+        prev.map((fish, i) => {
+          const size = fishList[i]?.size || 220;
+
+          // 1) Slowly change angle toward a target
+          const desiredTurn = (Math.random() - 0.5) * 0.1; // small wandering turn
+          const newAngle = fish.angle + desiredTurn;
+
+          // 2) Compute new position
+          let newX = fish.x + Math.cos(newAngle) * fish.speed + tiltX;
+          let newY = fish.y + Math.sin(newAngle) * fish.speed + tiltY;
+
+          // 3) Keep inside screen
+          newX = clamp(newX, 0, width - size);
+          newY = clamp(newY, 0, height - size);
+
+          // 4) Determine if it should flip
+          const flip = Math.cos(newAngle) < 0;
+
+          return {
+            ...fish,
+            x: newX,
+            y: newY,
+            angle: newAngle,
+            flip,
+          };
+        })
+      );
+    }, 20); // smooth 50 FPS-ish
+
+    return () => clearInterval(interval);
+  }, [swimState, fishList, tiltX, tiltY]);
+
+  // ---------------------------
+  // Render
+  // ---------------------------
 
   if (fishList.length === 0) {
     return (
@@ -70,30 +125,24 @@ export default function AquariumScreen() {
     <View style={styles.container}>
       <Text style={styles.title}>Your Aquarium</Text>
       <Text style={styles.count}>{fishList.length} Fish</Text>
- {fishList.map((schema, i) => {
-  const size = schema.size || 220;
-  const stagger = i * 40;
 
-  const rawX = (width / 2 - size / 2) + offsetX + (i % 2 === 0 ? -80 : 80);
-  const rawY = (height / 2 - size / 3) + offsetY + stagger;
+      {fishList.map((schema, i) => {
+        const motion = swimState[i];
+        if (!motion) return null;
 
-  const left = Math.min(Math.max(rawX, 0), width - size);
-  const top = Math.min(Math.max(rawY, 0), height - size - stagger);
-
-  return (
-    <View
-      key={i}
-      style={{
-        position: "absolute",
-        left,
-        top,
-      }}
-    >
-      <Fish schema={schema} />
-    </View>
-  );
-})}
-
+        return (
+          <View
+            key={i}
+            style={{
+              position: "absolute",
+              left: motion.x,
+              top: motion.y,
+            }}
+          >
+            <Fish schema={{ ...schema, flip: motion.flip }} />
+          </View>
+        );
+      })}
     </View>
   );
 }
@@ -110,7 +159,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-    title: {
+  title: {
     fontSize: 24,
     fontWeight: "600",
   },
