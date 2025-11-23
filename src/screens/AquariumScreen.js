@@ -3,31 +3,28 @@ import { View, StyleSheet, Dimensions, Text } from "react-native";
 import { Accelerometer } from "expo-sensors";
 import Fish from "../components/Fish";
 import { fetchData } from "../utils/db";
+import { ImageBackground } from "react-native";
+
 
 const { width, height } = Dimensions.get("window");
 
-// Clamp helper
+// clamp helper
 const clamp = (v, min, max) => Math.min(Math.max(v, min), max);
 
 export default function AquariumScreen() {
   const [fishList, setFishList] = useState([]);
+  const [swimState, setSwimState] = useState([]);
   const [error, setError] = useState("");
 
-  // Each fish has its own state: { x, y, angle, speed, flip }
-  const [swimState, setSwimState] = useState([]);
-
-  // Tilt offsets
   const [tiltX, setTiltX] = useState(0);
   const [tiltY, setTiltY] = useState(0);
 
-  // ---------------------------
-  // Load fish from database
-  // ---------------------------
+  // Load fish from DB
   useEffect(() => {
     (async () => {
       try {
         const rows = await fetchData();
-        const validFish = rows.map(r => r.fish).filter(f => f != null);
+        const validFish = rows.map((r) => r.fish).filter((f) => f != null);
 
         if (validFish.length === 0) {
           setError("No saved fish found.");
@@ -35,94 +32,97 @@ export default function AquariumScreen() {
 
         setFishList(validFish);
 
-        // Initialize movement state for each fish
+        // Initial movement states
         setSwimState(
           validFish.map(() => ({
             x: width / 2,
             y: height / 2,
             angle: Math.random() * Math.PI * 2,
-            speed: 2.0 + Math.random() * 1.5,  // 1.2 – 2.2 px/frame
+            speed: 2 + Math.random() * 2,
             flip: false,
           }))
         );
-      } catch (e) {
-        console.warn("Could not load fish:", e);
-        setError("Could not load fish from DB.");
+      } catch (err) {
+        console.log(err);
+        setError("Could not load fish.");
       }
     })();
   }, []);
 
-  // ---------------------------
-  // Accelerometer input
-  // ---------------------------
+  // Accelerometer tilt
   useEffect(() => {
     Accelerometer.setUpdateInterval(50);
-
     const sub = Accelerometer.addListener(({ x, y }) => {
       setTiltX(x * -5);
       setTiltY(y * 5);
-
     });
-
     return () => sub && sub.remove();
   }, []);
 
-  // ---------------------------
-  // Smooth swimming loop
-  // ---------------------------
+  // Movement + collision avoidance
   useEffect(() => {
     if (swimState.length === 0) return;
 
     const interval = setInterval(() => {
-      setSwimState(prev =>
-        prev.map((fish, i) => {
-          const size = fishList[i]?.size || 220;
+      setSwimState((prev) => {
+        return prev.map((fish, index) => {
+          const size = fishList[index]?.size || 220;
+          const avoidDistance = size * 0.15; // reduce to make collision tighter
 
-          // 1) Slowly change angle toward a target
-          const desiredTurn = (Math.random() - 0.5) * 0.1; // small wandering turn
-          const newAngle = fish.angle + desiredTurn;
+          let turnAngle = (Math.random() - 0.5) * 0.15; // wandering
 
-          // 2) Compute new position
+          // ----------- COLLISION AVOIDANCE ------------
+          prev.forEach((other, j) => {
+            if (j === index) return;
+
+            const dx = fish.x - other.x;
+            const dy = fish.y - other.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist < avoidDistance && dist > 0) {
+              const awayAngle = Math.atan2(dy, dx);
+              turnAngle += (awayAngle - fish.angle) * 0.12;
+            }
+          });
+
+          const newAngle = fish.angle + turnAngle;
+
+          // Basic forward movement
           let newX = fish.x + Math.cos(newAngle) * fish.speed + tiltX;
           let newY = fish.y + Math.sin(newAngle) * fish.speed + tiltY;
 
-          // 3) Keep inside screen
+          // ★ boundary clamp
           newX = clamp(newX, 0, width - size);
           newY = clamp(newY, 0, height - size);
-
-          // 4) Determine if it should flip
-          const flip = Math.cos(newAngle) < 0;
 
           return {
             ...fish,
             x: newX,
             y: newY,
             angle: newAngle,
-            flip,
+            flip: Math.cos(newAngle) < 0,
           };
-        })
-      );
-    }, 20); // smooth 50 FPS-ish
+        });
+      });
+    }, 20);
 
     return () => clearInterval(interval);
-  }, [swimState, fishList, tiltX, tiltY]);
-
-  // ---------------------------
-  // Render
-  // ---------------------------
+  }, [fishList, tiltX, tiltY]); // ← ★ swimState REMOVED so collisions work
 
   if (fishList.length === 0) {
     return (
       <View style={styles.center}>
-        <Text style={{ fontSize: 18, padding: 20, textAlign: "center" }}>
-          {error || "Loading fish..."}
-        </Text>
+        <Text style={{ fontSize: 18 }}>{error || "Loading fish..."}</Text>
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
+    <ImageBackground
+ source={require("../../assets/aquariumbg.png")}
+  style={styles.container}
+  resizeMode="cover"
+>
       <Text style={styles.title}>Your Aquarium</Text>
       <Text style={styles.count}>{fishList.length} Fish</Text>
 
@@ -143,7 +143,7 @@ export default function AquariumScreen() {
           </View>
         );
       })}
-    </View>
+    </ImageBackground>
   );
 }
 
@@ -166,6 +166,5 @@ const styles = StyleSheet.create({
   count: {
     fontSize: 16,
     marginBottom: 20,
-    color: "#555",
   },
 });
