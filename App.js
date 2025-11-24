@@ -7,6 +7,7 @@ import { initDb, getDb } from "./src/utils/db";
 import { useEffect } from "react";
 
 
+
 // screens
 import WelcomeScreen from "./src/screens/WelcomeScreen.js";
 import LoginScreen from "./src/screens/LoginScreen.js";
@@ -16,6 +17,7 @@ import CameraResultScreen from "./src/screens/CameraResult.js";
 import SignUpScreen from "./src/screens/SignUpScreen.js";
 import FishScreen from "./src/screens/Upload.js";
 import AquariumScreen from "./src/screens/AquariumScreen.js";
+import FishDetailsScreen from "./src/screens/FishDetailsScreen.js"
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -90,6 +92,7 @@ export default function App() {
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="SignUp" component={SignUpScreen} />
           <Stack.Screen name="MainTabs" component={MainTabs} />
+          <Stack.Screen name="FishDetailsScreen" component={FishDetailsScreen} />
         </Stack.Navigator>
       </SafeAreaProvider>
     </NavigationContainer>

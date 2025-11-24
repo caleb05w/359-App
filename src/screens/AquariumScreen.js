@@ -4,6 +4,9 @@ import { Accelerometer } from "expo-sensors";
 import Fish from "../components/Fish";
 import { fetchData } from "../utils/db";
 import { ImageBackground } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { Pressable } from "react-native";
+
 
 
 const { width, height } = Dimensions.get("window");
@@ -117,41 +120,49 @@ export default function AquariumScreen() {
     );
   }
 
-  return (
-    <ImageBackground
- source={require("../../assets/aquariumbg.png")}
-  style={styles.container}
-  resizeMode="cover"
->
-      <Text style={styles.title}>Your Aquarium</Text>
-      <Text style={styles.count}>{fishList.length} Fish</Text>
+const navigation = useNavigation();
 
-      {fishList.map((schema, i) => {
-        const motion = swimState[i];
-        if (!motion) return null;
+return (
+  <ImageBackground
+    source={require("../../assets/aquariumbg.png")}
+    style={styles.container}
+    resizeMode="cover"
+  >
+    <Text style={styles.title}>Your Aquarium</Text>
+    <Text style={styles.count}>{fishList.length} Fish</Text>
 
-        return (
-          <View
-            key={i}
-            style={{
-              position: "absolute",
-              left: motion.x,
-              top: motion.y,
-            }}
-          >
-            <Fish schema={{ ...schema, flip: motion.flip }} />
-          </View>
-        );
-      })}
-    </ImageBackground>
-  );
+    {fishList.map((schema, i) => {
+      const motion = swimState[i];
+      if (!motion) return null;
+
+      return (
+        <Pressable
+          key={i}
+          style={{
+            position: "absolute",
+            left: motion.x,
+            top: motion.y,
+          }}
+          onPress={() => {
+            console.log("FISH TAPPED!");
+            navigation.navigate("FishDetailsScreen", { fish: schema });
+          }}
+        >
+          <Fish schema={{ ...schema, flip: motion.flip }} />
+        </Pressable>
+      );
+    })}
+  </ImageBackground>
+);
+
+
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#b7defbff",
     alignItems: "center",
+    backgroundColor: "#b7defbff",
     paddingTop: 40,
   },
   center: {
