@@ -70,11 +70,11 @@ export default function AquariumScreen() {
       setSwimState((prev) => {
         return prev.map((fish, index) => {
           const size = fishList[index]?.size || 220;
-          const avoidDistance = size * 0.15; // reduce to make collision tighter
+          const avoidDistance = size * 0.15; // reduce to make collision tighter (barely works)
 
-          let turnAngle = (Math.random() - 0.5) * 0.15; // wandering
+          let turnAngle = (Math.random() - 0.5) * 0.15; //controls their wandering
 
-          // ----------- COLLISION AVOIDANCE ------------
+          // collision avoidance (doesn't work very well rn)
           prev.forEach((other, j) => {
             if (j === index) return;
 
@@ -94,7 +94,7 @@ export default function AquariumScreen() {
           let newX = fish.x + Math.cos(newAngle) * fish.speed + tiltX;
           let newY = fish.y + Math.sin(newAngle) * fish.speed + tiltY;
 
-          // ★ boundary clamp
+          // boundary clamp
           newX = clamp(newX, 0, width - size);
           newY = clamp(newY, 0, height - size);
 
@@ -110,7 +110,7 @@ export default function AquariumScreen() {
     }, 20);
 
     return () => clearInterval(interval);
-  }, [fishList, tiltX, tiltY]); // ← ★ swimState REMOVED so collisions work
+  }, [fishList, tiltX, tiltY]); //swimState removed so collisions work
 
   if (fishList.length === 0) {
     return (

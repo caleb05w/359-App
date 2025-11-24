@@ -30,7 +30,7 @@ export default function Fish({ schema }) {
       width={size}
       height={(size * 140) / 220}
       viewBox="0 0 220 140"
-      pointerEvents="none"     // ← ★ IMPORTANT FIX
+      pointerEvents="none"     // <-- IMPORTANT FIX
     >
       <Defs>
         <LinearGradient id="shade" x1="0" y1="0" x2="1" y2="1">
