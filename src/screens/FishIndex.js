@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useIsFocused } from "@react-navigation/native";
 import { View, Text, Button, StyleSheet, FlatList, Image } from "react-native";
 import global from "../globalStyles";
-import { deleteData, fetchData, initDb } from "../utils/db";
+import { deleteData, fetchData } from "../utils/db";
 import List from "../components/List";
 
 export default function FishIndex({ navigation, route }) {
@@ -12,7 +12,6 @@ export default function FishIndex({ navigation, route }) {
   useEffect(() => {
     if (!isFocused) return; //do nothing if not "focused"
     (async () => {
-      await initDb(); // important to use await here so you dont call it before hte table exists.
       setData(await fetchData()); // loads data and sets it into data.
       console.log("set data");
     })();

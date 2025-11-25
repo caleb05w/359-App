@@ -15,15 +15,15 @@ export default function Fish({ schema }) {
   //destructuring the schema
   //default options if the schema is blank
   const {
-    size = 220,
-    bodyColor = "#FF9566",
-    finColor = "#FFB07A",
-    eyeColor = "#1A1A1A",
-    pattern = "stripes",
+    size = 100,
+    bodyColor = "#000000",
+    finColor = "#000000",
+    eyeColor = "#ffffff", // outline only
+    pattern = "none",
     tail = "fan",
-    dorsal = "small",
+    dorsal = "none",
     flip = false,
-  } = schema || {};
+  } = schema || {}
 
   return (
     <Svg
@@ -64,16 +64,19 @@ export default function Fish({ schema }) {
 
         {/* Dorsal fin */}
         {dorsal !== "none" && (
-          <Path
-            d={
-              dorsal === "big"
-                ? "M90 25 C110 5, 140 5, 150 26 C135 22, 120 24, 90 25 Z"
-                : "M98 30 C112 18, 130 18, 142 30 C128 28, 114 29, 98 30 Z"
-            }
-            fill={finColor}
-            opacity={0.9}
-          />
+          <G transform="translate(-7, -10)">
+            <Path
+              d={
+                dorsal === "big"
+                  ? "M90 25 C110 5, 140 5, 150 26 C135 22, 120 24, 90 25 Z"
+                  : "M98 30 C112 18, 130 18, 142 30 C128 28, 114 29, 98 30 Z"
+              }
+              fill={finColor}
+              opacity={0.9}
+            />
+          </G>
         )}
+
 
         {/* Eye */}
         <Circle cx="55" cy="58" r="10" fill="#fff" />
@@ -120,6 +123,6 @@ export default function Fish({ schema }) {
             />
           ))}
       </G>
-    </Svg>
+    </Svg >
   );
 }

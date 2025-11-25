@@ -19,6 +19,7 @@ export default function CameraScreen({ navigation, route }) {
     try {
       const photoResult = await cameraRef.current.takePictureAsync({
         quality: 1,
+        base64: true,
       });
       navigation.navigate("Results", { photo: photoResult });
       setPhoto(photoResult);
@@ -31,7 +32,7 @@ export default function CameraScreen({ navigation, route }) {
   if (!permission) return <View />;
 
   //if you have permissions, add this in.
-  if (!permission.granted) {
+  if (!permission.granted && permission.canAskAgain) {
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
         <Text>We need camera permission</Text>

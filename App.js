@@ -3,8 +3,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 //navbar from navbar tutorial https://www.youtube.com/watch?v=AnjyzruZ36E&t=25s
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { initDb, getDb } from "./src/utils/db";
-import { useEffect } from "react";
 
 
 
@@ -42,13 +40,13 @@ function IndexStack() {
 }
 
 // Test stack
-function FishStack() {
-  return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Fish" component={FishScreen} />
-    </Stack.Navigator>
-  );
-}
+// function FishStack() {
+//   return (
+//     <Stack.Navigator screenOptions={{ headerShown: false }}>
+//       <Stack.Screen name="Fish" component={FishScreen} />
+//     </Stack.Navigator>
+//   );
+// }
 
 // Bottom tabs (main app)
 function MainTabs() {
@@ -56,31 +54,13 @@ function MainTabs() {
     <Tab.Navigator>
       <Tab.Screen name="Upload" component={UploadStack} />
       <Tab.Screen name="Index" component={IndexStack} />
-      <Tab.Screen name="Fish" component={FishStack} />
-      <Tab.Screen name="Aquarium" component={AquariumScreen} /> 
+      <Tab.Screen name="Aquarium" component={AquariumScreen} />
     </Tab.Navigator>
   );
 }
 
 // Main App Navigation
 export default function App() {
-  useEffect(() => {
-    (async () => {
-      await initDb(); // open + create table once
-      const db = await getDb();
-      console.log(
-        "tables:",
-        await db.getAllAsync(
-          "SELECT name FROM sqlite_master WHERE type='table'"
-        )
-      );
-      console.log(
-        "users columns:",
-        await db.getAllAsync("PRAGMA table_info(users)")
-      );
-    })().catch((e) => console.warn("init error", e));
-  }, []);
-
   return (
     <NavigationContainer>
       <SafeAreaProvider>

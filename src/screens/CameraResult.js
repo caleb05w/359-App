@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Text,
   View,
@@ -6,11 +6,24 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  Animated,
+  Alert,
+  Keyboard,
 } from "react-native";
-import { createData } from "../utils/db";
+import { Ionicons } from "@expo/vector-icons";
+
+import PixelFish from "../components/pixelFish";
+
+
+//
+import { collection, addDoc } from "firebase/firestore";
+import { db } from '../utils/firebaseConfig'
+
+import LoadState from "../components/Loadstate";
+
 import Fish from "../components/Fish";
 import global from "../globalStyles";
-import { handleResponse } from "../../api/chat";
+import { handleResponse, imgResponse } from "../../api/chat";
 
 export default function CameraResult({ navigation, route }) {
   //fish upload text
@@ -19,30 +32,88 @@ export default function CameraResult({ navigation, route }) {
   const initialPhoto = route?.params?.photo ?? null;
   const [photo, setPhoto] = useState(initialPhoto);
   const [imageUpload, setImageUpload] = useState(!!initialPhoto);
-
+  const [load, setLoad] = useState(false)
   //stroage system for photo
-  const [upload, setUpload] = useState({ name: "", email: "" });
-  // SaveData: robust version
-  const SaveData = async () => {
+  const [upload, setUpload] = useState({ name: "", description: "no description" });
+
+  // Bobbing animation for pixel fish
+  const bobAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    // Start bobbing animation when response is available
+    if (response) {
+      const bobAnimation = Animated.loop(
+        Animated.sequence([
+          Animated.timing(bobAnim, {
+            toValue: 2,
+            duration: 1500,
+            useNativeDriver: true,
+          }),
+          Animated.timing(bobAnim, {
+            toValue: 0,
+            duration: 1500,
+            useNativeDriver: true,
+          }),
+        ])
+      );
+      bobAnimation.start();
+
+      return () => bobAnimation.stop();
+    }
+  }, [response]);
+
+  const translateY = bobAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, -8], // Bob up 8 pixels
+  });
+
+  const IdentifyUpload = async () => {
+    setLoad(true);
     try {
       const imageUri = photo?.uri ?? null;
+      const parsedImg = await imgResponse(imageUri);
+      setUpload((prev) => ({ ...prev, name: parsedImg }));
+      handleUpload(parsedImg);
+    }
 
-      await createData(upload.name, upload.email, imageUri, response);
-      console.log("saved");
+    catch (e) {
+      console.warn("error parsing fish name", e)
+    }
+  }
+
+  // SaveData: robust version
+  const SaveData = async () => {
+    setLoad(true);
+    try {
+      const imageUri = photo?.uri ?? null;
+      const docRef = await addDoc(collection(db, "fish"), {
+        //need to use parsed image here because it only loads after the await imgResponse calls.
+        name: upload.name ?? "no name",
+        description: upload?.description ?? "no description",
+        imageUri: imageUri ?? "no image",
+        schema: response ?? "no schema"
+      });
+      console.log("Document written with ID: ", docRef.id);
+      Alert.alert("Saved!");
+      setLoad(false);
     } catch (e) {
       console.warn("failed to save photo to DB", e);
     }
   };
-  const handleUpload = async () => {
+
+
+  const handleUpload = async (name) => {
+    { load === false ? setLoad(true) : "" }
     //feedback
     setStatus("Generating a response…");
     // handleResponse is the returned object from chat.js.
     try {
-      const parsedSchema = await handleResponse(upload.name);
+      const parsedSchema = await handleResponse(name);
       //response is what GPT responds with.
       setResponse(parsedSchema);
       //feedback
       setStatus("Complete");
+      setLoad(false)
     } catch (e) {
       //catch case in case GPT fails to connect.
       console.warn("Failed to connect", e);
@@ -51,9 +122,28 @@ export default function CameraResult({ navigation, route }) {
 
   return (
     <View style={global.page}>
+      {load === true ? <LoadState message="Loading..."></LoadState> : ""}
       {imageUpload === false ? (
         <View>
-          <Fish schema={response ?? null} />
+          {response ? (
+            <Animated.View
+              style={{
+                transform: [{ translateY }],
+                alignItems: "center",
+                justifyContent: "center",
+                padding: 4, // Add padding so border is visible around content
+                paddingBottom: 12,
+              }}
+            >
+              {/* <Fish schema={response} /> */}
+              <PixelFish schema={response} />
+            </Animated.View>
+          ) : (
+            // <Fish schema={null} />
+            <View style={[global.flexRow, global.padding]}>
+              <PixelFish schema={null} />
+            </View>
+          )}
           <View style={global.flexRow}>
             <TextInput
               style={global.upload}
@@ -62,11 +152,15 @@ export default function CameraResult({ navigation, route }) {
               onChangeText={(text) => {
                 setUpload((prev) => ({ ...prev, name: text }));
               }}
+              onSubmitEditing={() => {
+                Keyboard.dismiss();
+              }}
             />
             <Button
               title="Upload"
               onPress={() => {
-                handleUpload();
+                handleUpload(upload.name);
+                Keyboard.dismiss();
               }}
             />
           </View>
@@ -75,16 +169,31 @@ export default function CameraResult({ navigation, route }) {
           </View>
         </View>
       ) : photo === null ? (
-        <Text>No Photo</Text>
+        <View>
+          <Button
+            title="Retake Photo"
+            onPress={() => {
+              navigation.navigate("Camera");
+            }}
+          ></Button>
+        </View>
       ) : (
         <View>
-          <Image
-            source={{ uri: photo.uri }}
-            style={{ width: 200, height: 200 }}
-          ></Image>
-          <View style={[global.container, global.flexRow]}>
+          <View style={global.flexRow}>
+            <Image
+              source={{ uri: photo.uri }}
+              style={upload.name !== "" ? { width: 100, height: 100 } : { width: 200, height: 200 }}
+            ></Image>
+            {upload.name !== "" && (
+              <>
+                <Ionicons name="arrow-forward" size={32} color="black" />
+                <PixelFish schema={response} />
+              </>
+            )}
+          </View>
+          <View style={[global.container]}>
             <View style={global.flexRow}>
-              <Text>Key:</Text>
+              <Text>Name:</Text>
               <TextInput
                 placeholder="Enter Key"
                 value={upload.name}
@@ -93,42 +202,52 @@ export default function CameraResult({ navigation, route }) {
                 }
               />
             </View>
-
             <View style={global.flexRow}>
               <Text>Data</Text>
               <TextInput
                 placeholder="Enter Data"
-                value={upload.email}
+                value={upload.description}
                 onChangeText={(text) =>
-                  setUpload((prev) => ({ ...prev, email: text }))
+                  setUpload((prev) => ({ ...prev, description: text }))
                 }
               />
             </View>
           </View>
         </View>
-      )}
+      )
+      }
 
-      {status === "Complete" || photo !== null ? (
-        <View>
-          <View style={global.flexRow}>
-            <Button
-              title="save to DB"
-              onPress={() => {
-                SaveData();
-              }}
-            ></Button>
-
-            <Button
-              title="New Photo"
-              onPress={() => {
-                navigation.navigate("Camera");
-              }}
-            />
+      {
+        status === "Complete" || photo !== null ? (
+          <View>
+            <View style={global.flexRow}>
+              {upload.name === "" && photo !== null ? (
+                <Button
+                  title="Identify Fish"
+                  onPress={() => {
+                    IdentifyUpload();
+                  }}
+                ></Button>
+              ) : (
+                <Button
+                  title="Save Fish"
+                  onPress={() => {
+                    SaveData();
+                  }}
+                ></Button>
+              )}
+              <Button
+                title="New Photo"
+                onPress={() => {
+                  navigation.navigate("Camera");
+                }}
+              />
+            </View>
           </View>
-        </View>
-      ) : (
-        <Text></Text>
-      )}
+        ) : (
+          <Text></Text>
+        )
+      }
 
       <View style={global.center}>
         <TouchableOpacity
@@ -141,6 +260,6 @@ export default function CameraResult({ navigation, route }) {
           <Text>{imageUpload === true ? "Upload Text" : "Upload Image"}</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </View >
   );
 }
