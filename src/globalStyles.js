@@ -39,6 +39,10 @@ export default StyleSheet.create({
     height: height,
   },
 
+  padding: {
+    padding: 40,
+  },
+
   page: {
     flex: 1,
     flexDirection: "column",
@@ -85,4 +89,14 @@ export default StyleSheet.create({
   m12: {
     margin: 12,
   },
+
+  border: {
+    borderColor: "black",
+    borderWidth: 2,
+  },
+
+  listItem: {
+    marginTop: 8, width: 100, height: 100, overflow: 'hidden', justifyContent: 'center', alignItems: 'center'
+  }
+
 });

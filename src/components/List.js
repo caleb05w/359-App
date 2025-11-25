@@ -1,6 +1,7 @@
 import { Text, View, StyleSheet, Image, FlatList } from "react-native";
 import global from "../globalStyles";
-import Fish from "./Fish";
+// import Fish from "./Fish";
+import PixelFish from "./pixelFish";
 
 export default function List({ data }) {
   const parseFish = (val) => {
@@ -14,13 +15,15 @@ export default function List({ data }) {
   };
 
   const renderItem = ({ item }) => {
-    const schema = parseFish(item.fish);
+    const schema = parseFish(item.schema);
 
     return (
       <View style={styles.containerItem}>
         {schema ? (
-          <View style={{ marginTop: 8 }}>
-            <Fish schema={schema} />
+          <View style={global.listItem}>
+            <View style={{ transform: [{ scale: 0.5 }], width: '200%', height: '200%' }}>
+              <PixelFish schema={schema} />
+            </View>
           </View>
         ) : item?.imageUri ? (
           <Image
@@ -35,7 +38,7 @@ export default function List({ data }) {
         <View style={styles.containerText}>
           <Text>{item?.name || "No Name"}</Text>
           <Text style={{ color: "#666" }}>
-            {item?.email || "No Description"}
+            {item?.description || "No Description"}
           </Text>
         </View>
       </View>
@@ -47,6 +50,7 @@ export default function List({ data }) {
       <View style={{ height: "100%" }}>
         <FlatList
           data={data}
+          //needs to be ID because each key must be unique.
           keyExtractor={(item) => item.id.toString()}
           renderItem={renderItem}
         />
