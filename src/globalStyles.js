@@ -12,6 +12,21 @@ export const GradientBackground = ({ children }) => {
 };
 
 export default StyleSheet.create({
+
+  h1: {
+    fontFamily: "departure mono",
+    fontSize: 36,
+    color: "white",
+  },
+
+  h2: {
+    fontFamily: "departure mono"
+  },
+
+  h3: {
+    fontFamily: "departure mono"
+  },
+
   colorBox: {
     height: 40,
     width: 40,

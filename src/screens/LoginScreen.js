@@ -12,6 +12,7 @@ import {
 import globalStyles from "../globalStyles";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../utils/firebaseConfig";
+import { loadUserPrefs } from "../utils/storage";
 
 export default function LoginScreen({ navigation, route }) {
   const [email, setEmail] = useState("");
@@ -20,6 +21,13 @@ export default function LoginScreen({ navigation, route }) {
   const localUserName = route?.params?.localUserName ?? null;
   const localEmail = route?.params?.localEmail ?? null;
   const localPassword = route?.params?.localPassword ?? null;
+
+  const loadPassword = async () => {
+    const load = await loadUserPrefs();
+    Alert.alert("filling data")
+    setEmail(load.localUserName.email);
+    setPassword(load.localUserName.password)
+  }
 
   const handlePassword = () => {
     localPassword === null
@@ -76,6 +84,7 @@ export default function LoginScreen({ navigation, route }) {
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <Text style={styles.buttonText}>Continue</Text>
         </TouchableOpacity>
+        <Button title="Forgot Password" onPress={() => { loadPassword() }} />
 
         {/* Link to Sign Up */}
         <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>

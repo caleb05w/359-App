@@ -17,15 +17,6 @@ export default function WelcomeScreen({ navigation }) {
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
 
-        <Button
-          title="skip"
-          onPress={() => {
-            navigation.navigate("MainTabs", {
-              screen: "Upload", // the Tab
-              params: { screen: "Results" }, // the Stack screen inside the Upload tab
-            });
-          }}
-        />
 
         <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
           <Text style={styles.linkText}>Don’t have an account? Sign up</Text>
