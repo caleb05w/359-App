@@ -7,6 +7,8 @@ import { fetchData } from "../utils/db";
 import { ImageBackground } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Pressable } from "react-native";
+import FishInfo from "../components/FishInfo";
+
 
 
 
@@ -29,6 +31,9 @@ export default function AquariumScreen() {
   //logs the position of the fish
   const [selectedX, setSelectedX] = useState("none");
   const [selectedY, setSelectedY] = useState("none");
+
+  const [selectedFish, setSelectedFish] = useState(null);
+
 
   //selects and returns information on the fish
   const returnSelected = (item, x, y) => {
@@ -321,6 +326,14 @@ export default function AquariumScreen() {
     >
       <Text style={styles.title}>Your Aquarium</Text>
       <Text>{selectedName}</Text>
+
+      {selectedFish && (
+         <FishInfo
+        fish={selectedFish}
+        onClose={() => setSelectedFish(null)}
+      />
+      )}
+
       {/* renders fish */}
       {fishList.map((item, i) => {
         const newSchema = item.schema
@@ -339,9 +352,7 @@ export default function AquariumScreen() {
               transform: motion.flip ? [{ scaleX: -1 }] : []
             }}
             onPress={() => {
-              returnSelected(item, motion.x, motion.y);
-              // console.log("FISH TAPPED!");
-              // navigation.navigate("FishDetailsScreen", { fish: newSchema });
+              setSelectedFish(item); // Opens popup
             }}
           >
             <PixelFish schema={newSchema} flip={false} scale={motion.scale ?? 1} />

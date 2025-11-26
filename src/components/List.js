@@ -1,9 +1,8 @@
-import { Text, View, StyleSheet, Image, FlatList } from "react-native";
+import { Text, View, StyleSheet, Image, FlatList, Pressable } from "react-native";
 import global from "../globalStyles";
-// import Fish from "./Fish";
 import PixelFish from "./pixelFish";
 
-export default function List({ data }) {
+export default function List({ data, onPressFish }) {
   const parseFish = (val) => {
     if (!val) return null;
     if (typeof val === "object") return val;
@@ -18,10 +17,15 @@ export default function List({ data }) {
     const schema = parseFish(item.schema);
 
     return (
-      <View style={styles.containerItem}>
+     <Pressable
+      onPress={() => {
+       onPressFish(item); // pass entire item
+  }}
+        style={styles.containerItem}
+      >
         {schema ? (
           <View style={global.listItem}>
-            <View style={{ transform: [{ scale: 0.5 }], width: '200%', height: '200%' }}>
+            <View style={{ transform: [{ scale: 0.5 }], width: "200%", height: "200%" }}>
               <PixelFish schema={schema} />
             </View>
           </View>
@@ -41,7 +45,7 @@ export default function List({ data }) {
             {item?.description || "No Description"}
           </Text>
         </View>
-      </View>
+      </Pressable>
     );
   };
 
@@ -50,7 +54,6 @@ export default function List({ data }) {
       <View style={{ height: "100%" }}>
         <FlatList
           data={data}
-          //needs to be ID because each key must be unique.
           keyExtractor={(item) => item.id.toString()}
           renderItem={renderItem}
         />

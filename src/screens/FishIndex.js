@@ -4,9 +4,11 @@ import { View, Text, Button, StyleSheet, FlatList, Image } from "react-native";
 import global from "../globalStyles";
 import { deleteData, fetchData } from "../utils/db";
 import List from "../components/List";
+import FishInfo from "../components/FishInfo"; 
 
 export default function FishIndex({ navigation, route }) {
   const [data, setData] = useState([]);
+  const [selectedFish, setSelectedFish] = useState(null); 
   const isFocused = useIsFocused(); //imported this because apparently react remembers page screens so every time we swap them, it doesnt refresh and useEffect never calls, so the db appears not to update
   //runs before we start our file
   useEffect(() => {
@@ -23,25 +25,31 @@ export default function FishIndex({ navigation, route }) {
     setData(await fetchData());
   };
 
-  return (
-    <View style={[global.page]}>
-      <Text> Camera Index </Text>
-      <View style={global.flexRow}>
-        {/* <Button title=""></Button> */}
-        <Text>
-          <Button
-            title="Delete List"
-            onPress={() => {
-              handleDelete();
-            }}
-          ></Button>
-        </Text>
-      </View>
-      {/* renders data in a list fed into it */}
-      <List data={data} />
+return (
+  <View style={[global.page]}>
+
+    <Text> Camera Index </Text>
+
+    <View style={global.flexRow}>
+      <Text>
+        <Button title="Delete List" onPress={handleDelete} />
+      </Text>
     </View>
-  );
+
+    <List data={data} onPressFish={setSelectedFish} />
+
+    {/* 🟣 MOVE FishInfo HERE — above closing View */}
+    {selectedFish && (
+      <FishInfo
+        fish={selectedFish}
+        onClose={() => setSelectedFish(null)}
+      />
+    )}
+
+  </View>
+);
 }
+
 
 const styles = StyleSheet.create({
   container: {
