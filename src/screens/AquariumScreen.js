@@ -5,9 +5,6 @@ import { Accelerometer } from "expo-sensors";
 import PixelFish, { computeFishBounds } from "../components/pixelFish";
 import { fetchData } from "../utils/db";
 import FishInfo from "../components/FishInfo";
-import { ImageBackground } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { Pressable } from "react-native";
 import globalStyles from "../globalStyles";
 
 // bounding box of the phone to help with edge detection
