@@ -12,11 +12,18 @@ import global from "../globalStyles";
 import { GradientBackground } from "../globalStyles";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../utils/firebaseConfig";
+import { saveUserPrefs, loadUserPrefs } from "../utils/storage";
 
 export default function SignUpScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const rememberLogin = async () => {
+    const payload = { email, password }
+    await saveUserPrefs(payload);
+    Alert.alert("saved info!")
+  }
 
   const handleSignUp = async () => {
     if (!email || !username || !password) {
@@ -47,48 +54,58 @@ export default function SignUpScreen({ navigation }) {
 
   return (
     <GradientBackground>
-    <View style={global.page}>
-      <Text style={styles.title}>Create Account</Text>
+      <View style={global.page}>
+        <Text style={styles.title}>Create Account</Text>
 
-    <View style={styles.inputContainer}>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter email"
-        value={email}
-        onChangeText={setEmail}
-        autoCapitalize="none"
-      />
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter email"
+            value={email}
+            onChangeText={setEmail}
+            autoCapitalize="none"
+          />
 
-      <TextInput
-        style={styles.input}
-        placeholder="Enter username"
-        value={username}
-        onChangeText={setUsername}
-      />
+          <TextInput
+            style={styles.input}
+            placeholder="Enter username"
+            value={username}
+            onChangeText={setUsername}
+          />
 
-      <TextInput
-        style={styles.input}
-        placeholder="Enter password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
-    </View>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter password"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+          />
+        </View>
 
-      <TouchableOpacity style={styles.button} onPress={handleSignUp}>
-                <Text style={styles.buttonText}>Continue</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handleSignUp}>
+          <Text style={styles.buttonText}>Continue</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-        <Text style={styles.linkText}>Already have an account? Login here</Text>
-      </TouchableOpacity>
-    </View>
+        {email && password && username && (
+          <Button
+            title="Remember Me"
+            onPress={() => { rememberLogin() }}
+          />
+        )
+        }
+
+
+
+        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+          <Text style={styles.linkText}>Already have an account? Login here</Text>
+        </TouchableOpacity>
+      </View>
     </GradientBackground>
   );
 }
 
 const styles = StyleSheet.create({
-container: {
+  container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",

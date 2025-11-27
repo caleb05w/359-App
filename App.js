@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 //navbar from navbar tutorial https://www.youtube.com/watch?v=AnjyzruZ36E&t=25s
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { useFonts } from "expo-font";
 
 
 
@@ -51,7 +52,27 @@ function IndexStack() {
 // Bottom tabs (main app)
 function MainTabs() {
   return (
-    <Tab.Navigator>
+    //makes headers not appear.
+    <Tab.Navigator
+      //referenced from here https://docs.expo.dev/router/advanced/custom-tabs/
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: {
+          borderTopWidth: 1,
+          borderTopColor: '#e5e5e5',
+          paddingBottom: 5,
+          paddingTop: 5,
+          height: 60,
+          backgroundColor: "none",
+        },
+        tabBarActiveTintColor: 'none',
+        tabBarInactiveTintColor: 'none',
+        tabBarLabelStyle: {
+          fontFamily: 'departure mono',
+          fontSize: 12,
+        },
+      }}
+    >
       <Tab.Screen name="Upload" component={UploadStack} />
       <Tab.Screen name="Index" component={IndexStack} />
       <Tab.Screen name="Aquarium" component={AquariumScreen} />
@@ -61,6 +82,10 @@ function MainTabs() {
 
 // Main App Navigation
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    "departure mono": require("./assets/DepartureMono-Regular.otf"),
+  });
+
   return (
     <NavigationContainer>
       <SafeAreaProvider>

@@ -5,6 +5,10 @@ import { Accelerometer } from "expo-sensors";
 import PixelFish, { computeFishBounds } from "../components/pixelFish";
 import { fetchData } from "../utils/db";
 import FishInfo from "../components/FishInfo";
+import { ImageBackground } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { Pressable } from "react-native";
+import globalStyles from "../globalStyles";
 
 // bounding box of the phone to help with edge detection
 const { width, height } = Dimensions.get("window");
@@ -277,7 +281,7 @@ export default function AquariumScreen() {
       style={styles.container}
       resizeMode="cover"
     >
-      <Text style={styles.title}>Your Aquarium</Text>
+      <Text style={globalStyles.h1}>AQUARIUM</Text>
       <Text>{selectedName}</Text>
 
       {selectedFish && (
