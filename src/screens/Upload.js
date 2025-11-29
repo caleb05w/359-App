@@ -2,6 +2,7 @@ import { Text, View, Button, TextInput, StyleSheet, ImageBackground } from "reac
 import { useState } from "react";
 import Fish from "../components/Fish";
 import { handleResponse } from "../../api/chat";
+import globalStyles from "../globalStyles"; 
 
 export default function ImportScreen() {
   const [load, setLoad] = useState(""); //what we send
@@ -33,6 +34,7 @@ export default function ImportScreen() {
           resizeMode="cover"
         >
     <View style={styles.page}>
+      <Text style={globalStyles.h1}>LOGIN</Text>
       <View style={styles.flexCol}>
         {/* //fish object which takes passed params object (schema) */}
         <Fish schema={response ?? null} />
@@ -54,6 +56,11 @@ export default function ImportScreen() {
 }
 
 const styles = StyleSheet.create({
+   bg: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   page: {
     flex: 1,
     width: "100%",

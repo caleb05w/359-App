@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { useIsFocused } from "@react-navigation/native";
-import { View, Text, Button, StyleSheet, FlatList, Image, ImageBackground } from "react-native";
+import { View, Text, Button, StyleSheet, FlatList, Image, ImageBackground, TouchableOpacity } from "react-native";
 import global from "../globalStyles";
 import { deleteData, fetchData } from "../utils/db";
 import List from "../components/List";
 import FishInfo from "../components/FishInfo"; 
+import globalStyles from "../globalStyles";
 
 export default function FishIndex({ navigation, route }) {
   const [data, setData] = useState([]);
@@ -33,13 +34,8 @@ return (
       >
   <View style={[global.page]}>
 
-    <Text> Camera Index </Text>
-
-    <View style={global.flexRow}>
-      <Text>
-        <Button title="Delete List" onPress={handleDelete} />
-      </Text>
-    </View>
+    <Text style={globalStyles.h1}>FISH INDEX</Text>
+    <Text style={globalStyles.h2}>NUMBER OF FISH</Text>
 
     <List data={data} onPressFish={setSelectedFish} />
 
@@ -51,6 +47,10 @@ return (
       />
     )}
   </View>
+  
+<TouchableOpacity style={styles.button} onPress={handleDelete}>
+          <Text style={globalStyles.h5}>DELETE LIST </Text>
+        </TouchableOpacity>
 </ImageBackground>
 );
 }
@@ -86,4 +86,12 @@ const styles = StyleSheet.create({
     display: "column",
     gap: 12,
   },
+    button: {
+    width: "60%",
+    backgroundColor: "#ffffff",
+    paddingVertical: 10,
+    alignItems: "center",
+    marginBottom: 15,
+  },
+
 });

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
+import { View, Text, StyleSheet, Button, TouchableOpacity } from "react-native";
 import globalStyles from "../globalStyles";
 
 export default function FishDetails({ fish, onClose }) {
@@ -11,9 +11,9 @@ export default function FishDetails({ fish, onClose }) {
         <Text style={globalStyles.h1}>{fish.name}</Text>
         <Text style={globalStyles.h2}>Description: {fish.type}</Text>
 
-        <View style={styles.closeButton}>
-          <Button title="Close [x]" onPress={onClose} color="#007AFF" />
-        </View>
+       <TouchableOpacity style={styles.button} onPress={onClose}>
+          <Text style={globalStyles.h5}>[X] CLOSE </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     width: "85%",
     padding: 25,
     borderRadius: 16,
-    backgroundColor: "rgba(255, 255, 255, 0.92)", // translucent so blur shows through
+    backgroundColor: "rgba(0, 0, 0, 0.6)", 
     alignItems: "center",
     shadowColor: "#000",
     shadowOpacity: 0.2,
@@ -42,8 +42,12 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     elevation: 6,
   },
-  closeButton: {
-    marginTop: 20,
-    width: 120,
+  button: {
+    marginTop: 50,
+    width: "60%",
+    backgroundColor: "#ffffff",
+    paddingVertical: 14,
+    alignItems: "center",
+    marginBottom: 20,
   },
 });
