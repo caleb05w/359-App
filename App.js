@@ -70,7 +70,6 @@ function MainTabs() {
         tabBarLabelStyle: {
           fontFamily: 'departure mono',
           fontSize: 12,
-          paddingTop: 80,
         },
       }}
     >
