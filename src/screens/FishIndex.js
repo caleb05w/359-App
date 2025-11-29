@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useIsFocused } from "@react-navigation/native";
-import { View, Text, Button, StyleSheet, FlatList, Image } from "react-native";
+import { View, Text, Button, StyleSheet, FlatList, Image, ImageBackground } from "react-native";
 import global from "../globalStyles";
 import { deleteData, fetchData } from "../utils/db";
 import List from "../components/List";
@@ -26,6 +26,11 @@ export default function FishIndex({ navigation, route }) {
   };
 
 return (
+    <ImageBackground
+        source={require("../../assets/indexbg.png")}
+        style={styles.container}
+        resizeMode="cover"
+      >
   <View style={[global.page]}>
 
     <Text> Camera Index </Text>
@@ -45,15 +50,14 @@ return (
         onClose={() => setSelectedFish(null)}
       />
     )}
-
   </View>
+</ImageBackground>
 );
 }
 
 
 const styles = StyleSheet.create({
   container: {
-    padding: 12,
     width: "100%",
     display: "flex",
     flex: 1,

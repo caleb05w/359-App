@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, Button, ImageBackground } from "react-native";
+import { View, Text, StyleSheet, Button } from "react-native";
 import globalStyles from "../globalStyles";
 
 export default function FishDetails({ fish, onClose }) {
@@ -8,18 +8,12 @@ export default function FishDetails({ fish, onClose }) {
   return (
     <View style={styles.overlay}>
       <View style={styles.card}>
-        <ImageBackground
-          source={require("../../assets/aquariumbg.png")}
-          style={styles.bg}
-          resizeMode="cover"
-        >
-          <Text style={globalStyles.h1}>{fish.name}</Text>
-          <Text style={globalStyles.h2}>Description: {fish.type}</Text>
+        <Text style={globalStyles.h1}>{fish.name}</Text>
+        <Text style={globalStyles.h2}>Description: {fish.type}</Text>
 
-          <View style={styles.closeButton}>
-            <Button title="Close [x]" onPress={onClose} color="#ffffffff" />
-          </View>
-        </ImageBackground>
+        <View style={styles.closeButton}>
+          <Button title="Close [x]" onPress={onClose} color="#007AFF" />
+        </View>
       </View>
     </View>
   );
@@ -32,39 +26,24 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: "rgba(0,0,0,0.2)",
     justifyContent: "center",
     alignItems: "center",
-    zIndex: 99,
+    zIndex: 998,
   },
   card: {
-    width: "100%",
-    height: "100%",
-    overflow: "hidden",
-  },
-  bg: {
-    flex: 1,
-    padding: 20,
-    justifyContent: "center",
+    width: "85%",
+    padding: 25,
+    borderRadius: 16,
+    backgroundColor: "rgba(255, 255, 255, 0.92)", // translucent so blur shows through
     alignItems: "center",
-  },
-  name: {
-    fontSize: 22,
-    fontWeight: "bold",
-    marginBottom: 10,
-    color: "white",
-  },
-  detail: {
-    fontSize: 16,
-    marginBottom: 5,
-    color: "white",
+    shadowColor: "#000",
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 6,
   },
   closeButton: {
-    fontFamily: "departure mono",
-    fontSize: 15,
     marginTop: 20,
-    alignSelf: "center",
-    width: 100,
-    color: "black",
+    width: 120,
   },
 });

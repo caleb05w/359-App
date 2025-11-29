@@ -1,64 +1,64 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Button } from "react-native";
-import { GradientBackground } from "../globalStyles";
+import { View, Text, StyleSheet, TouchableOpacity, ImageBackground } from "react-native";
+import globalStyles from "../globalStyles";
 
 export default function WelcomeScreen({ navigation }) {
   return (
-    <GradientBackground>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.title}>Welcome to Fish Finder</Text>
-        </View>
+    <ImageBackground
+      source={require("../../assets/welcomebg.png")}
+      style={styles.bg}
+      resizeMode="cover"
+    >
+      <View style={styles.content}>
 
+        {/* TITLE */}
+        <Text style={globalStyles.h1}>SANCTUARY</Text>
+        <Text style={globalStyles.h1}>FISH FINDER</Text>
+
+        {/* LOGIN BUTTON */}
         <TouchableOpacity
           style={styles.button}
           onPress={() => navigation.navigate("Login")}
         >
-          <Text style={styles.buttonText}>Login</Text>
+          <Text style={globalStyles.h5}>LOGIN</Text>
         </TouchableOpacity>
 
-
+        {/* SIGNUP LINK */}
         <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
-          <Text style={styles.linkText}>Don’t have an account? Sign up</Text>
+          <Text style={[globalStyles.h3, styles.linkText]}>
+            SIGN UP HERE
+          </Text>
         </TouchableOpacity>
+
       </View>
-    </GradientBackground>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  bg: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    paddingHorizontal: 24,
   },
-  header: {
+
+  content: {
+    width: "85%",
     alignItems: "center",
-    marginBottom: 60,
   },
-  title: {
-    fontSize: 26,
-    fontWeight: "bold",
-    color: "#033A57",
-    textAlign: "center", // ensures text is centered
-  },
+
   button: {
-    backgroundColor: "#0077A3",
-    paddingVertical: 14,
-    borderRadius: 30,
-    width: "80%",
+    marginTop: 100,
+    width: "40%",
+    backgroundColor: "#ffffff",
+    paddingVertical: 10,
     alignItems: "center",
     marginBottom: 20,
   },
-  buttonText: {
-    color: "white",
-    fontSize: 18,
-    fontWeight: "600",
-  },
+
   linkText: {
-    fontSize: 16,
-    color: "#007AFF",
-    textAlign: "center", // centers the text
+    color: "white",
+    marginTop: 10,
+    textAlign: "center",
   },
 });

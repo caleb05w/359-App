@@ -6,6 +6,7 @@ import PixelFish, { computeFishBounds } from "../components/pixelFish";
 import { fetchData } from "../utils/db";
 import FishInfo from "../components/FishInfo";
 import globalStyles from "../globalStyles";
+import { BlurView } from "expo-blur";
 
 // bounding box of the phone to help with edge detection
 const { width, height } = Dimensions.get("window");
@@ -273,6 +274,9 @@ export default function AquariumScreen() {
   const navigation = useNavigation();
 
   return (
+  <View style={{ flex: 1 }}>
+    
+    {/* The actual aquarium screen */}
     <ImageBackground
       source={require("../../assets/aquariumbg.png")}
       style={styles.container}
@@ -281,17 +285,11 @@ export default function AquariumScreen() {
       <Text style={globalStyles.h1}>AQUARIUM</Text>
       <Text>{selectedName}</Text>
 
-      {selectedFish && (
-        <FishInfo
-          fish={selectedFish}
-          onClose={() => setSelectedFish(null)}
-        />
-      )}
-
+      {/* Swimming Fish */}
       {fishList.map((item, i) => {
         const newSchema = item.schema;
         const motion = swimState[i];
-        if (!motion) return;
+        if (!motion) return null;
 
         return (
           <Pressable
@@ -306,12 +304,34 @@ export default function AquariumScreen() {
               setSelectedFish(item);
             }}
           >
-            <PixelFish schema={newSchema} flip={false} scale={motion.scale ?? 1} />
+            <PixelFish
+              schema={newSchema}
+              flip={false}
+              scale={motion.scale ?? 1}
+            />
           </Pressable>
         );
       })}
     </ImageBackground>
-  );
+
+    {/* 🔵 BLUR LAYER — now correctly on TOP of aquarium */}
+    {selectedFish && (
+      <BlurView
+        intensity={70}
+        tint="dark"
+        style={StyleSheet.absoluteFill}
+      />
+    )}
+
+    {/* 🟣 POPUP (FishInfo) — on top of blur */}
+    {selectedFish && (
+      <FishInfo
+        fish={selectedFish}
+        onClose={() => setSelectedFish(null)}
+      />
+    )}
+  </View>
+);
 }
 
 const styles = StyleSheet.create({

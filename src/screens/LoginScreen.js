@@ -1,13 +1,12 @@
-import { useState, useEffect } from "react";
-import { GradientBackground } from "../globalStyles";
+import { useState } from "react";
 import {
-  Button,
   View,
   Text,
   TextInput,
   StyleSheet,
   Alert,
   TouchableOpacity,
+  ImageBackground,
 } from "react-native";
 import globalStyles from "../globalStyles";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -18,21 +17,13 @@ export default function LoginScreen({ navigation, route }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const localUserName = route?.params?.localUserName ?? null;
-  const localEmail = route?.params?.localEmail ?? null;
   const localPassword = route?.params?.localPassword ?? null;
 
   const loadPassword = async () => {
     const load = await loadUserPrefs();
-    Alert.alert("filling data")
+    Alert.alert("Filling saved password...");
     setEmail(load.localUserName.email);
-    setPassword(load.localUserName.password)
-  }
-
-  const handlePassword = () => {
-    localPassword === null
-      ? Alert.alert("no password saved")
-      : setPassword(localPassword);
+    setPassword(load.localUserName.password);
   };
 
   const handleLogin = async () => {
@@ -44,34 +35,33 @@ export default function LoginScreen({ navigation, route }) {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       Alert.alert("Login successful!");
-      navigation.navigate("MainTabs", {
-        screen: "Camera",
-      });
+      navigation.navigate("MainTabs", { screen: "Camera" });
     } catch (error) {
       Alert.alert("Login failed", error.message);
     }
   };
 
   return (
-    <GradientBackground>
-      <View style={globalStyles.page}>
-        <View style={styles.header}>
-          <Text style={styles.title}>Login</Text>
-        </View>
+    <ImageBackground
+      source={require("../../assets/loginbg.png")}
+      style={styles.bg}
+      resizeMode="cover"
+    >
+      <View style={styles.content}>
 
-        {/* Inputs */}
-        <View style={styles.inputContainer}>
+        <Text style={globalStyles.h1}>LOGIN</Text>
+
+        {/* INPUTS */}
+        <View style={styles.inputWrapper}>
           <TextInput
-            style={styles.input}
-            placeholder="Email"
+            style={globalStyles.h4}
+            placeholder="EMAIL"
             placeholderTextColor="#777"
             value={email}
             onChangeText={setEmail}
-            autoCapitalize="none"
-            keyboardType="email-address"
           />
           <TextInput
-            style={styles.input}
+            style={globalStyles.h4}
             placeholder="Password"
             placeholderTextColor="#777"
             secureTextEntry
@@ -80,65 +70,61 @@ export default function LoginScreen({ navigation, route }) {
           />
         </View>
 
-        {/* Continue Button */}
+        {/* LOGIN BUTTON */}
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
-          <Text style={styles.buttonText}>Continue</Text>
+          <Text style={globalStyles.h5}>CONTINUE LOGIN</Text>
         </TouchableOpacity>
-        <Button title="Forgot Password" onPress={() => { loadPassword() }} />
 
-        {/* Link to Sign Up */}
-        <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
-          <Text style={styles.linkText}>Don’t have an account? Sign up</Text>
+        {/* FORGOT PASSWORD */}
+        <TouchableOpacity onPress={loadPassword}>
+          <Text style={[globalStyles.h3, styles.forgot]}>FORGOT PASSWORD?</Text>
         </TouchableOpacity>
+
+        {/* SIGN UP */}
+        <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
+          <Text style={[globalStyles.h3, styles.signup]}>
+            SIGNUP INSTEAD
+          </Text>
+        </TouchableOpacity>
+
       </View>
-    </GradientBackground>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  bg: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    paddingHorizontal: 24,
   },
-  header: {
+
+  content: {
+    width: "85%",
     alignItems: "center",
-    marginBottom: 60,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#033A57",
-    marginTop: 8,
-  },
-  inputContainer: {
+
+  inputWrapper: {
     width: "100%",
-    marginBottom: 60,
+    marginTop: 30,
+    marginBottom: 40,
   },
-  input: {
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-    fontSize: 18,
-    paddingVertical: 8,
-    marginBottom: 25,
-    color: "#033A57",
-  },
+
   button: {
-    backgroundColor: "#0077A3",
+    width: "50%",
+    backgroundColor: "#ffffff",
     paddingVertical: 14,
-    borderRadius: 30,
-    width: "100%",
     alignItems: "center",
     marginBottom: 20,
   },
-  buttonText: {
+
+  forgot: {
     color: "white",
-    fontSize: 18,
-    fontWeight: "600",
+    marginBottom: 10,
   },
-  linkText: {
-    fontSize: 16,
-    color: "#007AFF",
+
+  signup: {
+    color: "white",
+    marginTop: 10,
   },
 });
