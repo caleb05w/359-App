@@ -72,14 +72,12 @@ const styles = StyleSheet.create({
   containerItem: {
     padding: 12,
     width: "95%",
-    backgroundColor: "white",
-    borderColor: "#F1F1F7",
-    borderWidth: 2.5,
-    borderRadius: 16,
     display: "flex",
     flexDirection: "row",
     margin: 8,
     gap: 12,
+    borderBottomWidth: 1,   // only bottom line
+    borderBottomColor: "#ccc",
   },
 
   containerText: {
