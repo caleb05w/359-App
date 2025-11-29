@@ -1,5 +1,6 @@
 import React from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
+import { View, Text, StyleSheet, Button, ImageBackground } from "react-native";
+import globalStyles from "../globalStyles";
 
 export default function FishDetails({ fish, onClose }) {
   if (!fish) return null;
@@ -7,12 +8,18 @@ export default function FishDetails({ fish, onClose }) {
   return (
     <View style={styles.overlay}>
       <View style={styles.card}>
-        <Text style={styles.name}>{fish.name}</Text>
-        <Text style={styles.detail}>Description: {fish.type}</Text>
+        <ImageBackground
+          source={require("../../assets/aquariumbg.png")}
+          style={styles.bg}
+          resizeMode="cover"
+        >
+          <Text style={globalStyles.h1}>{fish.name}</Text>
+          <Text style={globalStyles.h2}>Description: {fish.type}</Text>
 
-         <View style={styles.closeButton}>
-          <Button title="Close" onPress={onClose} color="#007AFF" />
-        </View>
+          <View style={styles.closeButton}>
+            <Button title="Close [x]" onPress={onClose} color="#ffffffff" />
+          </View>
+        </ImageBackground>
       </View>
     </View>
   );
@@ -25,7 +32,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: "rgba(0,0,0,0.4)",
+    backgroundColor: "rgba(0,0,0,0.2)",
     justifyContent: "center",
     alignItems: "center",
     zIndex: 99,
@@ -33,23 +40,31 @@ const styles = StyleSheet.create({
   card: {
     width: "100%",
     height: "100%",
-    backgroundColor: "white",
+    overflow: "hidden",
+  },
+  bg: {
+    flex: 1,
     padding: 20,
-    alignItems: "center",
     justifyContent: "center",
+    alignItems: "center",
   },
   name: {
     fontSize: 22,
     fontWeight: "bold",
     marginBottom: 10,
+    color: "white",
   },
   detail: {
     fontSize: 16,
     marginBottom: 5,
+    color: "white",
   },
   closeButton: {
+    fontFamily: "departure mono",
+    fontSize: 15,
     marginTop: 20,
     alignSelf: "center",
-    width: 100, // optional, to make button a bit smaller
+    width: 100,
+    color: "black",
   },
 });

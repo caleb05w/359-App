@@ -20,7 +20,9 @@ export default StyleSheet.create({
   },
 
   h2: {
-    fontFamily: "departure mono"
+    fontFamily: "departure mono",
+    fontSize: 15,
+    color: "white"
   },
 
   h3: {
