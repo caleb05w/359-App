@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import {
   Text,
@@ -125,6 +126,7 @@ export default function CameraResult({ navigation, route }) {
     <View style={global.page}>
       {load === true ? <LoadState message="Loading..."></LoadState> : ""}
       {imageUpload === false ? (
+        
         <View>
           {response ? (
             <Animated.View
@@ -263,6 +265,7 @@ export default function CameraResult({ navigation, route }) {
       </View>
     </View >
   );
+}
   const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -278,7 +281,7 @@ export default function CameraResult({ navigation, route }) {
     marginBottom: 24,
   },
   button: {
-    width: "60%",
+    width: "45%",
     backgroundColor: "#ffffff",
     paddingVertical: 14,
     alignItems: "center",
@@ -286,4 +289,4 @@ export default function CameraResult({ navigation, route }) {
     marginTop: 16,
   },
 });
-}
+

@@ -1,4 +1,4 @@
-import { Text, View, Button, TextInput, StyleSheet, ImageBackground } from "react-native";
+import { Text, View, Button, TextInput, StyleSheet } from "react-native";
 import { useState } from "react";
 import Fish from "../components/Fish";
 import { handleResponse } from "../../api/chat";
@@ -28,11 +28,6 @@ export default function ImportScreen() {
   };
 
   return (
-      <ImageBackground
-          source={require("../../assets/uploadbg.png")}
-          style={styles.container}
-          resizeMode="cover"
-        >
     <View style={styles.page}>
       <Text style={globalStyles.h1}>LOGIN</Text>
       <View style={styles.flexCol}>
@@ -51,7 +46,6 @@ export default function ImportScreen() {
         <Text>{status || "idle"}</Text>
       </View>
     </View>
-    </ImageBackground>
   );
 }
 

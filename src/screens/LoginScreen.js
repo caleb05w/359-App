@@ -62,7 +62,7 @@ export default function LoginScreen({ navigation, route }) {
           />
           <TextInput
             style={globalStyles.h4}
-            placeholder="Password"
+            placeholder="PASSWORD"
             placeholderTextColor="#777"
             secureTextEntry
             value={password}

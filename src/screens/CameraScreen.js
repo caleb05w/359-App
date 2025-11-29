@@ -52,6 +52,20 @@ export default function CameraScreen({ navigation, route }) {
         facing={facing === true ? "front" : "back"}
         ref={cameraRef}
       />
+      <View style={styles.topLeftContainer}>
+        <Text style={globalStyles.h1}>UPLOAD/PHOTO</Text>
+
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Results", { toggleMode: true })}
+          style={styles.topToggleButton}
+        >
+          <Text style={[globalStyles.h5, { color: "black" }]}>
+            SWITCH MODE
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+
       <View
         style={{
           position: "absolute",
@@ -92,6 +106,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 5,
   },
+ topLeftContainer: {
+  position: "absolute",
+  top: 24,
+  left: 24,
+  display: "flex",
+  flexDirection: "column",
+  gap: 10,
+},
+
+topToggleButton: {
+  width: "45%",
+  paddingVertical: 6,
+  paddingHorizontal: 5,
+  backgroundColor: "#ffffff",
+},
 
 
 
