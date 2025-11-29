@@ -1,5 +1,6 @@
 import React from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
+import { View, Text, StyleSheet, Button, TouchableOpacity } from "react-native";
+import globalStyles from "../globalStyles";
 
 export default function FishDetails({ fish, onClose }) {
   if (!fish) return null;
@@ -7,12 +8,12 @@ export default function FishDetails({ fish, onClose }) {
   return (
     <View style={styles.overlay}>
       <View style={styles.card}>
-        <Text style={styles.name}>{fish.name}</Text>
-        <Text style={styles.detail}>Description: {fish.type}</Text>
+        <Text style={globalStyles.h1}>{fish.name}</Text>
+        <Text style={globalStyles.h2}>Description: {fish.type}</Text>
 
-         <View style={styles.closeButton}>
-          <Button title="Close" onPress={onClose} color="#007AFF" />
-        </View>
+       <TouchableOpacity style={styles.button} onPress={onClose}>
+          <Text style={globalStyles.h5}>[X] CLOSE </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -25,31 +26,28 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: "rgba(0,0,0,0.4)",
     justifyContent: "center",
     alignItems: "center",
-    zIndex: 99,
+    zIndex: 998,
   },
   card: {
-    width: "100%",
-    height: "100%",
-    backgroundColor: "white",
-    padding: 20,
+    width: "85%",
+    padding: 25,
+    borderRadius: 16,
+    backgroundColor: "rgba(0, 0, 0, 0.6)", 
     alignItems: "center",
-    justifyContent: "center",
+    shadowColor: "#000",
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 6,
   },
-  name: {
-    fontSize: 22,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  detail: {
-    fontSize: 16,
-    marginBottom: 5,
-  },
-  closeButton: {
-    marginTop: 20,
-    alignSelf: "center",
-    width: 100, // optional, to make button a bit smaller
+  button: {
+    marginTop: 50,
+    width: "60%",
+    backgroundColor: "#ffffff",
+    paddingVertical: 14,
+    alignItems: "center",
+    marginBottom: 20,
   },
 });

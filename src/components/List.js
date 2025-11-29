@@ -1,5 +1,4 @@
 import { Text, View, StyleSheet, Image, FlatList, Pressable } from "react-native";
-import global from "../globalStyles";
 import PixelFish from "./pixelFish";
 
 export default function List({ data, onPressFish }) {
@@ -17,79 +16,96 @@ export default function List({ data, onPressFish }) {
     const schema = parseFish(item.schema);
 
     return (
-     <Pressable
-      onPress={() => {
-       onPressFish(item); // pass entire item
-  }}
-        style={styles.containerItem}
-      >
-        {schema ? (
-          <View style={global.listItem}>
-            <View style={{ transform: [{ scale: 0.5 }], width: "200%", height: "200%" }}>
+      <Pressable onPress={() => onPressFish(item)} style={styles.row}>
+        
+        <View style={styles.imageBox}>
+          {schema ? (
+            <View style={styles.pixelFishWrapper}>
               <PixelFish schema={schema} />
             </View>
-          </View>
-        ) : item?.imageUri ? (
-          <Image
-            source={{ uri: item.imageUri }}
-            style={{ width: 100, height: 100, borderRadius: 8 }}
-          />
-        ) : (
-          <Text>No Item Saved</Text>
-        )}
-
-        {/* Always render text info */}
-        <View style={styles.containerText}>
-          <Text>{item?.name || "No Name"}</Text>
-          <Text style={{ color: "#666" }}>
-            {item?.description || "No Description"}
-          </Text>
+          ) : item?.imageUri ? (
+            <Image source={{ uri: item.imageUri }} style={styles.image} />
+          ) : (
+            <Text style={styles.placeholder}>No Image</Text>
+          )}
         </View>
+
+        <View style={styles.vLine} />
+
+        <View style={styles.textBox}>
+          <Text style={styles.name}>{item?.name || "NO NAME"}</Text>
+          <Text style={styles.desc}>{item?.description || "NO DESCRIPTION"}</Text>
+        </View>
+
       </Pressable>
     );
   };
 
   return (
-    <View style={[global.test, styles.container]}>
-      <View style={{ height: "100%" }}>
-        <FlatList
-          data={data}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={renderItem}
-        />
-      </View>
+    <View style={styles.container}>
+      <FlatList
+        data={data}
+        keyExtractor={item => item.id.toString()}
+        renderItem={renderItem}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    padding: 12,
     width: "100%",
-    display: "flex",
+    paddingHorizontal: 10,
   },
 
-  containerItem: {
-    padding: 12,
-    width: "95%",
-    backgroundColor: "white",
-    borderColor: "#F1F1F7",
-    borderWidth: 2.5,
-    borderRadius: 16,
-    display: "flex",
+  row: {
     flexDirection: "row",
-    margin: 8,
-    gap: 12,
+    alignItems: "center",
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: "white",
   },
 
-  containerText: {
-    display: "flex",
-    flexDirection: "col",
-    margin: 8,
+  imageBox: {
+    width: 80,
+    justifyContent: "center",
+    alignItems: "center",
   },
 
-  containerData: {
-    display: "column",
-    gap: 12,
+  pixelFishWrapper: {
+    transform: [{ scale: 0.35 }], 
   },
+
+  image: {
+    width: 70,
+    height: 70,
+    resizeMode: "contain",
+  },
+
+  vLine: {
+    width: 1,
+    height: "80%",
+    backgroundColor: "white",
+    marginHorizontal: 10,
+  },
+
+  textBox: {
+    flex: 1,
+  },
+
+  name: {
+    color: "white",
+    fontFamily: "departure mono",
+    fontSize: 18,
+    marginBottom: 2,
+  },
+
+  desc: {
+    color: "white",
+    opacity: 0.7,
+    fontFamily: "departure mono",
+    fontSize: 16,
+  },
+
+  placeholder: { color: "white" }
 });

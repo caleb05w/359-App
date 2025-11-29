@@ -1,6 +1,8 @@
 import { useState, useRef } from "react";
-import { View, Text, Button, StyleSheet, Image } from "react-native";
+import { View, Text, Button, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { CameraView, useCameraPermissions } from "expo-camera";
+import globalStyles from "../globalStyles";
+
 
 export default function CameraScreen({ navigation, route }) {
   //sets direction camera faces
@@ -34,9 +36,11 @@ export default function CameraScreen({ navigation, route }) {
   //if you have permissions, add this in.
   if (!permission.granted && permission.canAskAgain) {
     return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <View style={styles.center}>
         <Text>We need camera permission</Text>
-        <Button title="Grant permission" onPress={requestPermission} />
+        <TouchableOpacity style={styles.button} onPress={requestPermission}>
+          <Text style={globalStyles.h5}>Grant Permission</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -48,6 +52,20 @@ export default function CameraScreen({ navigation, route }) {
         facing={facing === true ? "front" : "back"}
         ref={cameraRef}
       />
+      <View style={styles.topLeftContainer}>
+        <Text style={globalStyles.h1}>UPLOAD/PHOTO</Text>
+
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Results", { toggleMode: true })}
+          style={styles.topToggleButton}
+        >
+          <Text style={[globalStyles.h5, { color: "black" }]}>
+            SWITCH MODE
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+
       <View
         style={{
           position: "absolute",
@@ -59,16 +77,18 @@ export default function CameraScreen({ navigation, route }) {
           gap: 10,
         }}
       >
-        <Button
-          title="take photo"
-          onPress={() => {
-            takePhoto();
-          }}
-        ></Button>
-        <Button
-          title={`Flip to ${facing === false ? "front" : "back"}`}
+         <TouchableOpacity style={styles.button} onPress={takePhoto}>
+          <Text style={globalStyles.h5}>TAKE PHOTO</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.button}
           onPress={() => setFacing(!facing)}
-        />
+        >
+          <Text style={globalStyles.h5}>
+            FLIP TO {facing ? "BACK" : "FRONT"}
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -79,4 +99,29 @@ const styles = StyleSheet.create({
   camera: {
     flex: 1,
   },
+   button: {
+    width: "100%",
+    backgroundColor: "#ffffff",
+    paddingVertical: 10,
+    alignItems: "center",
+    marginBottom: 5,
+  },
+ topLeftContainer: {
+  position: "absolute",
+  top: 24,
+  left: 24,
+  display: "flex",
+  flexDirection: "column",
+  gap: 10,
+},
+
+topToggleButton: {
+  width: "45%",
+  paddingVertical: 6,
+  paddingHorizontal: 5,
+  backgroundColor: "#ffffff",
+},
+
+
+
 });

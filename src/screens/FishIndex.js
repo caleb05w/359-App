@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { useIsFocused } from "@react-navigation/native";
-import { View, Text, Button, StyleSheet, FlatList, Image } from "react-native";
+import { View, Text, Button, StyleSheet, FlatList, Image, ImageBackground, TouchableOpacity } from "react-native";
 import global from "../globalStyles";
 import { deleteData, fetchData } from "../utils/db";
 import List from "../components/List";
 import FishInfo from "../components/FishInfo"; 
+import globalStyles from "../globalStyles";
 
 export default function FishIndex({ navigation, route }) {
   const [data, setData] = useState([]);
@@ -26,60 +27,65 @@ export default function FishIndex({ navigation, route }) {
   };
 
 return (
-  <View style={[global.page]}>
+  <ImageBackground
+    source={require("../../assets/indexbg.png")}
+    style={styles.container}
+    resizeMode="cover"
+  >
+    <View style={styles.content}>
+      <Text style={[globalStyles.h1, { marginTop: 40 }]}>FISH INDEX</Text>
+      <Text style={globalStyles.h2}>NUMBER OF FISH: {data.length}</Text>
 
-    <Text> Camera Index </Text>
-
-    <View style={global.flexRow}>
-      <Text>
-        <Button title="Delete List" onPress={handleDelete} />
-      </Text>
+      <List data={data} onPressFish={setSelectedFish} />
+      
+      {selectedFish && (
+        <FishInfo
+          fish={selectedFish}
+          onClose={() => setSelectedFish(null)}
+        />
+      )}
     </View>
-
-    <List data={data} onPressFish={setSelectedFish} />
-
-    {/* 🟣 MOVE FishInfo HERE — above closing View */}
-    {selectedFish && (
-      <FishInfo
-        fish={selectedFish}
-        onClose={() => setSelectedFish(null)}
-      />
-    )}
-
-  </View>
+     <TouchableOpacity style={styles.button} onPress={handleDelete}>
+        <Text style={globalStyles.h5}>DELETE LIST</Text>
+      </TouchableOpacity>
+  </ImageBackground>
 );
 }
-
-
 const styles = StyleSheet.create({
   container: {
-    padding: 12,
-    width: "100%",
-    display: "flex",
     flex: 1,
+    width: "100%",
   },
-
+  content: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "flex-start", 
+    paddingTop: 60, 
+    width: "100%",
+  },
   containerItem: {
     padding: 12,
     width: "95%",
-    backgroundColor: "white",
-    borderColor: "#F1F1F7",
-    borderWidth: 2.5,
-    borderRadius: 16,
-    display: "flex",
     flexDirection: "row",
     margin: 8,
     gap: 12,
+    backgroundColor: "transparent", // removes white background
   },
-
   containerText: {
-    display: "flex",
     flexDirection: "column",
     margin: 8,
   },
-
   containerData: {
-    display: "column",
+    flexDirection: "column",
     gap: 12,
+  },
+  button: {
+    width: "60%",
+    backgroundColor: "#ffffff",
+    paddingVertical: 10,
+    alignItems: "center",
+    marginTop: 20,
+    marginLeft: 70,
+    marginBottom: 40,
   },
 });

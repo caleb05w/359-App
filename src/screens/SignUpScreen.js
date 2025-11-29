@@ -3,16 +3,15 @@ import {
   View,
   Text,
   TextInput,
-  Button,
-  StyleSheet,
   Alert,
   TouchableOpacity,
+  ImageBackground,
+  StyleSheet,
 } from "react-native";
-import global from "../globalStyles";
-import { GradientBackground } from "../globalStyles";
+import globalStyles from "../globalStyles";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../utils/firebaseConfig";
-import { saveUserPrefs, loadUserPrefs } from "../utils/storage";
+import { saveUserPrefs } from "../utils/storage";
 
 export default function SignUpScreen({ navigation }) {
   const [email, setEmail] = useState("");
@@ -20,10 +19,10 @@ export default function SignUpScreen({ navigation }) {
   const [password, setPassword] = useState("");
 
   const rememberLogin = async () => {
-    const payload = { email, password }
+    const payload = { email, password };
     await saveUserPrefs(payload);
-    Alert.alert("saved info!")
-  }
+    Alert.alert("Saved info!");
+  };
 
   const handleSignUp = async () => {
     if (!email || !username || !password) {
@@ -32,14 +31,7 @@ export default function SignUpScreen({ navigation }) {
     }
 
     try {
-      console.log("auth?", !!auth, auth?.app?.options?.projectId);
-      console.log("auth", auth);
-      console.log("auth.app", auth?.app);
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       await updateProfile(userCredential.user, { displayName: username });
       Alert.alert("Success!", `Welcome, ${username}!`);
       navigation.navigate("Login", {
@@ -53,101 +45,98 @@ export default function SignUpScreen({ navigation }) {
   };
 
   return (
-    <GradientBackground>
-      <View style={global.page}>
-        <Text style={styles.title}>Create Account</Text>
+    <ImageBackground
+      source={require("../../assets/indexbg.png")}
+      style={styles.bg}
+      resizeMode="cover"
+    >
+      <View style={styles.content}>
 
-        <View style={styles.inputContainer}>
+        <Text style={globalStyles.h1}>SIGNUP</Text>
+
+        <View style={styles.inputWrapper}>
           <TextInput
-            style={styles.input}
-            placeholder="Enter email"
+            style={globalStyles.h4}
+            placeholder="EMAIL"
+            placeholderTextColor="#777"
             value={email}
             onChangeText={setEmail}
             autoCapitalize="none"
           />
-
           <TextInput
-            style={styles.input}
-            placeholder="Enter username"
+            style={globalStyles.h4}
+            placeholder="USERNAME"
+            placeholderTextColor="#777"
             value={username}
             onChangeText={setUsername}
           />
-
           <TextInput
-            style={styles.input}
-            placeholder="Enter password"
+            style={globalStyles.h4}
+            placeholder="PASSWORD"
+            placeholderTextColor="#777"
+            secureTextEntry
             value={password}
             onChangeText={setPassword}
-            secureTextEntry
           />
         </View>
 
         <TouchableOpacity style={styles.button} onPress={handleSignUp}>
-          <Text style={styles.buttonText}>Continue</Text>
+          <Text style={globalStyles.h5}>CONTINUE SIGNUP</Text>
         </TouchableOpacity>
 
+        {/* REMEMBER INFO */}
         {email && password && username && (
-          <Button
-            title="Remember Me"
-            onPress={() => { rememberLogin() }}
-          />
-        )
-        }
+          <TouchableOpacity onPress={rememberLogin}>
+            <Text style={[globalStyles.h3, styles.remember]}>Remember Me</Text>
+          </TouchableOpacity>
+        )}
 
-
-
+        {/* LINK TO LOGIN */}
         <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-          <Text style={styles.linkText}>Already have an account? Login here</Text>
+          <Text style={[globalStyles.h3, styles.loginLink]}>
+            LOGIN INSTEAD
+          </Text>
         </TouchableOpacity>
+
       </View>
-    </GradientBackground>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  bg: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    paddingHorizontal: 24,
   },
-  header: {
+
+  content: {
+    width: "85%",
     alignItems: "center",
-    marginBottom: 60,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#033A57",
-    marginTop: 8,
-  },
-  inputContainer: {
+
+  inputWrapper: {
     width: "100%",
-    marginBottom: 60,
+    marginTop: 20,
+    marginBottom: 40,
   },
-  input: {
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-    fontSize: 18,
-    paddingVertical: 8,
-    marginBottom: 25,
-    color: "#033A57",
-  },
+
   button: {
-    backgroundColor: "#0077A3",
+    width: "60%",
+    backgroundColor: "#ffffff",
     paddingVertical: 14,
-    borderRadius: 30,
-    width: "100%",
     alignItems: "center",
     marginBottom: 20,
   },
-  buttonText: {
+
+  remember: {
     color: "white",
-    fontSize: 18,
-    fontWeight: "600",
+    marginBottom: 10,
   },
-  linkText: {
-    fontSize: 16,
-    color: "#007AFF",
+
+  loginLink: {
+    color: "white",
+    marginTop: 10,
+    textAlign: "center",
   },
 });

@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import {
   Text,
@@ -9,6 +10,7 @@ import {
   Animated,
   Alert,
   Keyboard,
+  StyleSheet
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -124,6 +126,7 @@ export default function CameraResult({ navigation, route }) {
     <View style={global.page}>
       {load === true ? <LoadState message="Loading..."></LoadState> : ""}
       {imageUpload === false ? (
+        
         <View>
           {response ? (
             <Animated.View
@@ -263,3 +266,27 @@ export default function CameraResult({ navigation, route }) {
     </View >
   );
 }
+  const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#000", // black background
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 24,
+  },
+  photo: {
+    width: "80%",
+    height: 250,
+    borderRadius: 12,
+    marginBottom: 24,
+  },
+  button: {
+    width: "45%",
+    backgroundColor: "#ffffff",
+    paddingVertical: 14,
+    alignItems: "center",
+    borderRadius: 30,
+    marginTop: 16,
+  },
+});
+
