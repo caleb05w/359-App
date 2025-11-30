@@ -65,11 +65,12 @@ function MainTabs() {
           height: 60,
           backgroundColor: "none",
         },
-        tabBarActiveTintColor: 'none',
-        tabBarInactiveTintColor: 'none',
+        tabBarActiveTintColor: 'black',
+        tabBarInactiveTintColor: 'black',
         tabBarLabelStyle: {
           fontFamily: 'departure mono',
           fontSize: 12,
+          color: "black",
         },
       }}
     >

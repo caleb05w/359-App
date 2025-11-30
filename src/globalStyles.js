@@ -32,16 +32,18 @@ export default StyleSheet.create({
   },
 
   h4: {
+    fontFamily: "departure mono",
     borderWidth: 2,
     borderColor: "#bdbdbdff",
     paddingVertical: 15,
     marginBottom: 25,
+    color: "white"
   },
 
   h5: {
     fontFamily: "departure mono",
-     color: "#121212ff",
-     fontSize: 15,
+    color: "#121212ff",
+    fontSize: 15,
   },
 
   colorBox: {

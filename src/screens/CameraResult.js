@@ -172,6 +172,7 @@ export default function CameraResult({ navigation, route }) {
           </View>
         </View>
       ) : photo === null ? (
+        //retake photo page
         <View>
           <Button
             title="Retake Photo"
@@ -181,6 +182,7 @@ export default function CameraResult({ navigation, route }) {
           ></Button>
         </View>
       ) : (
+        //results of photo page
         <View>
           <View style={global.flexRow}>
             <Image
@@ -221,6 +223,7 @@ export default function CameraResult({ navigation, route }) {
       }
 
       {
+        //identify photo page
         status === "Complete" || photo !== null ? (
           <View>
             <View style={global.flexRow}>
