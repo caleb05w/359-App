@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { View, Text, Button, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import globalStyles from "../globalStyles";
 
@@ -19,10 +19,12 @@ export default function CameraScreen({ navigation, route }) {
     if (!cameraRef.current) return;
     console.log("Photo Taken");
     try {
+      //referenced from documentation, takes the photo -- quality and base64 are for parsing purposes
       const photoResult = await cameraRef.current.takePictureAsync({
         quality: 1,
         base64: true,
       });
+      //when it takes a photo, goes to photo result page
       navigation.navigate("Results", { photo: photoResult });
       setPhoto(photoResult);
     } catch (e) {
@@ -49,7 +51,9 @@ export default function CameraScreen({ navigation, route }) {
     <View style={styles.camera}>
       <CameraView
         style={styles.camera}
+        //sets the cameras facing direction
         facing={facing === true ? "front" : "back"}
+        //according to documentation, we need to use UseRef here.
         ref={cameraRef}
       />
       <View style={styles.topLeftContainer}>
@@ -77,7 +81,7 @@ export default function CameraScreen({ navigation, route }) {
           gap: 10,
         }}
       >
-         <TouchableOpacity style={styles.button} onPress={takePhoto}>
+        <TouchableOpacity style={styles.button} onPress={takePhoto}>
           <Text style={globalStyles.h5}>TAKE PHOTO</Text>
         </TouchableOpacity>
 
@@ -99,29 +103,26 @@ const styles = StyleSheet.create({
   camera: {
     flex: 1,
   },
-   button: {
+  button: {
     width: "100%",
     backgroundColor: "#ffffff",
     paddingVertical: 10,
     alignItems: "center",
     marginBottom: 5,
   },
- topLeftContainer: {
-  position: "absolute",
-  top: 24,
-  left: 24,
-  display: "flex",
-  flexDirection: "column",
-  gap: 10,
-},
+  topLeftContainer: {
+    position: "absolute",
+    top: 24,
+    left: 24,
+    display: "flex",
+    flexDirection: "column",
+    gap: 10,
+  },
 
-topToggleButton: {
-  width: "45%",
-  paddingVertical: 6,
-  paddingHorizontal: 5,
-  backgroundColor: "#ffffff",
-},
-
-
-
+  topToggleButton: {
+    width: "45%",
+    paddingVertical: 6,
+    paddingHorizontal: 5,
+    backgroundColor: "#ffffff",
+  },
 });

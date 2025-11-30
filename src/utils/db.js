@@ -8,7 +8,7 @@ export async function fetchData() {
   try {
     const querySnapshot = await getDocs(collection(db, "fish"));
     const allFish = [];
-
+    //pulls fish from our firestore
     querySnapshot.forEach((doc) => {
       const data = doc.data();
       allFish.push({

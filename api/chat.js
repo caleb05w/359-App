@@ -68,6 +68,8 @@ export async function handleResponse(ask) {
   }
 }
 
+
+
 //for images
 export async function imgResponse(img) {
   //guard
@@ -107,3 +109,34 @@ export async function imgResponse(img) {
     console.warn("issue parsing" + e);
   }
 }
+
+// for fish description
+export async function fishDescription(ask) {
+  if (!ask) {
+    console.warn("no ask detected");
+    return;
+  }
+
+  try {
+
+    //left this one in here since its very short 
+    const descriptionPrompt = `Provide a brief 1-2 sentence description of the fish species: ${ask}. Include information about its appearance, habitat, or notable characteristics. Be concise and informative.`;
+
+    const response = await openai.responses.create({
+      model: "gpt-4.1-mini",
+      input: [
+        {
+          role: "user",
+          content: descriptionPrompt,
+        },
+      ],
+    });
+    const text = response.output?.[0]?.content?.[0]?.text;
+    return text;
+  } catch (e) {
+    console.warn("issue returning description:" + e);
+  }
+}
+
+
+

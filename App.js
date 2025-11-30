@@ -40,14 +40,6 @@ function IndexStack() {
   );
 }
 
-// Test stack
-// function FishStack() {
-//   return (
-//     <Stack.Navigator screenOptions={{ headerShown: false }}>
-//       <Stack.Screen name="Fish" component={FishScreen} />
-//     </Stack.Navigator>
-//   );
-// }
 
 // Bottom tabs (main app)
 function MainTabs() {
@@ -60,18 +52,18 @@ function MainTabs() {
         tabBarStyle: {
           borderTopWidth: 1,
           borderTopColor: '#e5e5e5',
-          paddingBottom: 80,
-          paddingTop: 5,
-          height: 60,
-          backgroundColor: "none",
+          backgroundColor: "black",
+          justifyContent: 'center',
+          height: 80,
         },
-        tabBarActiveTintColor: 'black',
-        tabBarInactiveTintColor: 'black',
         tabBarLabelStyle: {
           fontFamily: 'departure mono',
           fontSize: 12,
-          color: "black",
+          color: '#ffffff',
         },
+
+        //removes the tab icons
+        tabBarIcon: () => null,
       }}
     >
       <Tab.Screen name="Upload" component={UploadStack} />
@@ -83,6 +75,8 @@ function MainTabs() {
 
 // Main App Navigation
 export default function App() {
+
+  //loads fonts for us, we need to use assets because this isn't a google font.
   const [fontsLoaded] = useFonts({
     "departure mono": require("./assets/DepartureMono-Regular.otf"),
   });
