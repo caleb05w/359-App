@@ -82,9 +82,8 @@ export default StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    padding: 24,
-    gap: 24,
     flex: 1,
+    backgroundColor:"transparent"
   },
 
   flexRow: {
