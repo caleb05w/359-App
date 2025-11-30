@@ -274,64 +274,62 @@ export default function AquariumScreen() {
   const navigation = useNavigation();
 
   return (
-  <View style={{ flex: 1 }}>
-    
-    {/* The actual aquarium screen */}
-    <ImageBackground
-      source={require("../../assets/aquariumbg.png")}
-      style={styles.container}
-      resizeMode="cover"
-    >
-      <Text style={globalStyles.h1}>AQUARIUM</Text>
-      <Text>{selectedName}</Text>
+    <View style={{ flex: 1 }}>
 
-      {/* Swimming Fish */}
-      {fishList.map((item, i) => {
-        const newSchema = item.schema;
-        const motion = swimState[i];
-        if (!motion) return null;
+      {/* The actual aquarium screen */}
+      <ImageBackground
+        source={require("../../assets/aquariumbg.png")}
+        style={styles.container}
+        resizeMode="cover"
+      >
+        <Text style={globalStyles.h1}>AQUARIUM</Text>
+        {/* Swimming Fish */}
+        {fishList.map((item, i) => {
+          const newSchema = item.schema;
+          const motion = swimState[i];
+          if (!motion) return null;
 
-        return (
-          <Pressable
-            key={i}
-            style={{
-              position: "absolute",
-              left: motion.x,
-              top: motion.y,
-              transform: motion.flip ? [{ scaleX: -1 }] : []
-            }}
-            onPress={() => {
-              setSelectedFish(item);
-            }}
-          >
-            <PixelFish
-              schema={newSchema}
-              flip={false}
-              scale={motion.scale ?? 1}
-            />
-          </Pressable>
-        );
-      })}
-    </ImageBackground>
+          return (
+            <Pressable
+              key={i}
+              style={{
+                position: "absolute",
+                left: motion.x,
+                top: motion.y,
+                transform: motion.flip ? [{ scaleX: -1 }] : []
+              }}
+              onPress={() => {
+                setSelectedFish(item);
+              }}
+            >
+              <PixelFish
+                schema={newSchema}
+                flip={false}
+                scale={motion.scale ?? 1}
+              />
+            </Pressable>
+          );
+        })}
+      </ImageBackground>
 
-    {/* 🔵 BLUR LAYER — now correctly on TOP of aquarium */}
-    {selectedFish && (
-      <BlurView
-        intensity={70}
-        tint="dark"
-        style={StyleSheet.absoluteFill}
-      />
-    )}
+      {/* 🔵 BLUR LAYER — now correctly on TOP of aquarium */}
+      {selectedFish && (
+        <BlurView
+          intensity={70}
+          tint="dark"
+          style={StyleSheet.absoluteFill}
+        />
+      )}
 
-    {/* 🟣 POPUP (FishInfo) — on top of blur */}
-    {selectedFish && (
-      <FishInfo
-        fish={selectedFish}
-        onClose={() => setSelectedFish(null)}
-      />
-    )}
-  </View>
-);
+      {/* 🟣 POPUP (FishInfo) — on top of blur */}
+      {selectedFish && (
+        <FishInfo
+          fish={selectedFish}
+          onClose={() => setSelectedFish(null)}
+        />
+      )}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
