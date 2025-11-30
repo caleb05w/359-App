@@ -82,7 +82,6 @@ export default StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    flex: 1,
     backgroundColor:"transparent"
   },
 
@@ -103,8 +102,8 @@ export default StyleSheet.create({
     borderColor: "#D9D9D9",
     borderWidth: 2,
     padding: 12,
-    borderRadius: 12,
-    minWidth: 220,
+    minWidth: 300,
+    
   },
 
   fill: {

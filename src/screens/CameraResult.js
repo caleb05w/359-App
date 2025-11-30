@@ -128,7 +128,7 @@ export default function CameraResult({ navigation, route }) {
   };
 
   return (
-    <View style={global.page}>
+    <View style={styles.container}>
       {load === true ? <LoadState message="Loading..."></LoadState> : ""}
      
 {imageUpload === false ? (
@@ -172,6 +172,7 @@ export default function CameraResult({ navigation, route }) {
 <TextInput
   style={[global.upload, globalStyles.h4, { width: "100%" }]}
   placeholder="ENTER NAME"
+  placeholderTextColor="#999"
   value={upload.name}
   onChangeText={(text) =>
     setUpload((prev) => ({ ...prev, name: text }))
@@ -188,6 +189,15 @@ export default function CameraResult({ navigation, route }) {
   >
     <Text style={globalStyles.h5}>GENERATE FISH</Text>
   </TouchableOpacity>
+
+  {response && (
+  <TouchableOpacity
+    style={[styles.whiteBtn, { marginTop: 20 }]}
+    onPress={SaveData}
+  >
+    <Text style={global.h5}>SAVE FISH</Text>
+  </TouchableOpacity>
+  )}
 </View>
 
 
@@ -200,111 +210,66 @@ export default function CameraResult({ navigation, route }) {
 ) : photo === null ? (
 
         //retake photo page
-      <View>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            navigation.navigate("Camera");
-          }}
-        >
+     <View style={styles.retakeContainer}>
+    <TouchableOpacity
+      style={styles.button}
+      onPress={() => {
+        navigation.navigate("Camera");
+      }}
+    >
           <Text style={globalStyles.h5}>Retake Photo</Text>
         </TouchableOpacity>
       </View>
 
       ) : (
-        //results of photo page
         
+         // Photo results page
+        <View style={styles.cameraContainer}>
+          <View style={styles.topLeftContainer}>
+            <Text style={globalStyles.h1}>UPLOAD/PHOTO</Text>
+            <TouchableOpacity
+              onPress={() => setImageUpload(false)}
+              style={styles.topToggleButton}
+            >
+              <Text style={[globalStyles.h5, { color: "black" }]}>SWITCH MODE</Text>
+            </TouchableOpacity>
+          </View>
 
-  <View style={{ flex: 1, backgroundColor: "#000", padding: 20 }}>
-    {/* Photo preview */}
-    <View style={[styles.photoBox, { width: 150, height: 150 }]}>
-      <Image
-        source={{ uri: photo.uri }}
-        style={{ width: "100%", height: "100%" }}
-        resizeMode="cover"
-      />
-    </View>
+          <View style={styles.photoSquare}>
+            <Image
+              source={{ uri: photo.uri }}
+              style={{ width: "100%", height: "100%" }}
+              resizeMode="cover"
+            />
+          </View>
 
-        {/* Label + Input */}
-    <Text style={global.h3}>NAME</Text>
-    <TextInput
-      style={global.upload}
-      placeholder="Enter Name..."
-      placeholderTextColor="#999"
-      value={upload.name}
-      onChangeText={(t) => setUpload({ ...upload, name: t })}
-    />
-
-    {/* DESCRIPTION input */}
-    <Text style={global.h3}>DESCRIPTION</Text>
-    <TextInput
-      style={global.upload}
-      placeholder="Enter Description..."
-      placeholderTextColor="#999"
-      value={upload.description}
-      onChangeText={(t) => setUpload({ ...upload, description: t })}
-    />
-
-        {/* Buttons */}
-      <TouchableOpacity style={styles.whiteBtn} onPress={IdentifyUpload}>
-      <Text style={global.h5}>IDENTIFY FISH</Text>
-    </TouchableOpacity>
-
-    <TouchableOpacity style={styles.whiteBtn} onPress={SaveData}>
-      <Text style={global.h5}>SAVE FISH</Text>
-    </TouchableOpacity>
-
-    <TouchableOpacity style={styles.whiteBtn} onPress={() => navigation.navigate("Camera")}>
-      <Text style={global.h5}>NEW PHOTO</Text>
-    </TouchableOpacity>
-  </View>
-    )}
-
-
-
-    {response && (
-      <View style={styles.section}>
-        <View style={styles.resultRow}>
-          <Image
-            source={{ uri: photo.uri }}
-            style={styles.smallPhoto}
+          <Text style={globalStyles.h3}>NAME</Text>
+          <TextInput
+            style={[global.upload, globalStyles.h3]}
+            placeholder="..."
+            placeholderTextColor="#999"
+            value={upload.name}
+            onChangeText={(t) => setUpload({ ...upload, name: t })}
           />
 
-          <Ionicons name="arrow-forward" size={32} color="#fff" />
+          <TouchableOpacity style={styles.whiteBtn} onPress={IdentifyUpload}>
+            <Text style={globalStyles.h5}>IDENTIFY FISH</Text>
+          </TouchableOpacity>
 
-          <Animated.View style={{ transform: [{ translateY }] }}>
-            <PixelFish schema={response} />
-          </Animated.View>
+          <TouchableOpacity style={styles.whiteBtn} onPress={SaveData}>
+            <Text style={globalStyles.h5}>SAVE FISH</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.blkBtn}
+            onPress={() => navigation.navigate("Camera")}
+          >
+            <Text style={globalStyles.h3}>NEW PHOTO</Text>
+          </TouchableOpacity>
         </View>
-
-        {/* Name */}
-        <Text style={global.h4}>NAME</Text>
-        <TextInput
-          style={global.upload}
-          value={upload.name}
-          onChangeText={(t) => setUpload({ ...upload, name: t })}
-        />
-
-        {/* Description */}
-        <Text style={global.h4}>DESCRIPTION</Text>
-        <TextInput
-          style={global.upload}
-          value={upload.description}
-          onChangeText={(t) => setUpload({ ...upload, description: t })}
-        />
-
-        {/* Save + New Photo */}
-        <TouchableOpacity style={styles.whiteBtn} onPress={SaveData}>
-          <Text style={global.h5}>SAVE FISH</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => navigation.navigate("Camera")}>
-          <Text style={global.h5}>NEW PHOTO</Text>
-        </TouchableOpacity>
-      </View>
-    )}
-  </View>
-);
+      )}
+    </View>
+  );
 }
   const styles = StyleSheet.create({
 content: {
@@ -314,6 +279,11 @@ content: {
   paddingTop: 0,           
   width: "100%",
 },
+  container: {
+    flex: 1,
+    paddingTop: 0,
+    paddingHorizontal: 0,
+  },
   photo: {
     width: "80%",
     height: 250,
@@ -348,11 +318,18 @@ content: {
   },
 
   whiteBtn: {
-    width: "100%",
+    width: "85%",
     backgroundColor: "#fff",
     paddingVertical: 12,
     alignItems: "center",
-    marginTop: 6,
+    marginTop: 20,
+    marginBottom: 6,
+  },
+  blkBtn:{
+    width: "80%",
+    paddingVertical: 12,
+    alignItems: "center",
+    marginTop: 20,
     marginBottom: 6,
   },
   button: {
@@ -367,7 +344,7 @@ content: {
   width: "100%",
   flexDirection: "column",
   alignItems: "center",
-  gap: 12,  // spacing between input + button
+  gap: 12,  
   marginTop: 20,
 },
 
@@ -381,7 +358,7 @@ fullUploadContent: {
   flex: 1,
   justifyContent: "flex-start",
   alignItems: "center",
-  paddingTop: 100,
+  paddingTop: 150,
   paddingHorizontal: 20,
 },
 
@@ -413,6 +390,30 @@ topToggleButton: {
   paddingHorizontal: 5,
   backgroundColor: "#ffffff",
 },
+cameraContainer: {
+  flex: 1,
+  backgroundColor: "#000",
+  paddingTop: 150,
+  paddingHorizontal: 20,
+  alignItems: "center",
+},
+
+photoSquare: {
+  width: 180,
+  height: 180,
+  borderWidth: 2,
+  borderColor: "#fff",
+  marginBottom: 30,
+  justifyContent: "center",
+  alignItems: "center",
+},
+retakeContainer: {
+  flex: 1,
+  backgroundColor: "#000",
+  justifyContent: "center", 
+  alignItems: "center",     
+},
+
 
 
 });

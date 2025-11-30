@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { View, Text, StyleSheet } from "react-native"
-import global from "../globalStyles"
+import globalStyles from "../globalStyles";
 
 export default function LoadState({ message }) {
 
@@ -9,8 +9,8 @@ export default function LoadState({ message }) {
         <View style={[styles.wrapper]}>
             <View style={[styles.absolute]} />
             <View style={[styles.container]}>
-                <Text>
-                    {messagePlaceholder}
+                <Text style={globalStyles.h3}>
+                     {messagePlaceholder}
                 </Text>
             </View>
         </View>
@@ -41,10 +41,10 @@ const styles = StyleSheet.create({
     container: {
         width: 200,
         height: 200,
-        backgroundColor: "white",
+        backgroundColor: "black",
         zIndex: 100,
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 12,
-    }
+    },
 })
