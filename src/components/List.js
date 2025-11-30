@@ -17,7 +17,7 @@ export default function List({ data, onPressFish }) {
 
     return (
       <Pressable onPress={() => onPressFish(item)} style={styles.row}>
-        
+
         <View style={styles.imageBox}>
           {schema ? (
             <View style={styles.pixelFishWrapper}>
@@ -34,7 +34,15 @@ export default function List({ data, onPressFish }) {
 
         <View style={styles.textBox}>
           <Text style={styles.name}>{item?.name || "NO NAME"}</Text>
-          <Text style={styles.desc}>{item?.description || "NO DESCRIPTION"}</Text>
+          <Text
+            style={styles.desc}
+            //referenced stack overflow documentation for trailing text
+            //https://stackoverflow.com/questions/30594080/how-to-have-ellipsis-effect-on-text
+            numberOfLines={2}
+            ellipsizeMode="tail"
+          >
+            {item?.description || "NO DESCRIPTION"}
+          </Text>
         </View>
 
       </Pressable>
@@ -73,7 +81,7 @@ const styles = StyleSheet.create({
   },
 
   pixelFishWrapper: {
-    transform: [{ scale: 0.35 }], 
+    transform: [{ scale: 0.35 }],
   },
 
   image: {
@@ -105,6 +113,7 @@ const styles = StyleSheet.create({
     opacity: 0.7,
     fontFamily: "departure mono",
     fontSize: 16,
+    flexShrink: 1,
   },
 
   placeholder: { color: "white" }

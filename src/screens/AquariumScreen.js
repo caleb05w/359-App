@@ -6,7 +6,6 @@ import PixelFish, { computeFishBounds } from "../components/pixelFish";
 import { fetchData } from "../utils/db";
 import FishInfo from "../components/FishInfo";
 import globalStyles from "../globalStyles";
-import { BlurView } from "expo-blur";
 
 // bounding box of the phone to help with edge detection
 const { width, height } = Dimensions.get("window");
@@ -311,17 +310,8 @@ export default function AquariumScreen() {
           );
         })}
       </ImageBackground>
+      
 
-      {/* 🔵 BLUR LAYER — now correctly on TOP of aquarium */}
-      {selectedFish && (
-        <BlurView
-          intensity={70}
-          tint="dark"
-          style={StyleSheet.absoluteFill}
-        />
-      )}
-
-      {/* 🟣 POPUP (FishInfo) — on top of blur */}
       {selectedFish && (
         <FishInfo
           fish={selectedFish}

@@ -23,10 +23,8 @@ import { collection, addDoc } from "firebase/firestore";
 import { db } from '../utils/firebaseConfig'
 
 import LoadState from "../components/Loadstate";
-
-import Fish from "../components/Fish";
 import global from "../globalStyles";
-import { handleResponse, imgResponse } from "../../api/chat";
+import { handleResponse, imgResponse, fishDescription } from "../../api/chat";
 
 export default function CameraResult({ navigation, route }) {
   //fish upload text
@@ -36,6 +34,7 @@ export default function CameraResult({ navigation, route }) {
   const [photo, setPhoto] = useState(initialPhoto);
   const [imageUpload, setImageUpload] = useState(!!initialPhoto);
   const [load, setLoad] = useState(false)
+  const [description, setDescription] = useState("")
   //stroage system for photo
   const [upload, setUpload] = useState({ name: "", description: "no description" });
 
@@ -76,11 +75,13 @@ export default function CameraResult({ navigation, route }) {
       const imageUri = photo?.uri ?? null;
       const parsedImg = await imgResponse(imageUri);
       setUpload((prev) => ({ ...prev, name: parsedImg }));
-      handleUpload(parsedImg);
+      // handleUpload will fetch the description from fishDescription
+      await handleUpload(parsedImg);
     }
 
     catch (e) {
       console.warn("error parsing fish name", e)
+      setLoad(false);
     }
   }
 
@@ -92,7 +93,7 @@ export default function CameraResult({ navigation, route }) {
       const docRef = await addDoc(collection(db, "fish"), {
         //need to use parsed image here because it only loads after the await imgResponse calls.
         name: upload.name ?? "no name",
-        description: upload?.description ?? "no description",
+        description: upload?.description ?? "no descriptionnnn",
         imageUri: imageUri ?? "no image",
         schema: response ?? "no schema"
       });
@@ -112,8 +113,11 @@ export default function CameraResult({ navigation, route }) {
     // handleResponse is the returned object from chat.js.
     try {
       const parsedSchema = await handleResponse(name);
+      const parsedDescription = await fishDescription(name);
       //response is what GPT responds with.
       setResponse(parsedSchema);
+      // Set the description from fishDescription to upload.description
+      setUpload((prev) => ({ ...prev, description: parsedDescription || "no description" }));
       //feedback
       setStatus("Complete");
       setLoad(false)
