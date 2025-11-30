@@ -11,11 +11,9 @@ export default function WelcomeScreen({ navigation }) {
     >
       <View style={styles.content}>
 
-        {/* TITLE */}
         <Text style={globalStyles.h1}>SANCTUARY</Text>
         <Text style={globalStyles.h1}>FISH FINDER</Text>
 
-        {/* LOGIN BUTTON */}
         <TouchableOpacity
           style={styles.button}
           onPress={() => navigation.navigate("Login")}
@@ -23,7 +21,6 @@ export default function WelcomeScreen({ navigation }) {
           <Text style={globalStyles.h5}>LOGIN</Text>
         </TouchableOpacity>
 
-        {/* SIGNUP LINK */}
         <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
           <Text style={[globalStyles.h3, styles.linkText]}>
             SIGN UP HERE

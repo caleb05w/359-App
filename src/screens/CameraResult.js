@@ -131,23 +131,23 @@ export default function CameraResult({ navigation, route }) {
     <View style={styles.container}>
       {load === true ? <LoadState message="Loading..."></LoadState> : ""}
      
-{imageUpload === false ? (
-  <ImageBackground
-    source={require("../../assets/uploadbg.png")}
-    style={styles.fullUploadBG}
-    resizeMode="cover"
-  >
-   <View style={styles.topLeftContainer}>
-      <Text style={globalStyles.h1}>UPLOAD/TEXT</Text> 
-      <TouchableOpacity
-        onPress={() => setImageUpload(true)} // This switches to photo mode
-        style={styles.topToggleButton}
-      >
-        <Text style={[globalStyles.h5, { color: "black" }]}>SWITCH MODE</Text>
-      </TouchableOpacity>
-    </View>
+      {imageUpload === false ? (
+        <ImageBackground
+          source={require("../../assets/uploadbg.png")}
+          style={styles.fullUploadBG}
+          resizeMode="cover"
+        >
+      <View style={styles.topLeftContainer}>
+          <Text style={globalStyles.h1}>UPLOAD/TEXT</Text> 
+          <TouchableOpacity
+            onPress={() => setImageUpload(true)} // This switches to photo mode
+            style={styles.topToggleButton}
+          >
+            <Text style={[globalStyles.h5, { color: "black" }]}>SWITCH MODE</Text>
+          </TouchableOpacity>
+        </View>
 
-    <View style={styles.fullUploadContent}>
+  <View style={styles.fullUploadContent}>
       {/* PixelFish / Preview area */}
       {response ? (
         <Animated.View
@@ -166,19 +166,19 @@ export default function CameraResult({ navigation, route }) {
           <PixelFish schema={null} />
         </View>
       )}
- <Text style={globalStyles.h1}>FISH GENERATOR</Text>
-      {/* Text input + Upload button */}
-<View style={styles.inputStack}>
-<TextInput
-  style={[global.upload, globalStyles.h4, { width: "100%" }]}
-  placeholder="ENTER NAME"
-  placeholderTextColor="#999"
-  value={upload.name}
-  onChangeText={(text) =>
-    setUpload((prev) => ({ ...prev, name: text }))
-  }
-  onSubmitEditing={() => Keyboard.dismiss()}
-/>
+  <Text style={globalStyles.h1}>FISH GENERATOR</Text>
+      {/* Text input and Upload button section */}
+      <View style={styles.inputStack}>
+        <TextInput
+          style={[global.upload, globalStyles.h4, { width: "100%" }]}
+          placeholder="ENTER NAME"
+          placeholderTextColor="#999"
+          value={upload.name}
+          onChangeText={(text) =>
+            setUpload((prev) => ({ ...prev, name: text }))
+          }
+          onSubmitEditing={() => Keyboard.dismiss()}
+      />
 
   <TouchableOpacity
     style={[styles.button, { width: "100%" }]}
@@ -200,14 +200,13 @@ export default function CameraResult({ navigation, route }) {
   )}
 </View>
 
-
-      {/* Status */}
      <View>
         <Text style={globalStyles.h2}>STATUS: {status}</Text>
      </View>
     </View>
   </ImageBackground>
-) : photo === null ? (
+
+  ) : photo === null ? (
 
         //retake photo page
      <View style={styles.retakeContainer}>
@@ -272,51 +271,11 @@ export default function CameraResult({ navigation, route }) {
   );
 }
   const styles = StyleSheet.create({
-content: {
-  flex: 1,
-  alignItems: "center",
-  justifyContent: "center",
-  paddingTop: 0,           
-  width: "100%",
-},
   container: {
     flex: 1,
     paddingTop: 0,
     paddingHorizontal: 0,
   },
-  photo: {
-    width: "80%",
-    height: 250,
-    borderRadius: 12,
-    marginBottom: 24,
-  },
-    photoBox: {
-    width: "50%",
-    aspectRatio: 1,
-    borderWidth: 2,
-    borderColor: "#fff",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 20,
-    marginBottom: 20,
-    overflow: "hidden",
-  },
-    resultRow: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: 12,
-    marginBottom: 20,
-  },
-
-  smallPhoto: {
-    width: 100,
-    height: 100,
-    borderWidth: 2,
-    borderColor: "#fff",
-    borderRadius: 4,
-  },
-
   whiteBtn: {
     width: "85%",
     backgroundColor: "#fff",
@@ -339,7 +298,6 @@ content: {
     alignItems: "center",
     marginTop: 16,
   },
-
   inputStack: {
   width: "100%",
   flexDirection: "column",
@@ -347,32 +305,17 @@ content: {
   gap: 12,  
   marginTop: 20,
 },
-
 fullUploadBG: {
   flex: 1,
   width: "100%",
   height: "100%",
 },
-
 fullUploadContent: {
   flex: 1,
   justifyContent: "flex-start",
   alignItems: "center",
   paddingTop: 150,
   paddingHorizontal: 20,
-},
-
-uploadImageButton: {
-  marginTop: 40,
-  paddingHorizontal: 20,
-  paddingVertical: 12,
-  borderRadius: 10,
-  backgroundColor: "rgba(255,255,255,0.2)",
-},
-
-uploadImageText: {
-  color: "#fff",
-  fontSize: 16,
 },
 topLeftContainer: {
   position: "absolute",
@@ -382,7 +325,7 @@ topLeftContainer: {
   flexDirection: "column",
   gap: 10,
   zIndex: 999,
-  elevation: 999, // Android
+  elevation: 999, 
 },
 topToggleButton: {
   width: "50%",
@@ -397,7 +340,6 @@ cameraContainer: {
   paddingHorizontal: 20,
   alignItems: "center",
 },
-
 photoSquare: {
   width: 180,
   height: 180,
@@ -413,8 +355,5 @@ retakeContainer: {
   justifyContent: "center", 
   alignItems: "center",     
 },
-
-
-
 });
 
