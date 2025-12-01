@@ -137,7 +137,7 @@ export default function AquariumScreen() {
             vy = Math.sin(newAngle);
           }
 
-          // --- READ LATEST TILT AND APPLY IT BEFORE COMPUTING DIRECTION ---
+          // READ LATEST TILT AND APPLY IT BEFORE COMPUTING DIRECTION 
           // Read from ref so interval sees latest accelerometer values
           const currentTilt = tiltRef.current || { x: 0, y: 0 };
           const tiltStrength = 0.4; // tune this

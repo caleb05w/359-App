@@ -84,14 +84,14 @@ export default function SignUpScreen({ navigation }) {
           <Text style={globalStyles.h5}>CONTINUE SIGNUP</Text>
         </TouchableOpacity>
 
-        {/* REMEMBER INFO */}
+        {/* For remembering info */}
         {email && password && username && (
           <TouchableOpacity onPress={rememberLogin}>
             <Text style={[globalStyles.h3, styles.remember]}>Remember Me</Text>
           </TouchableOpacity>
         )}
 
-        {/* LINK TO LOGIN */}
+        {/* swicthes to login pageee*/}
         <TouchableOpacity onPress={() => navigation.navigate("Login")}>
           <Text style={[globalStyles.h3, styles.loginLink]}>
             LOGIN INSTEAD

@@ -51,7 +51,6 @@ export default function LoginScreen({ navigation, route }) {
 
         <Text style={globalStyles.h1}>LOGIN</Text>
 
-        {/* INPUTS */}
         <View style={styles.inputWrapper}>
           <TextInput
             style={globalStyles.h4}
@@ -70,17 +69,14 @@ export default function LoginScreen({ navigation, route }) {
           />
         </View>
 
-        {/* LOGIN BUTTON */}
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <Text style={globalStyles.h5}>CONTINUE LOGIN</Text>
         </TouchableOpacity>
 
-        {/* FORGOT PASSWORD */}
         <TouchableOpacity onPress={loadPassword}>
           <Text style={[globalStyles.h3, styles.forgot]}>FORGOT PASSWORD?</Text>
         </TouchableOpacity>
 
-        {/* SIGN UP */}
         <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
           <Text style={[globalStyles.h3, styles.signup]}>
             SIGNUP INSTEAD
