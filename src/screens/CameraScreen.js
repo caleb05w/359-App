@@ -1,3 +1,6 @@
+//screen dedicated to taking photos.
+//houses our camera object.
+
 import { useState, useRef } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { CameraView, useCameraPermissions } from "expo-camera";
@@ -57,7 +60,7 @@ export default function CameraScreen({ navigation, route }) {
         ref={cameraRef}
       />
       <View style={styles.topLeftContainer}>
-        <Text style={globalStyles.h1}>UPLOAD/PHOTO</Text>
+        <Text style={globalStyles.h2}>UPLOAD/PHOTO</Text>
 
         <TouchableOpacity
           onPress={() => navigation.navigate("Results", { toggleMode: true })}
@@ -113,14 +116,18 @@ const styles = StyleSheet.create({
   topLeftContainer: {
     position: "absolute",
     top: 24,
-    left: 24,
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "row",
+    width: "100%",
+    paddingHorizontal: 24,
+    flex: 1,
     gap: 10,
+    zIndex: 999,
+    elevation: 999,
+    justifyContent: "space-between"
   },
 
   topToggleButton: {
-    width: "45%",
     paddingVertical: 6,
     paddingHorizontal: 5,
     backgroundColor: "#ffffff",

@@ -11,6 +11,7 @@ Your job:
    - medium  = some key features, but still notable uncertainty
    - high    = features are clear; you’re reasonably confident
    - certain = very distinctive features and clear image
+   - if you receive the word null, you can return: "This fish does not exist, or is null. Therefore, the generated fish will be random."
 
 Output rules (IMPORTANT):
 - If you are at confidence "low" or "null", output exactly: null

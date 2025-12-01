@@ -1,3 +1,5 @@
+//pretty self explanantory... It's a login screen to access the app 
+
 import { useState } from "react";
 import {
   View,

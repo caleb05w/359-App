@@ -1,3 +1,5 @@
+//also very self explanatory. Sign up page to create an account
+
 import { useState } from "react";
 import {
   View,

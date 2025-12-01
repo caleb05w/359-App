@@ -14,7 +14,6 @@ import CameraScreen from "./src/screens/CameraScreen.js";
 import FishIndexScreen from "./src/screens/FishIndex.js";
 import CameraResultScreen from "./src/screens/CameraResult.js";
 import SignUpScreen from "./src/screens/SignUpScreen.js";
-import FishScreen from "./src/screens/Upload.js";
 import AquariumScreen from "./src/screens/AquariumScreen.js";
 
 

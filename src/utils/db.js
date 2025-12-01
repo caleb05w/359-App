@@ -1,8 +1,7 @@
-'use client';
+//Stores our functions for handling firestore data.
+
 import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 import { db } from "../utils/firebaseConfig"
-
-
 
 export async function fetchData() {
   try {
@@ -12,12 +11,12 @@ export async function fetchData() {
     querySnapshot.forEach((doc) => {
       const data = doc.data();
       allFish.push({
-        id: doc.id,
-        description: data.description,
-        name: data.name,
-        imageUri: data.imageUri,
-        response: data.response,
-        schema: data.schema,
+        id: doc.id, //id, for mapping key
+        description: data.description, // description
+        name: data.name, // name of fish 
+        imageUri: data.imageUri, // image of fish
+        response: data.response, //also schema for rendering fish, but from GPT
+        schema: data.schema, //fish object for rendering svg of fish
       })
     })
     return allFish;

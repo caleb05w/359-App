@@ -1,3 +1,7 @@
+//Screen where all the fish are rendered, and can "sort of" swim. It's a more interactive list, and is kinda cool and fun.
+// Alot of the code here was referenced from 265 -- Eric, since it uses alot of the same principles for movement and collison that they teach for OOP. 
+//Obviously, adapted for React Native, whcih features server side rendering, which complicates things.
+
 import React, { useEffect, useState, useRef } from "react";
 import { View, StyleSheet, Dimensions, Text, ImageBackground, Pressable } from "react-native";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
@@ -12,29 +16,15 @@ const { width, height } = Dimensions.get("window");
 
 export default function AquariumScreen() {
   const isFocused = useIsFocused(); // Refetch when screen comes into focus
-  const [fishList, setFishList] = useState([]);
-  const [swimState, setSwimState] = useState([]);
+  const [fishList, setFishList] = useState([]);   //list of the fish rendered from fetch data
+  const [swimState, setSwimState] = useState([]);   //renders fish movement and appended inot each fish
   const [error, setError] = useState("");
   // tilt from accelerometer (kept for any UI/debug)
   const [tiltX, setTiltX] = useState(0);
   const [tiltY, setTiltY] = useState(0);
   // ref to hold latest tilt values for the interval to read
   const tiltRef = useRef({ x: 0, y: 0 });
-
-  //returns a fish name
-  const [selectedName, setSelectedName] = useState("none");
-  //logs the position of the fish
-  const [selectedX, setSelectedX] = useState("none");
-  const [selectedY, setSelectedY] = useState("none");
-
   const [selectedFish, setSelectedFish] = useState(null);
-
-  //selects and returns information on the fish
-  const returnSelected = (item, x, y) => {
-    setSelectedName(item.name || "Unknown");
-    setSelectedX(x.toFixed(2));
-    setSelectedY(y.toFixed(2));
-  };
 
   // Load fish from DB
   useEffect(() => {
@@ -42,38 +32,46 @@ export default function AquariumScreen() {
 
     (async () => {
       try {
+        //maps rows to see if any items are null, guardrail to prevent null fish from being rendered.
         const rows = await fetchData();
         const validFish = rows;
+        //error state if there are no fish
         if (validFish.length === 0) {
           setError("No saved fish found.");
         }
+        //if there are fish, set it in the aquarium.
         setFishList(validFish);
         const initialSwimState = validFish.map((item) => {
-          const scale = 0.3 + Math.random() * 0.4;
+          const scale = 0.3 + Math.random() * 0.4; // Random scale between 0.2 and 0.5 so they can vary in size/
           const bounds = computeFishBounds(item.schema);
+          // Scale the bounding box dimensions
           const fishW = bounds.width * scale;
           const fishH = bounds.height * scale;
-          const initialSpeed = 1 + Math.random() * 3;
-          const accel = 0.02;
-          const maxSpeed = 3 + Math.random() * 5;
+          const initialSpeed = 1 + Math.random() * 3;    // starts the fish at a random speed between 1 and 4
+          const accel = 0.02;       //acceleration for the fish, referenced from IAT267.
+          const maxSpeed = 3 + Math.random() * 5; //max speed for fish so fish dont become unreasonably fast.
+
+          // this loads and appends parametesr for movement into the fish from when we set it above.
           return {
             ...item,
             width: fishW,
             height: fishH,
             scale: scale,
-            x: Math.random() * (width - fishW),
-            y: Math.random() * (height - fishH),
+            x: Math.random() * (width - fishW), //fish starts at random place on the screen
+            y: Math.random() * (height - fishH), //fish starts at random place on the screen
             vx: initialSpeed,
             vy: initialSpeed,
             angle: Math.random() * Math.PI * 2,
             accel: accel,
-            flip: initialSpeed < 0,
+            flip: initialSpeed < 0, //flips the fish if they turn directions.
             maxSpeed: maxSpeed,
             speed: initialSpeed,
           };
         });
+        //updates the fish movmement parameter
         setSwimState(initialSwimState);
 
+        //jjust helped me keep track of fish during build
         initialSwimState.forEach((item) => {
           console.log(
             item.name,
@@ -106,8 +104,10 @@ export default function AquariumScreen() {
 
   // Movement
   useEffect(() => {
+    //guard rail, if there is no swim state from fish, kill this function.
     if (swimState.length === 0) return;
 
+    //janky animation to get the fish to move
     const interval = setInterval(() => {
       setSwimState(prev => {
         if (!prev || prev.length === 0) return prev;
@@ -144,19 +144,21 @@ export default function AquariumScreen() {
           vx += currentTilt.x * tiltStrength;
           vy += currentTilt.y * tiltStrength;
 
-          // compute normalized direction based on updated velocities
+          //Move fish in directions, includeding diagonal
+          //had GPT help me write this instead of PVector.
           const len = Math.hypot(vx, vy) || 1;
           const dirX = vx / len;
           const dirY = vy / len;
 
-          // new position based on direction and speed
+          //new X position + y position, determined by direction and multipled by speed.
           let newX = x + dirX * speed;
           let newY = y + dirY * speed;
 
-          // wall detection
+          // wall detection boolean 
           let hitX = false;
           let hitY = false;
 
+          // X walls
           if (newX < 0) {
             newX = 0;
             hitX = true;
@@ -165,7 +167,8 @@ export default function AquariumScreen() {
             hitX = true;
           }
 
-          const bottomBuffer = 140;
+          // Y walls
+          const bottomBuffer = 80; //buffer for the navbar, so fish don't float behind it, but instead "bounce" off it.
           if (newY < 0) {
             newY = 0;
             hitY = true;
@@ -174,9 +177,11 @@ export default function AquariumScreen() {
             hitY = true;
           }
 
+          //go the negative direction if a hit is detected.
           if (hitX) vx = -vx;
           if (hitY) vy = -vy;
 
+          //return the numbers so that the movement is updated
           return {
             ...fish,
             x: newX,
@@ -190,12 +195,13 @@ export default function AquariumScreen() {
             scale,
             fishW,
             fishH,
-            index,
+            index, //stored in index for collision det4ection
           };
         });
 
-        // collision detection and separation
+        //nested array loop to detect colliison detection, inspired by 267 code from eric
         return fishWithNewPositions.map((fish, i) => {
+          //init fish values
           let newX = fish.x;
           let newY = fish.y;
           let vx = fish.vx;
@@ -204,14 +210,16 @@ export default function AquariumScreen() {
           const currentW = fish.fishW;
           const currentH = fish.fishH;
 
+          // checks fish colliison with others.
           for (let j = 0; j < fishWithNewPositions.length; j++) {
-            if (i === j) continue;
+            if (i === j) continue;; //doesnt collide with itself
             const otherFish = fishWithNewPositions[j];
             const otherW = otherFish.fishW;
             const otherH = otherFish.fishH;
             const otherX = otherFish.x;
             const otherY = otherFish.y;
 
+            //bounding box for the fish. Detects when or if something infringes on it.
             const fishLeft = newX;
             const fishRight = newX + currentW;
             const fishTop = newY;
@@ -222,22 +230,28 @@ export default function AquariumScreen() {
             const otherTop = otherY;
             const otherBottom = otherY + otherH;
 
+            //collision code, checks if the current bounding box overlaps.
             if (
               fishLeft < otherRight &&
               fishRight > otherLeft &&
               fishTop < otherBottom &&
               fishBottom > otherTop
             ) {
+
+              // detects fish colliding, and finds distance to push them apart, otherwise they get stuck in each other
               const dx = (fishLeft + currentW / 2) - (otherLeft + otherW / 2);
               const dy = (fishTop + currentH / 2) - (otherTop + otherH / 2);
               const distance = Math.hypot(dx, dy) || 1;
 
+              // pushes the fish apart, which is importnat otherwise fish can get stuck in each other.
               const pushDistance = 5;
               newX += (dx / distance) * pushDistance;
               newY += (dy / distance) * pushDistance;
 
+              // inverses velocity (looks like they turn away )
               vx = -vx;
               vy = -vy;
+              // slow down speed when colliding -- adds epic physics lol
               speed = speed * 0.5;
             }
           }
@@ -250,6 +264,7 @@ export default function AquariumScreen() {
             vy,
             speed,
             flip: vx < 0,
+            // doesnt return temporary variables
             fishW: undefined,
             fishH: undefined,
             index: undefined,
@@ -262,6 +277,7 @@ export default function AquariumScreen() {
     // keep dependencies minimal so interval isn't recreated frequently
   }, [swimState.length, width, height]);
 
+  //error handler if there are no fish.
   if (fishList.length === 0) {
     return (
       <View style={styles.center}>
@@ -310,7 +326,7 @@ export default function AquariumScreen() {
           );
         })}
       </ImageBackground>
-      
+
 
       {selectedFish && (
         <FishInfo
