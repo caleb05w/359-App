@@ -1,3 +1,6 @@
+//Renders the list of fish on fish Index in a flatlist. 
+//Pulls data from the firestore
+
 import { Text, View, StyleSheet, Image, FlatList, Pressable } from "react-native";
 import PixelFish from "./pixelFish";
 

@@ -1,4 +1,6 @@
-import React, { useState } from "react"
+//affordance to call a loading screen whenever generating a fish.
+
+import React from "react"
 import { View, Text, StyleSheet } from "react-native"
 import globalStyles from "../globalStyles";
 
@@ -10,7 +12,7 @@ export default function LoadState({ message }) {
             <View style={[styles.absolute]} />
             <View style={[styles.container]}>
                 <Text style={globalStyles.h3}>
-                     {messagePlaceholder}
+                    {messagePlaceholder}
                 </Text>
             </View>
         </View>

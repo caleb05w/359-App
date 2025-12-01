@@ -1,5 +1,8 @@
+//component that brings up fish description when a fish is tapped.
+//used in aquarium and fish index.
+
 import React from "react";
-import { View, Text, StyleSheet, Button, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import globalStyles from "../globalStyles";
 import PixelFish from "./pixelFish";
 
@@ -8,7 +11,7 @@ export default function FishDetails({ fish, onClose }) {
   // accepts and parses image of the fish. Makes sure that the fish is returned as a JSON, otherwise the image breaks.
   const parseSchema = (schema) => {
     if (!schema) return null;
-    //casts the schema to make sure it is an object
+    //checks the cast the schema to make sure it is an object
     if (typeof schema === "object") return schema;
     try {
       return JSON.parse(schema);
@@ -25,13 +28,13 @@ export default function FishDetails({ fish, onClose }) {
         {/* renders the fish, if the fish exists */}
         {schema && (
           <View style={styles.fishImageContainer}>
-            <PixelFish schema={schema} />
+            <PixelFish schema={schema} scale={.75} />
           </View>
         )}
         {/* pulls the fish name */}
-        <Text style={globalStyles.h1}>{fish.name}</Text>
+        <Text style={globalStyles.h2}>{fish.name}</Text>
         {/* pulls the fish description */}
-        <Text style={globalStyles.h2}>Description: {fish.description}</Text>
+        <Text style={globalStyles.h3}>{fish.description}</Text>
         <TouchableOpacity style={styles.button} onPress={onClose}>
           <Text style={globalStyles.h5}>[X] CLOSE </Text>
         </TouchableOpacity>
@@ -55,11 +58,6 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     backgroundColor: "rgba(0, 0, 0, 1)",
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 6,
     flexDirection: "column",
     gap: 24,
   },

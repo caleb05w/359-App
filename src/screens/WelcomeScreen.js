@@ -1,3 +1,5 @@
+//welcome screen, serves as a point to either login or sing up.
+
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, ImageBackground } from "react-native";
 import globalStyles from "../globalStyles";
@@ -12,7 +14,7 @@ export default function WelcomeScreen({ navigation }) {
       <View style={styles.content}>
 
         <Text style={globalStyles.h1}>SANCTUARY</Text>
-        <Text style={globalStyles.h1}>FISH FINDER</Text>
+        <Text style={globalStyles.h2}>FISH FINDER</Text>
 
         <TouchableOpacity
           style={styles.button}

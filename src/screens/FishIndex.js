@@ -1,15 +1,18 @@
+//just a list of all the fish you have caught and are stored in your firestore.
+//more traditional way to keep track of long amounts of fish compared to the aquarium.
+//uses list component to help render all the fish in a flat list.
+
 import { useState, useEffect } from "react";
 import { useIsFocused } from "@react-navigation/native";
-import { View, Text, Button, StyleSheet, FlatList, Image, ImageBackground, TouchableOpacity } from "react-native";
-import global from "../globalStyles";
+import { View, Text, StyleSheet, ImageBackground, TouchableOpacity } from "react-native";
 import { deleteData, fetchData } from "../utils/db";
 import List from "../components/List";
-import FishInfo from "../components/FishInfo"; 
+import FishInfo from "../components/FishInfo";
 import globalStyles from "../globalStyles";
 
 export default function FishIndex({ navigation, route }) {
   const [data, setData] = useState([]);
-  const [selectedFish, setSelectedFish] = useState(null); 
+  const [selectedFish, setSelectedFish] = useState(null);
   const isFocused = useIsFocused(); //imported this because apparently react remembers page screens so every time we swap them, it doesnt refresh and useEffect never calls, so the db appears not to update
   //runs before we start our file
   useEffect(() => {
@@ -26,30 +29,31 @@ export default function FishIndex({ navigation, route }) {
     setData(await fetchData());
   };
 
-return (
-  <ImageBackground
-    source={require("../../assets/indexbg.png")}
-    style={styles.container}
-    resizeMode="cover"
-  >
-    <View style={styles.content}>
-      <Text style={[globalStyles.h1, { marginTop: 40 }]}>FISH INDEX</Text>
-      <Text style={globalStyles.h2}>NUMBER OF FISH: {data.length}</Text>
+  return (
+    <ImageBackground
+      source={require("../../assets/indexbg.png")}
+      style={styles.container}
+      resizeMode="cover"
+    >
+      <View style={styles.content}>
+        <Text style={[globalStyles.h2, { marginBottom: 10 }]}>FISH INDEX</Text>
+        {/* //shows number of fish */}
+        <Text style={[globalStyles.h3, { marginBottom: 20 }]}>NUMBER OF FISH: {data.length}</Text>
 
-      <List data={data} onPressFish={setSelectedFish} />
-      
-      {selectedFish && (
-        <FishInfo
-          fish={selectedFish}
-          onClose={() => setSelectedFish(null)}
-        />
-      )}
-    </View>
-     <TouchableOpacity style={styles.button} onPress={handleDelete}>
+        <List data={data} onPressFish={setSelectedFish} />
+
+        {selectedFish && (
+          <FishInfo
+            fish={selectedFish}
+            onClose={() => setSelectedFish(null)}
+          />
+        )}
+      </View>
+      <TouchableOpacity style={styles.button} onPress={handleDelete}>
         <Text style={globalStyles.h5}>DELETE LIST</Text>
       </TouchableOpacity>
-  </ImageBackground>
-);
+    </ImageBackground>
+  );
 }
 const styles = StyleSheet.create({
   container: {
@@ -59,8 +63,8 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "flex-start", 
-    paddingTop: 60, 
+    justifyContent: "flex-start",
+    paddingTop: 60,
     width: "100%",
   },
   containerItem: {

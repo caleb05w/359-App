@@ -1,3 +1,5 @@
+//gobal style sheet for consistency.
+
 import { StyleSheet, Dimensions } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 //because apparently, you can't use 100vh on react expo lol
@@ -21,8 +23,8 @@ export default StyleSheet.create({
 
   h2: {
     fontFamily: "departure mono",
-    fontSize: 15,
-    color: "white"
+    fontSize: 24,
+    color: "white",
   },
 
   h3: {
@@ -82,7 +84,7 @@ export default StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor:"transparent"
+    backgroundColor: "transparent"
   },
 
   flexRow: {
@@ -101,9 +103,7 @@ export default StyleSheet.create({
   upload: {
     borderColor: "#D9D9D9",
     borderWidth: 2,
-    padding: 12,
-    minWidth: 300,
-    
+
   },
 
   fill: {

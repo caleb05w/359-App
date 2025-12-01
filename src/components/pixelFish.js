@@ -1,8 +1,12 @@
-// PixelFish.js
+// Pixel fish -- this is the fish that gets generated.
 import React from "react";
 import Svg, { Path, Rect } from "react-native-svg";
-import { useState } from "react"
 
+//had help converting SVG's to JS code with:  https://react-svgr.com/playground/
+// then used chat GPT to help me parse it into vectors that would fit my drawing
+//because I didnt have enough time to manually plant each SVG anchor. That wouldve taken ages.
+//but every thing is drawn by me originally. You can refer to our /images file, and you can find all the SVG files from figma that
+//that compose the fish.
 
 // Default body graphics configuration
 const nullSchema = {
@@ -21,7 +25,7 @@ const nullSchema = {
     eyeColor: "#FFFFFF" // Color for the eye
 };
 
-// Fin definitions based on images/fins SVG files
+// Fin definitions
 const FIN_DEFINITIONS = {
     angled: {
         width: 40,
@@ -127,22 +131,22 @@ const FIN_DEFINITIONS = {
         width: 70,
         height: 20,
         rects: [
-            { x: 40, y: 10, width: 10, height: 10 }, // transformed: matrix(-1 0 0 1 50 10)
-            { x: 30, y: 10, width: 10, height: 10 }, // transformed: matrix(-1 0 0 1 40 10)
-            { x: 20, y: 10, width: 10, height: 10 }, // transformed: matrix(-1 0 0 1 30 10)
-            { x: 30, y: 0, width: 10, height: 10 }, // transformed: matrix(-1 0 0 1 40 0)
-            { x: 40, y: 0, width: 10, height: 10 }, // transformed: matrix(-1 0 0 1 50 0)
-            { x: 50, y: 10, width: 10, height: 10 }, // transformed: matrix(-1 0 0 1 60 10)
-            { x: 60, y: 10, width: 10, height: 10 }, // transformed: matrix(-1 0 0 1 70 10)
-            { x: 20, y: 0, width: 10, height: 10 }, // transformed: matrix(-1 0 0 1 30 0)
-            { x: 12, y: 0, width: 10, height: 10 }, // transformed: matrix(-1 0 0 1 22 0)
-            { x: 10, y: 10, width: 10, height: 10 }, // transformed: matrix(-1 0 0 1 20 10)
-            { x: 0, y: 10, width: 10, height: 10 }, // transformed: matrix(-1 0 0 1 10 10)
+            { x: 40, y: 10, width: 10, height: 10 },
+            { x: 30, y: 10, width: 10, height: 10 },
+            { x: 20, y: 10, width: 10, height: 10 },
+            { x: 30, y: 0, width: 10, height: 10 },
+            { x: 40, y: 0, width: 10, height: 10 },
+            { x: 50, y: 10, width: 10, height: 10 },
+            { x: 60, y: 10, width: 10, height: 10 },
+            { x: 20, y: 0, width: 10, height: 10 },
+            { x: 12, y: 0, width: 10, height: 10 },
+            { x: 10, y: 10, width: 10, height: 10 },
+            { x: 0, y: 10, width: 10, height: 10 },
         ]
     }
 };
 
-// Tail definitions based on images/tails SVG files
+// Tail definitions 
 const TAIL_DEFINITIONS = {
     clubbed: {
         width: 50,
@@ -182,17 +186,17 @@ const TAIL_DEFINITIONS = {
             { x: 10, y: 20, width: 10, height: 10 },
             { x: 10, y: 80, width: 10, height: 10 },
             { x: 20, y: 30, width: 10, height: 10 },
-            { x: 10, y: 70, width: 10, height: 10 }, // transformed: matrix(-1 0 0 1 20 70)
-            { x: 20, y: 60, width: 10, height: 10 }, // transformed: matrix(-1 0 0 1 30 60)
-            { x: 20, y: 70, width: 10, height: 10 }, // transformed: matrix(-1 0 0 1 30 70)
-            { x: 0, y: 70, width: 10, height: 10 }, // transformed: matrix(-1 0 0 1 10 70)
-            { x: 0, y: 80, width: 10, height: 10 }, // transformed: matrix(-1 0 0 1 10 80)
-            { x: 0, y: 90, width: 10, height: 10 }, // transformed: matrix(-1 0 0 1 10 90)
-            { x: 0, y: 99, width: 10, height: 10 }, // transformed: matrix(-1 0 0 1 10 99)
-            { x: 10, y: 90, width: 10, height: 10 }, // transformed: matrix(-1 0 0 1 20 90)
-            { x: 10, y: 10, width: 10, height: 10 }, // transformed: matrix(-1 0 0 1 20 10)
-            { x: 0, y: 0, width: 10, height: 10 }, // transformed: matrix(-1 0 0 1 10 0)
-            { x: 10, y: 60, width: 10, height: 10 }, // transformed: matrix(-1 0 0 1 20 60)
+            { x: 10, y: 70, width: 10, height: 10 },
+            { x: 20, y: 60, width: 10, height: 10 },
+            { x: 20, y: 70, width: 10, height: 10 },
+            { x: 0, y: 70, width: 10, height: 10 },
+            { x: 0, y: 80, width: 10, height: 10 },
+            { x: 0, y: 90, width: 10, height: 10 },
+            { x: 0, y: 99, width: 10, height: 10 },
+            { x: 10, y: 90, width: 10, height: 10 },
+            { x: 10, y: 10, width: 10, height: 10 },
+            { x: 0, y: 0, width: 10, height: 10 },
+            { x: 10, y: 60, width: 10, height: 10 },
         ]
     },
     forked: {
@@ -244,31 +248,31 @@ const TAIL_DEFINITIONS = {
             { x: 0, y: 0, width: 10, height: 10 },
             { x: 20, y: 10, width: 10, height: 10 },
             { x: 10, y: 0, width: 10, height: 10 },
-            { x: 10, y: 50, width: 10, height: 10 }, // transformed: matrix(-1 0 0 1 20 50)
-            { x: 20, y: 40, width: 10, height: 10 }, // transformed: matrix(-1 0 0 1 30 40)
-            { x: 0, y: 50, width: 10, height: 10 }, // transformed: matrix(-1 0 0 1 10 50)
-            { x: 10, y: 40, width: 10, height: 10 }, // transformed: matrix(-1 0 0 1 20 40)
+            { x: 10, y: 50, width: 10, height: 10 },
+            { x: 20, y: 40, width: 10, height: 10 },
+            { x: 0, y: 50, width: 10, height: 10 },
+            { x: 10, y: 40, width: 10, height: 10 },
         ]
     }
 };
 
-// Snout definitions based on images/snout SVG files
+// Snout definitions 
 const SNOUT_DEFINITIONS = {
     overhanging: {
         width: 30,
         height: 50,
         rects: [
-            { x: 0, y: 10, width: 10, height: 10 }, // transformed: matrix(1 0 0 -1 0 40)
-            { x: 10, y: 10, width: 10, height: 10 }, // transformed: matrix(1 0 0 -1 10 40)
-            { x: 10, y: 0, width: 10, height: 10 }, // transformed: matrix(1 0 0 -1 10 50)
-            { x: 20, y: 20, width: 10, height: 10 }, // transformed: matrix(1 0 0 -1 20 30)
-            { x: 20, y: 30, width: 10, height: 10 }, // transformed: matrix(1 0 0 -1 20 20)
-            { x: 0, y: 0, width: 10, height: 10 }, // transformed: matrix(1 0 0 -1 0 50)
-            { x: 0, y: 40, width: 10, height: 10 }, // transformed: matrix(1 0 0 -1 0 10)
-            { x: 0, y: 20, width: 10, height: 10 }, // transformed: matrix(1 0 0 -1 0 30)
-            { x: 0, y: 30, width: 10, height: 10 }, // transformed: matrix(1 0 0 -1 0 20)
-            { x: 10, y: 20, width: 10, height: 10 }, // transformed: matrix(1 0 0 -1 10 30)
-            { x: 10, y: 30, width: 10, height: 10 }, // transformed: matrix(1 0 0 -1 10 20)
+            { x: 0, y: 10, width: 10, height: 10 },
+            { x: 10, y: 10, width: 10, height: 10 },
+            { x: 10, y: 0, width: 10, height: 10 },
+            { x: 20, y: 20, width: 10, height: 10 },
+            { x: 20, y: 30, width: 10, height: 10 },
+            { x: 0, y: 0, width: 10, height: 10 },
+            { x: 0, y: 40, width: 10, height: 10 },
+            { x: 0, y: 20, width: 10, height: 10 },
+            { x: 0, y: 30, width: 10, height: 10 },
+            { x: 10, y: 20, width: 10, height: 10 },
+            { x: 10, y: 30, width: 10, height: 10 },
         ]
     },
     slightlyProtruding: {
@@ -319,17 +323,17 @@ const SNOUT_DEFINITIONS = {
         width: 30,
         height: 50,
         rects: [
-            { x: 0, y: 0, width: 10, height: 10 }, // transformed: matrix(1 0 0 -1 0 50)
-            { x: 0, y: 30, width: 10, height: 10 }, // transformed: matrix(1 0 0 -1 0 20)
-            { x: 0, y: 40, width: 10, height: 10 }, // transformed: matrix(1 0 0 -1 0 10)
-            { x: 0, y: 10, width: 10, height: 10 }, // transformed: matrix(1 0 0 -1 0 40)
-            { x: 0, y: 20, width: 10, height: 10 }, // transformed: matrix(1 0 0 -1 0 30)
-            { x: 10, y: 0, width: 10, height: 10 }, // transformed: matrix(1 0 0 -1 10 50)
-            { x: 10, y: 30, width: 10, height: 10 }, // transformed: matrix(1 0 0 -1 10 20)
-            { x: 10, y: 10, width: 10, height: 10 }, // transformed: matrix(1 0 0 -1 10 40)
-            { x: 10, y: 20, width: 10, height: 10 }, // transformed: matrix(1 0 0 -1 10 30)
-            { x: 20, y: 10, width: 10, height: 10 }, // transformed: matrix(1 0 0 -1 20 40)
-            { x: 20, y: 20, width: 10, height: 10 }, // transformed: matrix(1 0 0 -1 20 30)
+            { x: 0, y: 0, width: 10, height: 10 },
+            { x: 0, y: 30, width: 10, height: 10 },
+            { x: 0, y: 40, width: 10, height: 10 },
+            { x: 0, y: 10, width: 10, height: 10 },
+            { x: 0, y: 20, width: 10, height: 10 },
+            { x: 10, y: 0, width: 10, height: 10 },
+            { x: 10, y: 30, width: 10, height: 10 },
+            { x: 10, y: 10, width: 10, height: 10 },
+            { x: 10, y: 20, width: 10, height: 10 },
+            { x: 20, y: 10, width: 10, height: 10 },
+            { x: 20, y: 20, width: 10, height: 10 },
         ]
     },
     projecting: {
@@ -377,23 +381,23 @@ const SNOUT_DEFINITIONS = {
 export default function PixelFish({ schema, flip, angle, width, height, scale }) {
     const bodyGraphics = schema ?? nullSchema;
 
-    // Main body box (80x70)
+    // Main body 
     const bodyWidth = 80;
     const bodyHeight = 70;
 
-    // Gray face box (10x60), vertically centered, on the right side
+    // Face Box
     const faceWidth = 10;
     const faceHeight = 60;
-    const faceX = bodyWidth; // 80 (outside the body, on the right)
-    const faceY = (bodyHeight - faceHeight) / 2; // 5 (centered vertically)
+    const faceX = bodyWidth;
+    const faceY = (bodyHeight - faceHeight) / 2;
 
-    // Eye definition based on images/eye/eye.svg (18x18)
+    // Eyes
     const eyeDefinition = {
         width: 18,
         height: 18,
         rects: [
-            { x: 0, y: 0, width: 18, height: 18, fill: "#181818" }, // Black background
-            { x: 2, y: 3, width: 4, height: 4, fill: "white" }, // White highlight (rounded from 2.3, 2.7, 4.2, 4.2)
+            { x: 0, y: 0, width: 18, height: 18, fill: "#181818" },
+            { x: 2, y: 3, width: 4, height: 4, fill: "white" },
         ]
     };
     const eyeSize = eyeDefinition.width; // 30
@@ -406,17 +410,17 @@ export default function PixelFish({ schema, flip, angle, width, height, scale })
     const mouthX = faceX + faceWidth; // Start at the end of the face
     const mouthY = eyeY + eyeSize + 10; // 10px below eye
 
-    // Top fin - based on fin parameter
+    // Top fin
     const selectedFin = FIN_DEFINITIONS[bodyGraphics.fin] || FIN_DEFINITIONS.flat;
     const topFinX = (bodyWidth - selectedFin.width) / 2; // Centered horizontally
     const topFinY = -selectedFin.height; // Above body
 
-    // Bottom fin - based on bottomFin parameter
+    // Bottom fin 
     const selectedBottomFin = FIN_DEFINITIONS[bodyGraphics.bottomFin] || FIN_DEFINITIONS.flat;
     const bottomFinX = (bodyWidth - selectedBottomFin.width) / 2; // Centered horizontally
     const bottomFinY = bodyHeight; // Below body
 
-    // Secondary body width based on size parameter
+    // Secondary bod, helps maintain scale of the fish since main body cant really change lol
     const sizeWidthMap = {
         small: 10,
         medium: 30,
@@ -424,36 +428,28 @@ export default function PixelFish({ schema, flip, angle, width, height, scale })
     };
     const leftSquareWidth = sizeWidthMap[bodyGraphics.size] || sizeWidthMap.medium;
     const leftSquareHeight = 60;
-    const leftSquareX = -leftSquareWidth; // Left of body
-    const leftSquareY = (bodyHeight - leftSquareHeight) / 2; // Vertically centered
+    const leftSquareX = -leftSquareWidth;
+    const leftSquareY = (bodyHeight - leftSquareHeight) / 2;
 
-    // Tail - based on tail parameter
+    // Tail 
     const selectedTail = TAIL_DEFINITIONS[bodyGraphics.tail] || TAIL_DEFINITIONS.truncate;
     const tailX = leftSquareX - selectedTail.width; // Left of left square
     const tailY = (bodyHeight - selectedTail.height) / 2; // Vertically centered
 
-    // Snout - based on snout parameter
+    // Snout 
     const selectedSnout = SNOUT_DEFINITIONS[bodyGraphics.snout] || SNOUT_DEFINITIONS.slightlyProtruding;
     const snoutX = faceX + faceWidth; // Right of face box
     const snoutY = faceY + (faceHeight - selectedSnout.height) / 2; // Vertically centered with face
 
-    // Side fin - in the middle of body (30px long, 20px tall)
-    const sideFinWidth = 30; // 30px long
-    const sideFinHeight = 20; // 20px tall
-    const sideFinX = bodyWidth - sideFinWidth - 5; // Right aligned inside body, 5px to the left
-    const sideFinY = (bodyHeight - sideFinHeight) / 2 + 20; // Vertically centered, 20px lower
-
-    // Calculate viewBox to include face, mouth, snout, side fin, top/bottom fins, left square, and tail
-    // Body is always 80x70px, viewBox max is 240x240px
+    // Side fin (center of body)
+    const sideFinWidth = 30;
+    const sideFinHeight = 20;
+    const sideFinX = bodyWidth - sideFinWidth - 5;
+    const sideFinY = (bodyHeight - sideFinHeight) / 2 + 20;
 
 
-    // Scale SVG dimensions to match viewBox to preserve body size (80x70)
-
-
-
-
-
-    // ----- BOUNDING BOX CALCULATION -----
+    //bounding box calculation for fish. Basically adds all the porportions up.
+    //need this for collision
     const maxX = Math.max(
         bodyWidth,
         faceX + faceWidth,
@@ -488,15 +484,11 @@ export default function PixelFish({ schema, flip, angle, width, height, scale })
         bodyGraphics.sideFin ? sideFinY : 0
     );
 
-    // True pixel size of the fish
     const viewBoxWidth = maxX - minX;
     const viewBoxHeight = maxY - minY;
-
-    // If consumer passes width/height, treat them as *display size* (scaled);
-    // otherwise use the true pixel size of the fish.
-    // Apply scale factor to the final dimensions
     const baseWidth = width ?? viewBoxWidth;
     const baseHeight = height ?? viewBoxHeight;
+    //scale factor of fish, allows us to rescale it.
     const scaleFactor = scale ?? 1;
     const svgWidth = baseWidth * scaleFactor;
     const svgHeight = baseHeight * scaleFactor;
@@ -574,8 +566,7 @@ export default function PixelFish({ schema, flip, angle, width, height, scale })
                 fill={bodyGraphics.mainColor || "gray"}
             />
 
-            {/* Body graphics overlay - only in body area (0,0 to 80,70) */}
-            {/* Main body overlay (80px wide, 35px tall) - renders underneath stripes, top-aligned */}
+            {/* Main body overlay */}
             {bodyGraphics.colorOverlay && (
                 <Path
                     d="M 0 0 L 80 0 L 80 35 L 0 35 Z"
@@ -601,7 +592,7 @@ export default function PixelFish({ schema, flip, angle, width, height, scale })
             )}
             {bodyGraphics.pattern === "stripes" && (
                 <>
-                    {/* Vertical stripes (15px wide, 70px tall, 20px spacing) */}
+                    {/* patterns stripes */}
                     <Path
                         d="M 0 0 L 15 0 L 15 70 L 0 70 Z"
                         fill={bodyGraphics.tertiary || "black"}
@@ -618,7 +609,7 @@ export default function PixelFish({ schema, flip, angle, width, height, scale })
             )}
             {bodyGraphics.pattern === "dots" && (
                 <>
-                    {/* Dots (10x10px) - sporadic pattern with at least 20px spacing, mimicking fish speckles */}
+                    {/* Dots */}
                     {[
                         { x: 10, y: 10 },
                         { x: 50, y: 0 },
@@ -640,7 +631,7 @@ export default function PixelFish({ schema, flip, angle, width, height, scale })
             )}
             {bodyGraphics.pattern === "line" && (
                 <>
-                    {/* Single horizontal line through the body (10px tall) */}
+                    {/* Stripe */}
                     <Path
                         d="M 0 30 L 80 30 L 80 40 L 0 40 Z"
                         fill={bodyGraphics.tertiary || "black"}
@@ -649,7 +640,7 @@ export default function PixelFish({ schema, flip, angle, width, height, scale })
             )}
 
 
-            {/* Snout - based on snout parameter */}
+            {/* Snout*/}
             {selectedSnout.rects.map((rect, index) => (
                 <Rect
                     key={`snout-${index}`}
@@ -661,7 +652,7 @@ export default function PixelFish({ schema, flip, angle, width, height, scale })
                 />
             ))}
 
-            {/* Snout overlay - top half, full width, uses color parameter */}
+            {/* Snout overlay */}
             {bodyGraphics.colorOverlay && (
                 <Path
                     d={`M ${snoutX} ${snoutY} L ${snoutX + selectedSnout.width} ${snoutY} L ${snoutX + selectedSnout.width} ${snoutY + selectedSnout.height / 2} L ${snoutX} ${snoutY + selectedSnout.height / 2} Z`}
@@ -669,13 +660,13 @@ export default function PixelFish({ schema, flip, angle, width, height, scale })
                 />
             )}
 
-            {/* Gray face box */}
+            {/* face */}
             <Path
                 d={`M ${faceX} ${faceY} L ${faceX + faceWidth} ${faceY} L ${faceX + faceWidth} ${faceY + faceHeight} L ${faceX} ${faceY + faceHeight} Z`}
                 fill={bodyGraphics.mainColor || "gray"}
             />
 
-            {/* Face overlay - top half, full width, uses color parameter */}
+            {/* Face overlay */}
             {bodyGraphics.colorOverlay && (
                 <Path
                     d={`M ${faceX} ${faceY} L ${faceX + faceWidth} ${faceY} L ${faceX + faceWidth} ${faceY + faceHeight / 2} L ${faceX} ${faceY + faceHeight / 2} Z`}
@@ -683,12 +674,11 @@ export default function PixelFish({ schema, flip, angle, width, height, scale })
                 />
             )}
 
-            {/* Eye - based on images/eye/Frame 33.svg */}
+            {/* Eye*/}
             {eyeDefinition.rects.map((rect, index) => {
-                // First rect (background) uses eyeColor, second rect (highlight) stays white
                 const fillColor = index === 0
                     ? (bodyGraphics.eyeColor || "#181818")
-                    : rect.fill; // Keep white highlight as white
+                    : rect.fill;
                 return (
                     <Rect
                         key={`eye-${index}`}
@@ -701,13 +691,13 @@ export default function PixelFish({ schema, flip, angle, width, height, scale })
                 );
             })}
 
-            {/* Mouth (black) */}
+            {/* Mouth */}
             <Path
                 d={`M ${mouthX} ${mouthY} L ${mouthX + mouthWidth} ${mouthY} L ${mouthX + mouthWidth} ${mouthY + mouthHeight} L ${mouthX} ${mouthY + mouthHeight} Z`}
                 fill="black"
             />
 
-            {/* Side fin - in the middle of body (renders on top) */}
+            {/* Side fin, in the middle of body */}
             {bodyGraphics.sideFin && (
                 <Path
                     d={`M ${sideFinX} ${sideFinY} L ${sideFinX + sideFinWidth} ${sideFinY} L ${sideFinX + sideFinWidth} ${sideFinY + sideFinHeight} L ${sideFinX} ${sideFinY + sideFinHeight} Z`}
